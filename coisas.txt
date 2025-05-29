@@ -1,0 +1,136 @@
+vou precisar esse codigo a  amis tarde
+esse codigo mostra aquele box de sms para poder intregar no site
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/5ae370d7227d3d7edc24cb96/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+esse codigo ainda nao sei bem o que vais faz 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=323620764400430";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+<?php
+function cropImage($sourcePath, $destinationPath, $targetWidth, $targetHeight) {
+    list($origWidth, $origHeight, $imageType) = getimagesize($sourcePath);
+
+    // Criando a imagem a partir do tipo de arquivo
+    switch ($imageType) {
+        case IMAGETYPE_JPEG:
+            $sourceImage = imagecreatefromjpeg($sourcePath);
+            break;
+        case IMAGETYPE_PNG:
+            $sourceImage = imagecreatefrompng($sourcePath);
+            break;
+        case IMAGETYPE_GIF:
+            $sourceImage = imagecreatefromgif($sourcePath);
+            break;
+        default:
+            die("Formato de imagem não suportado.");
+    }
+
+    // Calcular a área de recorte (Crop Center)
+    $aspectRatio = $origWidth / $origHeight;
+    $targetRatio = $targetWidth / $targetHeight;
+
+    if ($aspectRatio > $targetRatio) {
+        // Cortar lateralmente
+        $newWidth = $origHeight * $targetRatio;
+        $newHeight = $origHeight;
+        $x = ($origWidth - $newWidth) / 2;
+        $y = 0;
+    } else {
+        // Cortar verticalmente
+        $newWidth = $origWidth;
+        $newHeight = $origWidth / $targetRatio;
+        $x = 0;
+        $y = ($origHeight - $newHeight) / 2;
+    }
+
+    // Criando a nova imagem cortada
+    $croppedImage = imagecreatetruecolor($targetWidth, $targetHeight);
+    imagecopyresampled($croppedImage, $sourceImage, 0, 0, $x, $y, $targetWidth, $targetHeight, $newWidth, $newHeight);
+
+    // Salvando a imagem final
+    imagejpeg($croppedImage, $destinationPath, 90);
+
+    // Liberando memória
+    imagedestroy($sourceImage);
+    imagedestroy($croppedImage);
+}
+
+// Diretório de upload
+$uploadDir = "uploads/";
+if (!file_exists($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
+}
+
+// Verificar se foi enviado um arquivo
+if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    $tempPath = $_FILES['image']['tmp_name'];
+    $fileName = uniqid() . ".jpg";
+    $destinationPath = $uploadDir . $fileName;
+
+    // Crop no formato ideal para o carrossel
+    cropImage($tempPath, $destinationPath, 400, 500); // Exemplo: formato 4:5
+
+    echo "Imagem processada e salva em: " . $destinationPath;
+} else {
+    echo "Erro ao enviar a imagem.";
+}
+?>
+
+
+ <div class="carousel-wrapper">
+        <button class="carousel-btn prev-btn" aria-label="Anterior">&#10094;</button>
+     
+        <div class="carousel-container">
+        <?php foreach($result as $row):  ?>
+            <div class="product-item">
+                <img src="<?=ROOT?>assets/uploads/<?=$row['p_featured_photo']?>" alt="<?php echo $row['p_name']; ?>" loading="lazy">
+                <div class="product-desc">
+                    <h5><a href="<?=ROOT?>product?id=<?php echo $row['p_id']; ?>"><?php echo $row['p_name']; ?></a>
+                    </h5>
+                    <p>
+                <?php echo $row['p_current_price']; ?>KZ 
+                <?php if($row['p_old_price'] != ''): ?>
+                <del>
+                <?php echo $row['p_old_price']; ?>KZ
+                </del>
+                <?php endif; ?>
+                    </p>
+                    
+                   <?php if($row['p_qty'] == 0 && $row['p_qty_update'] != 0): ?>
+
+            <a href="<?=ROOT?>product?id=<?php echo $row['p_id']; ?>" class="btn btn-warning btn-sm"><i class="fa fa-shopping-cart"></i> Add carrinho</a>
+            
+            <?php elseif($row['p_qty'] == 0):?>
+            <a href="<?=ROOT?>product?id=<?php echo $row['p_id']; ?>" class="btn btn-warning btn-sm"><i class="fa fa-shopping-cart"></i> Add carrinho</a>
+            
+            <?php else: ?>
+            <a href="<?=ROOT?>product?id=<?php echo $row['p_id']; ?>" class="btn btn-warning btn-sm"><i class="fa fa-shopping-cart"></i> Add carrinho</a>
+            
+            <?php endif; ?>
+                </div>
+            </div>
+         <?php endforeach;?>
+
+        </div>
+        <button class="carousel-btn next-btn" aria-label="Proximo">&#10095;</button>
+    </div>

@@ -1,0 +1,48 @@
+# Ignorar arquivos e pastas de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignorar arquivos temporários ou backups
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Ignorar configurações locais
+*.env
+.env.*
+php.ini
+*.local
+
+# Ignorar dependências
+/vendor/
+node_modules/
+
+# Ignorar arquivos de cache
+.cache/
+*.cache
+
+# Ignorar arquivos de compressão ou exportação
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Ignorar IDEs e editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignorar arquivos de sessão ou uploads temporários
+session/
+uploads/
+temp/
+tmp/
+
+# Ignorar banco de dados local exportado
+*.sql
+*.sqlite
+*.db

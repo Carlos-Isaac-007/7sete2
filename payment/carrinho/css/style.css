@@ -1,0 +1,95 @@
+/* 📌 Estilos para Mobile */
+body {
+    background-color: #f8f9fa;
+}
+
+.cart-items {
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background: white;
+    border-radius: 8px;
+}
+
+.cart-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.cart-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.cart-price {
+    color: #28a745;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.btn-qty {
+    padding: 2px 8px;
+    font-size: 12px;
+}
+
+/* 📌 Resumo da compra */
+.summary {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.summary p {
+    margin: 5px 0;
+}
+
+hr {
+    border: 0.5px solid #ddd;
+}
+
+/* 📌 Estilos para Desktop (acima de 768px) */
+@media (min-width: 768px) {
+    .cart-items {
+        padding: 15px;
+    }
+
+    .cart-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .cart-title {
+        font-size: 16px;
+    }
+
+    .cart-price {
+        font-size: 14px;
+    }
+
+    .btn-qty {
+        font-size: 14px;
+        padding: 4px 10px;
+    }
+}
+
+/* 📌 Ajuste para Desktop Grande (acima de 1024px) */
+@media (min-width: 1024px) {
+    .cart-items {
+        max-width: 75%;
+        margin: 0 auto;
+    }
+
+    .summary {
+        max-width: 50%;
+        margin: 0 auto;
+    }
+}

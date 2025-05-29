@@ -1,0 +1,123 @@
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+      font-family: Arial, sans-serif;
+      background-color: #3b2a1d;
+    }
+
+    header {
+      background-color: #343a40;
+      color: white;
+      padding: 3rem 0;
+    }
+
+    .navbar {
+      background-color: #3b2a1d !important;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-nav .nav-link {
+      color: rgba(253, 130, 31, 0.5);
+      font-size: 1.2rem;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #fd821f;
+      transform: scale(1.2);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #fd821f;
+    }
+
+    .card{
+       box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+    }
+    .section-title {
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+        color: #fd821f !important;
+    }
+    #home p{
+        color: #fff;
+    }
+
+    footer {
+      background-color: rgba(52, 58, 64, 1);
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .logo-navbar {
+      max-width: 40px;
+      height: auto;
+      background-color: transparent;
+    }
+
+    .carousel-caption {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .carousel img {
+      object-fit: cover;
+      height: 400px;
+    }
+
+    @media (max-width: 768px) {
+      .carousel img {
+        height: 250px;
+      }
+    }
+
+    .card {
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-body {
+      flex-grow: 1;
+    }
+
+    .card-img-top {
+      object-fit: cover;
+      height: 200px;
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .card:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .card-overlay span {
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      color: white;
+      background-color: #fd821f;
+      border-radius: 5px;
+    }

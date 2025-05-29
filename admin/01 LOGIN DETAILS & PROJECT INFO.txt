@@ -1,0 +1,14 @@
+Nome do banco de dados: u322980294_seteEcomerce
+nome do usuario: u322980294_sete
+senha do banco de dados: 7$Ete2@25
+
+**Recommended PHP Version 5.6, 7.4**
+
+
+
+**Customer Verification should be done by accessing the database and changing its active status**
+
+**Admin Login Details**
+
+Email   : admin@mail.com
+Password: tyler.com

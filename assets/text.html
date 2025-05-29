@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header com Carrinho Atualizado</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    /* Header Base */
+    .header {
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+      position: relative;
+    }
+    .container-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 10px;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      white-space: nowrap;
+    }
+    /* Responsividade para a imagem do logo */
+    .logo img {
+      max-width: 120px; /* Tamanho máximo para telas maiores */
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .icons a {
+      color: #333;
+      font-size: 20px;
+      text-decoration: none;
+      transition: 0.3s;
+      position: relative;
+    }
+    .icons a:hover {
+      color: #007bff;
+    }
+    /* Badge no ícone do carrinho */
+    .badge {
+      background: #dc3545;
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 50%;
+      position: absolute;
+      top: -5px;
+      right: -10px;
+    }
+    /* Efeito de pulso no ícone do carrinho */
+    .pulse {
+      animation: pulse-animation 0.5s ease-in-out;
+    }
+    @keyframes pulse-animation {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    /* Barra de Pesquisa Oculta */
+    .search-bar-overlay {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+    .search-bar {
+      position: relative;
+      max-width: 300px;
+      margin: auto;
+    }
+    .search-bar input {
+      width: 100%;
+      border-radius: 20px;
+      padding: 8px 35px 8px 12px;
+      font-size: 14px;
+    }
+    .search-bar button {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 18px;
+    }
+    .search-bar button:hover {
+      color: #007bff;
+    }
+    /* Ajustes para telas pequenas */
+    @media (max-width: 576px) {
+      .container-header {
+        flex-wrap: nowrap;
+      }
+      .logo {
+        font-size: 18px;
+      }
+      .icons a {
+        font-size: 18px;
+      }
+      .logo img {
+        max-width: 90px; /* Reduz o tamanho da imagem para mobile */
+      }
+    }
+    /* Botão de exemplo para adicionar produto */
+    .add-product-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container">
+    <div class="container-header">
+      <!-- Logo sempre à esquerda -->
+      <a href="#" class="logo">
+        <img src="C:\Users\FITEC\Desktop\logo.jpeg" alt="Logo 7tech">
+      </a>
+      
+      <!-- Ícones: busca (toggle) e demais -->
+      <div class="icons">
+        <a href="#" id="search-toggle"><i class="ph ph-magnifying-glass"></i></a>
+        <a href="#"><i class="ph ph-user"></i></a>
+        <a href="#"><i class="ph ph-envelope"></i></a>
+        <a href="#" id="cart-icon">
+          <i class="ph ph-shopping-cart"></i>
+          <!-- Badge: inicialmente oculto -->
+          <span id="cart-badge" class="badge d-none">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Barra de Pesquisa (overlay) -->
+  <div class="search-bar-overlay d-none">
+    <div class="container">
+      <div class="search-bar">
+        <input type="text" class="form-control" placeholder="Buscar produtos...">
+        <button type="submit">
+          <i class="ph ph-magnifying-glass"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Botão de exemplo para adicionar um produto -->
+<div class="container">
+  <button id="add-product" class="btn btn-primary add-product-btn">Adicionar Produto</button>
+</div>
+
+<script>
+  // Toggle da visibilidade da barra de pesquisa
+  document.getElementById('search-toggle').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector('.search-bar-overlay').classList.toggle('d-none');
+  });
+
+  // Variáveis do carrinho
+  let cartCount = 0;
+
+  // Atualiza o badge do carrinho
+  function updateCartBadge() {
+    const badge = document.getElementById('cart-badge');
+    if (cartCount > 0) {
+      badge.textContent = cartCount;
+      badge.classList.remove('d-none');
+    } else {
+      badge.classList.add('d-none');
+    }
+  }
+
+  // Animação de pulso no ícone do carrinho
+  function animateCart() {
+    const cartIcon = document.getElementById('cart-icon');
+    cartIcon.classList.add('pulse');
+    setTimeout(() => {
+      cartIcon.classList.remove('pulse');
+    }, 500);
+  }
+
+  // Evento para adicionar um produto
+  document.getElementById('add-product').addEventListener('click', function() {
+    cartCount++;
+    updateCartBadge();
+    animateCart();
+  });
+</script>
+
+</body>
+</html>
