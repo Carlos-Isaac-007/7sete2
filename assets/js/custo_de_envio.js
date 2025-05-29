@@ -98,7 +98,7 @@
     const bairroExato = (window.bairrosDisponiveis || []).find(b => normalizar(b.nome_bairro) === nomeNormalizado);
 
     // Verifica se existe alguma correspondência parcial
-    const correspondenciaParcial = (window.bairrosDisponiveis || []).some(b => normalizar(b.nome_bairro).startsWith(nomeNormalizado));
+    const correspondenciaParcial = (window.bairrosDisponiveis || []).some(b => normalizar(b.nome_bairro).includes(nomeNormalizado));
 
     if (bairroExato) {
       // Bairro existente → busca o custo normalmente
@@ -113,7 +113,7 @@
                 ce.textContent = 'Custo de envio: ' + data.custo + ' KZ';
             }
           } else if (data.erro) {
-            ce.textContent = 'Erro: ' + data.erro;
+            ce.textContent = 'Erro: ' + (data.erro === 'Custo de envio não encontrado.' ? 'Entraremos em contacto para informar o custo de envio. Pode proceguir com a compra.' : data.erro);
             if(typeof cp !=="undefined"){
                 atualizarTotais(NaN);
             }
@@ -132,11 +132,19 @@
     } else if (!correspondenciaParcial) {
       // Nenhuma correspondência parcial → mostrar "Outro bairro"
       document.getElementById('otherBairroContainer').style.display = 'block';
+      document.getElementById('otherBairroInput').value = nomeDigitado;
 
+      // Mostra um modal informativo
+      Swal.fire({
+        icon: 'info',
+        title: 'Bairro não encontrado',
+        text: 'Não encontramos este bairro. Clique em "Enviar" para calcular o Custo de Envio.',
+        confirmButtonText: 'Entendi'
+      }); 
         if(typeof cp !== "undefined"){
              atualizarTotais(NaN);
             } else{
-               e.textContent = 'Entraremos em contacto para informar o custo de envio.';
+               e.textContent = 'Entraremos em contacto para informar o custo de envio. Pode proceguir com a compra.';
             }
     } else {
       // Ainda está digitando algo que pode bater com bairros conhecidos
@@ -233,7 +241,7 @@ document.getElementById('otherBairroSubmit').addEventListener('click', async fun
       Swal.fire({
         icon: 'success',
         title: 'Bairro adicionado!',
-        text: 'Obrigado. Entraremos em contacto com o custo.'
+        text: 'Obrigado. Entraremos em contacto para informar o custo de Envio.'
       });
     } else {
       throw new Error('Erro no retorno da API');
