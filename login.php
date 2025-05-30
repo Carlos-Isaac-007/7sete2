@@ -1,4 +1,5 @@
 <?php require_once('header.php'); ?>
+<?php require_once "verify.php" ?>
 <?php require_once('style_login.php'); ?>
 <?php require_once("assets/css/customer_form.php");?>
 <style>
@@ -68,8 +69,17 @@ $error_message .= LANG_VALUE_148.'<br>';
 } else {
     
 $_SESSION['customer'] = $row;
-
-header("location: ".URL."dashboard");
+// Redireciona para onde o usuário queria ir
+    if (isset($_SESSION['redirect_after_login'])) {
+        $destino = $_SESSION['redirect_after_login'];
+        unset($_SESSION['redirect_after_login']); // limpar depois de usar
+        header("Location: $destino");
+        exit;
+    } else {
+        // Caso contrário, vai para o painel
+        header("location: ".URL."dashboard");
+        exit;
+    }
 }
 }
 
@@ -106,6 +116,7 @@ if($success_message != '') {
 echo "<div class='success' style='padding: 10px;background:#f1f1f1;margin-bottom:20px;'>".$success_message."</div>";
 }
 ?>
+
 <div class="form-group">
 <label for=""><?php echo LANG_VALUE_94; ?> *</label>
 <input type="email" class="form-control" name="cust_email" required="True">

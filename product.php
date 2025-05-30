@@ -1,4 +1,10 @@
-<?php require_once('header.php'); ?>
+<?php require_once('header.php');
+if (!isset($_SESSION['customer']['cust_id'])) {
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI']; // ou $_SERVER['REQUEST_URI'] se quiser o caminho exato
+}
+
+?>
+?>
 <style>
   body {
     background-color: #f8f9fa !important;
@@ -892,9 +898,15 @@ window.addEventListener('scroll', () => {
         // Você pode mostrar uma mensagem se quiser
         if (data.success) {
           // Redireciona para o checkout
+          console.log(data);
           window.location.href = 'checkout.php';
-        } else {
-          alert("Erro ao adicionar ao carrinho.");
+        } else if(data.message.includes("Desculpas! á apenas")) {    
+          // Exibe a mensagem de erro
+          alert(data.message);
+
+        }else {
+          console.log(data);
+          window.location.href = 'checkout.php';
         }
       })
       .catch(error => {

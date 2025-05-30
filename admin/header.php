@@ -110,7 +110,7 @@ exit;
 
 /* Contadores de Notificações e Bairro */
 #notificacoes-count,
-#bairro-count, #usuarios-online {
+#bairro-count, #usuarios-online, #stock-alert {
     position: absolute;
     top: -5px;
     right: -5px;
@@ -145,7 +145,7 @@ exit;
 
 /* Estilização de cada item nas notificações e bairros */
 .notificacao-item,
-.bairro-item {
+.bairro-item, .stock-item {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -190,7 +190,7 @@ exit;
     background: #ffb700;
 }
 
-#online-icon{
+#online-icon, #stock-icon{
     position: relative;
     font-size: 24px;
     background: linear-gradient(to right, #00c6ff, #0072ff);
@@ -284,7 +284,7 @@ exit;
     /* Reduz tamanho do contador */
     #notificacoes-count,
     #bairro-count,
-    #usuarios-online{
+    #usuarios-online, #stock-alert{
         font-size: 10px;
         padding: 2px 5px;
         top: -4px;
@@ -302,18 +302,18 @@ exit;
 
     /* Itens do dropdown menores */
     .notificacao-item,
-    .bairro-item {
+    .bairro-item, .stock-item {
         font-size: 13px;
         padding: 8px;
     }
 
     .notificacao-item .icone,
-    .bairro-item .icone {
+    .bairro-item .icone, .stock-item .icone{
         font-size: 16px;
     }
 
     .notificacao-item .data,
-    .bairro-item .data {
+    .bairro-item .data, .stock-item .data {
         font-size: 11px;
     }
 }
@@ -403,6 +403,11 @@ exit;
     <div id="online-container">
         <div id="online-icon">
             👥 <span id = "usuarios-online">0</span>
+        </div>
+    </div>
+    <div id="stock-container">
+        <div id="stock-icon">
+            📦<span id = "stock-alert">0</span>
         </div>
     </div>
     
@@ -600,6 +605,7 @@ $(document).ready(function() {
 
     let notificacoes = { count: 0 };
     let bairros = { count: 0 };
+    let stock = { count: 0 };
 
     function atualizarNotificacoes() {
         carregarDados({
@@ -627,10 +633,25 @@ $(document).ready(function() {
         });
     }
 
+    function atualizarStock() {
+        carregarDados({
+            url: '../api/alerta_stock.php',
+            anterior: stock,
+            audioId: 'bairro-som',
+            listId: '#bairro-list',
+            countId: '#stock-alert',
+            itemClass: 'stock-item',
+            icone: '📦',
+            vazioTexto: 'Sem produtos com nivel baixo.'
+        });
+    }
+
     setInterval(atualizarNotificacoes, 5000);
     setInterval(atualizarBairros, 5000);
+    setInterval(atualizarStock, 5000);
     atualizarNotificacoes();
     atualizarBairros();
+    atualizarStock();
 
     // =================== EVENTOS DE CLICK ===================
     $('#notificacoes-icon').on('click', function() {
@@ -641,6 +662,11 @@ $(document).ready(function() {
     $('#bairro-container').on('click', function() {
         $.get('marcar_como_visto_bairro.php');
         window.location.href = "https://7setetech.com/admin/bairro.php";
+    });
+
+    $('#stock-container').on('click', function() {
+        $.get('marcar_como_visto_bairro.php');
+        window.location.href = "https://7setetech.com/admin/product.php";
     });
 });
 </script>

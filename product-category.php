@@ -1,4 +1,9 @@
-<?php require_once('header.php'); ?>
+<?php require_once('header.php');
+if (!isset($_SESSION['customer']['cust_id'])) {
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI']; // ou $_SERVER['REQUEST_URI'] se quiser o caminho exato
+}
+
+?> ?>
 
 <style>
 .product-cat .col-md-2 {

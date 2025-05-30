@@ -1,4 +1,10 @@
-<?php require_once('header.php'); ?>
+<?php require_once('header.php');
+if (!isset($_SESSION['customer']['cust_id'])) {
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI']; // ou $_SERVER['REQUEST_URI'] se quiser o caminho exato
+}
+
+?>
+
 <!-- Google tag (gtag.js) event -->
 <script>
   gtag('event', 'ads_conversion_Iniciar_pagamento_1', {
@@ -263,86 +269,154 @@ input:checked + .slider::before {
 
 <!-- Container que será exibido quando o switch estiver ativado -->
 <div id="localizacaoEntrega" style="display: none;">
-  <div class="shipping-select">
-    <label for="municipioSelect">Município:</label>
-    <select name="municipio" id="municipioSelect" class="form-select" style="width: 30%;">
-      <option value="">-- Escolha uma opção --</option>
-    </select>
-  </div>
-
-  <div class="shipping-select">
-    <label for="bairroInput">Selecione o bairro/rua para calcular o custo de envio:</label>
-    <input autocomplete="off" id="bairroInput" name="bairro" class="form-control awesomplete" placeholder="Digite ou selecione" disabled>
-  </div>
-  
-  <style>
-  #otherBairroContainer {
-    display: none;
-    margin-top: 12px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin-left: -15px;
-  }
-
-  #otherBairroInput {
-    flex: 1;
-    padding: 10px 14px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  #otherBairroInput:focus {
-    border-color: #000c78;
-    box-shadow: 0 0 0 3px rgba(0, 12, 120, 0.15);
-    outline: none;
-  }
-
-  #otherBairroSubmit {
-    background-color: #000c78;
-    color: #fff;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  #otherBairroSubmit:hover {
-    background-color: #000a5e;
-  }
-
-  @media (max-width: 480px) {
-    #otherBairroContainer {
-      flex-direction: column;
-      align-items: stretch;
+    <style>
+    .shipping-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #f3f5ff;
+      border-left: 5px solid #000c78;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #000c78;
+      margin-bottom: 15px;
     }
 
-    #otherBairroSubmit {
+    .shipping-info i {
+      font-size: 20px;
+      color: #000c78;
+    }
+
+    .shipping-select {
+      margin-bottom: 15px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .shipping-select label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .form-select,
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-select:focus,
+    .form-control:focus {
+      border-color: #000c78;
+      box-shadow: 0 0 0 3px rgba(0, 12, 120, 0.15);
+      outline: none;
+    }
+
+    .form-control[disabled] {
+      background-color: #f0f0f0;
+      color: #999;
+    }
+
+    /* Estilo para alinhar input e botão na mesma linha */
+    #bairroInputGroup {
+      display: flex;
+      gap: 8px;
+      align-items: center;
       width: 100%;
     }
-  }
-</style>
+    #bairroInput {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    #otherBairroContainer {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+      gap: 0;
+    }
+    #otherBairroSubmit {
+      background-color: #000c78;
+      color: #fff;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-left: 0;
+      height: 42px;
+      /* Ajuste para alinhar com o input */
+    }
+    #otherBairroSubmit:hover {
+      background-color: #000a5e;
+    }
 
-<div id="otherBairroContainer">
-  <input
-    type="text"
-    id="otherBairroInput"
-    placeholder="Não achou? Digite aqui"
-  />
-  <button type="button" id="otherBairroSubmit">
-    Enviar
-  </button>
-</div>
+    @media (max-width: 480px) {
+      .shipping-info {
+        font-size: 14px;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 8px;
+            }
+            .shipping-select label {
+        font-size: 14px;
+            }
+            .form-select,
+            .form-control {
+        font-size: 14px;
+            }
+            #bairroInputGroup {
+        flex-direction: row;
+        gap: 6px;
+        align-items: stretch;
+            }
+            #bairroInput {
+        width: 100%;
+        flex: 1 1 0%;
+            }
+            #otherBairroSubmit {
+        width: 100%;
+        height: 40px;
+        max-width: 120px;
+            }
+          }
+        </style>
+
+       
+        <!-- Seleção de município -->
+        <div class="shipping-select" style="margin-bottom: 12px;">
+          <label for="municipioSelect"><i class="fas fa-map-marker-alt" ></i> Município:</label>
+          <select name="municipio" id="municipioSelect" class="form-select" style="width: 30%;">
+            <option value="">-- Escolha uma opção --</option>
+          </select>
+        </div>
+
+        <!-- Seleção de bairro/rua -->
+        <div class="shipping-select" style="margin-bottom: 18px;">
+          <label for="bairroInput"><i class="fas fa-road"></i> Bairro/Rua para calcular o custo de envio:</label>
+          <div id="bairroInputGroup">
+            <input autocomplete="off" id="bairroInput" name="bairro" class="form-control awesomplete" placeholder="Digite ou selecione" disabled>
+            <span id="otherBairroContainer">
+        <button type="button" id="otherBairroSubmit">
+          Enviar
+        </button>
+            </span>
+          </div>
+          <input type="hidden" id="otherBairroInput" />
+        </div>
 </div>
 <script>
   // Alternar visibilidade do bloco de localização com o switch

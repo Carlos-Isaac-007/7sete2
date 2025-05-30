@@ -297,7 +297,7 @@ if($cur_page == ROOT.'customer-order') {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 
-<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5993ef01e2587a001253a261&product=inline-share-buttons"></script>
+<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=683987fbbfa7c90013226f7e&product=sop' async='async'></script>
 
 <?php echo $before_head; ?>
 

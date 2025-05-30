@@ -60,14 +60,14 @@ JOIN tbl_mid_category t3
 ON t2.mcat_id = t3.mcat_id
 JOIN tbl_top_category t4
 ON t3.tcat_id = t4.tcat_id
-ORDER BY t1.p_id DESC
+ORDER BY t1.p_qty ASC
 ");
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 foreach ($result as $row) {
 $i++;
 ?>
-<tr>
+<tr <?= $row['p_qty']=='0' ? 'style = "background-color: #ffb3b3;"': ($row['p_qty'] <='10' ? 'style = "background-color: #fff7b3"' : '' )?>>
 <td><?php echo $i; ?></td>
 <td style="width:82px;"><img src="../assets/uploads/<?php echo $row['p_featured_photo']; ?>" alt="<?php echo $row['p_name']; ?>" style="width:80px;"></td>
 <td><?php echo $row['p_name']; ?></td>

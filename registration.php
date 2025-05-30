@@ -288,7 +288,7 @@ if ($statement->rowCount()>0){
     $nome = $_POST['cust_name'];
     $email = $_POST['cust_email'];
     // Link de ativação no servidor
-        $link_ativacao = "https://7setetech.com/verify?token=$token&email=$email";
+        $link_ativacao = "https://7setetech.com/login?token=$token&email=$email";
 
         // Assunto e mensagem do e-mail
         $assunto = "Confirme seu cadastro";

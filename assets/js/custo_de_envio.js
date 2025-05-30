@@ -13,13 +13,19 @@
     .then(r => r.json())
     .then(bairros => {
       window.bairrosDisponiveis = bairros;
+          // Limpa Awesomplete anterior
+    if (input.awesomplete) {
+      input.awesomplete.list = []; // limpa a lista anterior
+    }
+      // Cria nova instância ou atualiza
+    const aw = new Awesomplete(input, {
+      list: bairros.map(b => b.nome_bairro),
+      minChars: 1,
+      autoFirst: true
+    });
+    input.awesomplete = aw;
 
-      new Awesomplete(input, {
-        list: bairros.map(b => b.nome_bairro),
-        minChars: 1,
-        autoFirst: true
-      });
-      // Solução para garantir busca do custo após seleção:
+          // Solução para garantir busca do custo após seleção:
     input.addEventListener('awesomplete-selectcomplete', function() {
     input.dispatchEvent(new Event('input'));
     });
