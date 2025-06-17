@@ -59,17 +59,19 @@ require_once 'assets/css/checkout.php';
 
 <h3 class="special"><?php echo LANG_VALUE_26; ?></h3>
 <div class="cart">
-    <!-- Wrapper responsivo para rolagem horizontal -->
-<div class="table-responsive">
-    <table class="table table-hover table-bordered">
+  <!-- Wrapper responsivo para rolagem horizontal -->
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered modern-cart-table">
+      <thead class="bg-primary text-white">
         <tr>
-            <th><?php echo LANG_VALUE_8; ?></th>
-            <th  class="product-name"><?php echo LANG_VALUE_47; ?></th>
-            <th class="product-quantity" ><?php echo LANG_VALUE_55; ?></th>
-            <th><?php echo LANG_VALUE_159; ?></th>
-            <th class="text-right"><?php echo LANG_VALUE_82; ?></th>
+          <th><i class="fas fa-image"></i></th>
+          <th class="product-name"><i class="fas fa-box"></i> <?php echo LANG_VALUE_47; ?></th>
+          <th class="product-quantity"><i class="fas fa-sort-numeric-up"></i> <?php echo LANG_VALUE_55; ?></th>
+          <th><i class="fas fa-tag"></i> <?php echo LANG_VALUE_159; ?></th>
+          <th class="text-right"><i class="fas fa-money-bill-wave"></i> <?php echo LANG_VALUE_82; ?></th>
         </tr>
-
+      </thead>
+      <tbody>
         <?php
         $table_total_price = 0;
         $cart_items = [];
@@ -88,41 +90,124 @@ require_once 'assets/css/checkout.php';
         ?>
 
         <?php foreach ($cart_items as $index => $item): ?>
-            <?php
-            $row_total_price = $item['price'] * $item['quantity'];
-            $table_total_price += $row_total_price;
-            ?>
-            <tr>
-                <td>
-                    <img src="<?= ROOT ?>assets/uploads/<?php echo htmlspecialchars($item['photo']); ?>" alt="Produto" class="cart-img" >
-                </td>
-                <td class="product-name"><?php echo htmlspecialchars($item['name']); ?></td>
-                <td class="product-quantity"><?php echo $item['quantity']; ?></td>
-                <td ><?php echo $item['price'] . LANG_VALUE_1; ?></td>
-                <td class="text-right" ><?php echo $row_total_price . LANG_VALUE_1; ?></td>
-            </tr>
+          <?php
+          $row_total_price = $item['price'] * $item['quantity'];
+          $table_total_price += $row_total_price;
+          ?>
+          <tr>
+            <td>
+              <div class="cart-img-wrapper">
+                <img src="<?= ROOT ?>assets/uploads/<?php echo htmlspecialchars($item['photo']); ?>" alt="Produto" class="cart-img rounded shadow-sm">
+              </div>
+            </td>
+            <td class="product-name align-middle">
+              <span class="fw-semibold"><?php echo htmlspecialchars($item['name']); ?></span>
+            </td>
+            <td class="product-quantity align-middle">
+              <!-- Removido badge, agora só número centralizado -->
+              <span style="display:inline-block; min-width:32px; text-align:center; font-size:1.1rem; font-weight:600; color:#000c78; background:#f3f5ff; border-radius:6px; padding:4px 10px;">
+                <?php echo $item['quantity']; ?>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span class="text-success fw-bold"><?php echo $item['price'] . LANG_VALUE_1; ?></span>
+            </td>
+            <td class="text-right align-middle">
+              <span class="fw-bold text-dark"><?php echo $row_total_price . LANG_VALUE_1; ?></span>
+            </td>
+          </tr>
         <?php endforeach; ?>
-
-        <tr>
-            <th colspan="4" class="total-text"><?php echo LANG_VALUE_81; ?></th>
-            <th class="total-amount" data-totalCart="<?php echo $table_total_price . LANG_VALUE_1; ?>"><?php echo $table_total_price . LANG_VALUE_1; ?></th>
-        </tr>
-
-       
-
-        <tr>
-            <td colspan="4" class="total-text"><?php echo LANG_VALUE_84; ?></td>
-            
-            <td class="total-amount" id="custoEnvio"></td>
+      </tbody>
+      <tfoot>
+        <tr class="bg-light">
+          <th colspan="4" class="total-text text-end"><?php echo LANG_VALUE_81; ?></th>
+          <th class="total-amount" data-totalCart="<?php echo $table_total_price . LANG_VALUE_1; ?>">
+            <i class="fas fa-coins text-warning"></i> <?php echo $table_total_price . LANG_VALUE_1; ?>
+          </th>
         </tr>
         <tr>
-            <th colspan="4" class="total-text"><?php echo LANG_VALUE_82; ?></th>
-            <th class="total-amount" id="totalWithShipping">Aqui vai aprecer o total</th>
+          <td colspan="4" class="total-text text-end">
+            <i class="fas fa-shipping-fast text-info"></i> <?php echo LANG_VALUE_84; ?>
+          </td>
+          <td class="total-amount" id="custoEnvio"></td>
         </tr>
+        <tr class="bg-primary text-white">
+          <th colspan="4" class="total-text text-end">
+            <i class="fas fa-cash-register"></i> <?php echo LANG_VALUE_82; ?>
+          </th>
+          <th class="total-amount" id="totalWithShipping">Aqui vai aprecer o total</th>
+        </tr>
+      </tfoot>
     </table>
+  </div>
 </div>
 
-</div>
+<style>
+.modern-cart-table {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 12px #000c7822;
+  margin-bottom: 1.5rem;
+}
+.modern-cart-table th, .modern-cart-table td {
+  vertical-align: middle !important;
+  font-size: 1.05rem;
+}
+.modern-cart-table thead th {
+  background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%) !important;
+  color: #fff !important;
+  border: none;
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+}
+.modern-cart-table tfoot th, .modern-cart-table tfoot td {
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-top: 2px solid #ccc;
+}
+.cart-img-wrapper {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f5ff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px #000c7822;
+}
+.cart-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.total-text {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #000c78;
+}
+.total-amount {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #23235a;
+}
+@media (max-width: 576px) {
+  .modern-cart-table th, .modern-cart-table td {
+    font-size: 0.98rem;
+    padding: 0.5rem;
+  }
+  .cart-img-wrapper {
+    width: 40px;
+    height: 40px;
+  }
+  .cart-img {
+    width: 36px;
+    height: 36px;
+  }
+}
+</style>
 
 <style>
   /* Switch estilo alavanca */
@@ -431,177 +516,557 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
 
 </script>
 <div class="cart-buttons">
-
-<div><a href="<?=ROOT?>cart" class="btn btn-secondary"><?php echo LANG_VALUE_21; ?></a></div>
-
+  <div>
+    <a href="<?=ROOT?>cart" class="btn btn-secondary">
+      <i class="fas fa-arrow-left"></i> <?php echo LANG_VALUE_21; ?>
+    </a>
+  </div>
 </div>
 
-<div class="clear"></div>
-<h3 class="special"><?php echo LANG_VALUE_33; ?></h3>
+<!--<div class="clear"></div>
+<h3 class="special"><?php echo LANG_VALUE_33; ?></h3>-->
 <div class="row">
-
-<div class="col-md-12">
-
-<div class="row">
-
-<div class="col-md-12 form-group" id="paymentSection">
-<label for=""><?php echo LANG_VALUE_34; ?> *</label>
-
-<div class="d-flex p-3 justify-content-between align-item-center">
-<?php if($_SESSION['cart_p_name'][1] != "Alice de Almeida - Técnicas Infalíveis de Estudo, Memorização e Aprendizagem – Do Jeito que Funciona pra Você"): ?>   
-<button type="button" class="btn-details" data-toggle="modal" data-target="#moneykModal" >Pagar em dinheiro</button>
-<?php endif; ?>
-<!-- Botão para abrir o Modal bank -->
-<button type="button" class="btn-details" data-toggle="modal" data-target="#bankModal">
-    Transferência Bancária
-</button>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12 form-group" id="paymentSection">
+        <label for="" class="fw-bold" style="font-size:1.1rem;">
+          <i class="fas fa-credit-card text-primary"></i> <?php echo LANG_VALUE_34; ?> *
+        </label>
+        <div class="d-flex flex-wrap gap-3 p-3 justify-content-between align-items-center" style="background: #f3f5ff; border-radius: 1rem; box-shadow: 0 2px 12px #000c7822;">
+          <?php if($_SESSION['cart_p_name'][1] != "Alice de Almeida - Técnicas Infalíveis de Estudo, Memorização e Aprendizagem – Do Jeito que Funciona pra Você"): ?>   
+            <button type="button" class="btn btn-lg btn-light border border-primary d-flex align-items-center gap-2 shadow-sm"
+              data-bs-toggle="modal" data-bs-target="#moneykModal" style="border-radius: 0.75rem; font-weight:600;">
+              <i class="fas fa-money-bill-wave fa-lg text-success"></i>
+              <span>Pagar em dinheiro</span>
+            </button>
+          <?php endif; ?>
+          <!-- Botão para abrir o Modal bank -->
+          <button type="button" class="btn btn-lg btn-light border border-primary d-flex align-items-center gap-2 shadow-sm"
+            data-bs-toggle="modal" data-bs-target="#bankModal" style="border-radius: 0.75rem; font-weight:600;">
+            <i class="fas fa-university fa-lg text-primary"></i>
+            <span>Transferência Bancária</span>
+          </button>
+        </div>
+        <div class="mt-2 small text-muted mb-4">
+          <i class="fas fa-info-circle"></i> Escolha a forma de pagamento preferida para finalizar sua compra.
+        </div>
+      </div>
+    </div>
+    <?php endif; ?>
+  </div>
 </div>
 
-<!-- Div pagamento bancario -->
-</div>
+<style>
+  .step {
+  transition: opacity 0.3s ease-in-out;
+}
 
+/* Botão base */
+.btn-custom {
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
 
-</div>
-<?php endif; ?>
+/* Botão primário: azul escuro */
+.btn-primary-custom {
+  background-color: #000c78;
+  color: white;
+}
 
-</div>
+.btn-primary-custom:hover {
+  background-color: #000a66;
+}
 
+.btn-primary-custom:disabled {
+  background-color: #ccc;
+  color: #777;
+  cursor: not-allowed;
+}
 
+/* Botão secundário: branco com borda azul */
+.btn-secondary-custom {
+  background-color: white;
+  color: #000c78;
+  border: 2px solid #000c78;
+}
 
-</div>
-</div>
-</div>
-</div>
+.btn-secondary-custom:hover {
+  background-color: #000c78;
+  color: white;
+}
 
+.btn-secondary-custom:disabled {
+  background-color: #f3f3f3;
+  border-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
 
-<!-- Modal -->
-<div class="modal fade" id="bankModal" tabindex="-1" role="dialog" aria-labelledby="bankModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="bankModalLabel">Transferência Bancária</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
+</style>
+<!-- Modal Moderno e Atrativo -->
+<div class="modal fade" id="bankModal" tabindex="-1" aria-labelledby="bankModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 shadow border-0" style="overflow:hidden;">
+      <div class="modal-header border-0 bg-primary text-white rounded-top-4" style="background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%);">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-university fa-lg"></i>
+          <h5 class="modal-title fw-bold mb-0" id="bankModalLabel">Pagamento por Transferência Bancária</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body p-4" style="background: #f8faff;">
+        <div id="stepper">
+          <!-- Etapa 1: Dados Bancários -->
+          <div class="step" data-step="1">
+            <div class="mb-4 text-center">
+              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-money-check-alt me-2"></i>1. Transfira o valor</span>
+              <p class="mb-0 text-muted" style="margin-top: 10px;">Escolha uma das contas abaixo para realizar a transferência:</p>
+            </div>
+            <div class="row g-3 justify-content-center">
+              <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                      <img src="uploads/bpc.webp" alt="BPC" style="height:32px;width:auto;" class="me-2">
+                      <span class="fw-bold fs-6">BPC</span>
+                    </div>
+                    <div class="mb-2">
+                      <i class="fas fa-hashtag text-primary"></i>
+                      <span class="text-monospace">0455X01688011</span>
+                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('0455X01688011')"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <div>
+                      <i class="fas fa-barcode text-secondary"></i>
+                      <span class="text-monospace">AO06001004550330168801152</span>
+                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('001004550330168801152')"><i class="fas fa-copy"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                      <img src="uploads/BAI.webp" alt="BAI" style="height:32px;width:auto;" class="me-2">
+                      <span class="fw-bold fs-6">BAI</span>
+                    </div>
+                    <div class="mb-2">
+                      <i class="fas fa-hashtag text-primary"></i>
+                      <span class="text-monospace">245080097</span>
+                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('245080097')"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <div>
+                      <i class="fas fa-barcode text-secondary"></i>
+                      <span class="text-monospace">AO06004000007508009710153</span>
+                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('004000007508009710153')"><i class="fas fa-copy"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="alert alert-info mt-4 d-flex align-items-center" style="font-size: 1rem;">
+              <i class="fas fa-info-circle me-2"></i>
+              Após transferir, avance para informar a entrega.
+            </div>
+          </div>
+
+          <!-- Etapa 2: Escolha de Entrega -->
+          <div class="step d-none" data-step="2">
+            <div class="mb-4 text-center">
+              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-truck me-2"></i>2. Como deseja receber?</span>
+              <p class="mb-0 text-muted"  style="margin-top: 10px;">Escolha a forma de entrega do seu pedido:</p>
+            </div>
+            <form id="deliveryForm">
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                  <div class="form-check p-3 rounded-3 border border-primary-subtle bg-light h-100">
+                    <input class="form-check-input" type="radio" name="delivery_option" id="opt_entrega" value="entrega" checked>
+                    <label class="form-check-label fw-semibold" for="opt_entrega">
+                      <i class="fas fa-home me-1 text-primary"></i> Entregar no meu endereço
+                    </label>
+                    <div class="small text-muted ms-4">Receba em casa, escritório ou outro local.</div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-check p-3 rounded-3 border border-success-subtle bg-light h-100">
+                    <input class="form-check-input" type="radio" name="delivery_option" id="opt_loja" value="loja">
+                    <label class="form-check-label fw-semibold" for="opt_loja">
+                      <i class="fas fa-store me-1 text-success"></i> Retirar na loja
+                    </label>
+                    <div class="small text-muted ms-4">Sem custo de envio. Retire pessoalmente.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3" id="campoEndereco">
+                <label for="endereco" class="form-label fw-semibold">
+                  <i class="fas fa-map-marker-alt text-danger"></i> Descreva sua localização
+                </label>
+                <textarea id="endereco" class="form-control rounded-3 shadow-sm" rows="3" name="location_now" placeholder="Ex: Perto do mercado municipal, ao lado das bombas de combustível"></textarea>
+                <div class="form-text text-muted mt-1">
+                  Seja o mais detalhado possível para facilitar a entrega.
+                </div>
+              </div>
+              <input type="hidden" name="customer_province" value="Benguela" class="provincia">
+              <input type="hidden" name="customer_municipio" value="" class="municipio">
+              <input type="hidden" name="customer_bairro" value="" class="bairro">
+              <input type="hidden" name="final_total" value="" class="final_total">
+              <input type="hidden" name="final_total_custo" value="" class="final_total_custo">
+            </form>
+          </div>
+
+          <!-- Etapa 3: Enviar Comprovativo -->
+          <div class="step d-none" data-step="3">
+            <div class="mb-4 text-center">
+              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-paperclip me-2"></i>3. Envie o comprovativo</span>
+              <p class="mb-0 text-muted"  style="margin-top: 10px;">Finalize enviando o comprovativo da transferência:</p>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <a id="whatsappBtn" target="_blank" class="btn btn-success btn-lg d-flex align-items-center gap-2 px-4 py-2 mb-3 shadow-sm" style="font-size:1.15rem;">
+                <i class="fab fa-whatsapp fa-lg"></i> Mandar Comprovativo
+              </a>
+              <div class="alert alert-success d-flex align-items-center" style="font-size: 1rem;">
+                <i class="fas fa-check-circle me-2"></i>
+                Pronto! Após o envio, aguarde nossa confirmação.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões do Rodapé -->
+      <div class="modal-footer border-0 d-flex justify-content-between bg-light rounded-bottom-4">
+        <button class="btn-custom btn-secondary-custom" id="btnAnterior" disabled>
+          <i class="fas fa-arrow-left me-1"></i> Anterior
         </button>
-      </div>
-
-      <div class="modal-body">
-        <h6><strong>&lt;&lt;Dados para a Transferência&gt;&gt;</strong></h6>
-        <p><strong>Banco:</strong> Banco de Poupança e Crédito (BPC)</p>
-        <p><strong>Número de conta:</strong> <span>0455X01688011</span></p>
-        <p><strong>IBAN:</strong> AO06001004550330168801152</p>
-        <p><strong>Usuário:</strong> SETE7 TECNOLOGIA COMERCIO & SERVICO(SU) LDA</p>
-        <br>
-        <p><strong>Banco:</strong> Banco Angolano de Investimentos (BAI)</p>
-        <p><strong>Número de conta:</strong> <span id="conta">245080097</span></p>
-        <p><strong>IBAN:</strong> AO06004000007508009710153</p>
-        <p><strong>Observação:</strong> Use o seu número de pedido como referência.</p>
-        <h6>ID do Produto: <strong id="saida_idP"></strong> (Copie e mande junto com o comprovativo)</h6>
-
-        <?php
-        $pedido_enviado = false;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['BankBtnGo'])) {
-            $pedido_enviado = true;
-        }
-        ?>
-
-        <form action="#" method="post" id="bank-form_go" class="w-100 mt-3">
-
-          <!-- Opção de entrega ou retirar -->
-          <div class="form-group">
-            <label><strong>Como deseja receber?</strong></label><br>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="delivery_option" id="option_entrega" value="entrega" checked onclick="toggleEndereco(true)">
-              <label class="form-check-label" for="option_entrega">Entregar em minha localização</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="delivery_option" id="option_loja" value="loja" onclick="toggleEndereco(false)">
-              <label class="form-check-label" for="option_loja">Vou buscar na loja</label>
-            </div>
-          </div>
-
-          <!-- Campo de localização (visível apenas se for entrega) -->
-          <div class="form-group" id="location_field">
-            <label for="location_now">Diz-nos onde tu estás agora?</label>
-            <textarea class="form-control" name="location_now" required id="location_now" rows="5"
-              placeholder="Ex: Estou no mercado municipal ao lado das bombas de combustível."></textarea>
-          </div>
-
-            <input type="hidden" name="customer_province" value="Benguela" class="provincia">
-            <input type="hidden" name="customer_municipio" value="" class="municipio">
-            <input type="hidden" name="customer_bairro" value="" class="bairro">
-            <input type="hidden" name="final_total" value="" class="final_total">
-            <input type="hidden" name="final_total_custo" value="" class="final_total_custo">
-            
-          <!-- Botão de envio -->
-          <div class="d-flex justify-content-start">
-            <input type="submit" class="btn-details mb-3" value="Enviar pedido" name="BankBtnGo">
-          </div>
-        </form>
-
-        <?php if ($pedido_enviado): ?>
-          <p style="color: green; font-weight: bold;">Pedido enviado com sucesso!</p>
-        <?php endif; ?>
-      </div>
-
-      <div class="modal-footer d-flex justify-content-between">
-        <button id="copiarIBAN" class="btn btn-primary">Copiar IBAN</button>
-        <button class="btn" style="background-color: #e67e22; color: white;" id="copiarConta">Copiar Conta</button>
-        <a id="whatsappButton" href="#" target="_blank" class="btn btn-success d-flex align-items-center gap-2">
-          <i class="fa fa-whatsapp"></i> Mandar Comprovativo
-        </a>
+        <button class="btn-custom btn-primary-custom" id="btnProximo">
+          Próximo <i class="fas fa-arrow-right ms-1"></i>
+        </button>
       </div>
     </div>
   </div>
 </div>
+<style>
+#bankModal .modal-content {
+  border-radius: 1.5rem;
+  border: none;
+  overflow: hidden;
+}
+#bankModal .modal-header {
+  border-bottom: none;
+  padding-bottom: 1rem;
+}
+#bankModal .modal-title {
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+}
+#bankModal .form-check-input:checked {
+  background-color: #000c78;
+  border-color: #000c78;
+}
+#bankModal .form-check {
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+#bankModal .form-check:hover {
+  box-shadow: 0 0 0 2px #000c7833;
+}
+#bankModal .btn-primary-custom {
+  background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%);
+  border: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px #000c7822;
+}
+#bankModal .btn-primary-custom:hover {
+  background: linear-gradient(90deg, #000a66 60%, #23235a 100%);
+}
+#bankModal .btn-secondary-custom {
+  background: #fff;
+  color: #000c78;
+  border: 2px solid #000c78;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 0.75rem;
+}
+#bankModal .btn-secondary-custom:hover {
+  background: #000c78;
+  color: #fff;
+}
+#bankModal .badge {
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+#bankModal .card {
+  border-radius: 1rem;
+  border: none;
+  background: #fff;
+}
+#bankModal .card-body {
+  padding: 1.2rem 1rem;
+}
+#bankModal .alert-info, #bankModal .alert-success {
+  border-radius: 0.75rem;
+  font-size: 1rem;
+}
+@media (max-width: 576px) {
+  #bankModal .modal-dialog {
+    margin: 1rem;
+  }
+  #bankModal .modal-content {
+    border-radius: 1rem;
+  }
+  #bankModal .card-body {
+    padding: 1rem 0.5rem;
+  }
+}
+</style>
+<script>
+let data = null;
+let etapaAtual = 1;
+const totalEtapas = 3;
+let bloquearRetorno = false; // Flag para impedir o retorno ao Step 2
+
+const btnProximo = document.getElementById('btnProximo');
+const btnAnterior = document.getElementById('btnAnterior');
+
+const atualizarEtapa = () => {
+  document.querySelectorAll('.step').forEach(el => {
+    el.classList.add('d-none');
+    if (parseInt(el.dataset.step) === etapaAtual) {
+      el.classList.remove('d-none');
+    }
+  });
+
+  btnAnterior.disabled = etapaAtual === 1 || (etapaAtual === 3 && bloquearRetorno);
+  btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Fechar' : 'Próximo';
+};
+
+// Copiar número
+function copiarTexto(texto) {
+  navigator.clipboard.writeText(texto).then(() => {
+    alert("Copiado!");
+  });
+}
+
+// Mostrar ou ocultar campo de endereço
+document.querySelectorAll('input[name="delivery_option"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    const campo = document.getElementById('campoEndereco');
+    campo.style.display = (radio.value === 'entrega') ? 'block' : 'none';
+  });
+});
+
+btnProximo.addEventListener('click', async () => {
+  if (etapaAtual === 2) {
+    const opcao = document.querySelector('input[name="delivery_option"]:checked').value;
+    const endereco = document.getElementById('endereco').value.trim();
+
+    const form = document.getElementById('deliveryForm');
+    const formData = new FormData(form);
+    const jsonData = Object.fromEntries(formData.entries());
+
+    jsonData.tipo = opcao;
+
+    if (opcao === 'entrega' && endereco === '') {
+      alert('Por favor, preencha sua localização antes de continuar.');
+      return;
+    }
+
+    const url = (opcao === 'entrega') ? 'ajax_bank_payment.php' : 'ajax_bank_payment.php';
+
+    // Animação de carregamento
+    const textoOriginal = btnProximo.innerHTML;
+    btnProximo.disabled = true;
+    btnProximo.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Enviando...`;
+
+    console.log('Enviando dados:', jsonData);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(jsonData)
+      });
+
+      if (!response.ok) throw new Error('Erro no servidor');
+
+      data = await response.json();
+      console.log(data);
+
+      // Exibe alerta de sucesso
+      swal.fire({
+        icon: 'success',
+        title: 'Pedido enviado',
+        text: data.message
+      });
+
+      const mensagem = `Olá, segue em anexo o comprovativo de pagamento do meu pedido com o id:${data.paymentid}. Obrigado, ${data.name}!`;
+      const whatsappurl = `https://api.whatsapp.com/send?phone=244927606472&text=${encodeURIComponent(mensagem)}`;
+      document.getElementById('whatsappBtn').href = whatsappurl;
+      etapaAtual++;
+      bloquearRetorno = true; // impede voltar do step 3
+      atualizarEtapa();
+
+    } catch (error) {
+      console.error('Erro ao enviar:', error);
+      alert('Ocorreu um erro ao enviar. Tente novamente.');
+    } finally {
+      btnProximo.disabled = false;
+      btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Fechar' : 'Próximo';
+    }
+
+    return;
+  }
+
+  if (etapaAtual < totalEtapas) {
+    etapaAtual++;
+    atualizarEtapa();
+  } else {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('bankModal'));
+    modal.hide();
+
+    // Aguarda um pequeno tempo para o modal desaparecer antes do redirecionamento
+  setTimeout(() => {
+    window.location.href = 'http://localhost/7sete/home'; // <-- Altere o caminho se necessário
+  }, 300);
+  }
+});
+
+btnAnterior.addEventListener('click', () => {
+  if (etapaAtual === 3 && bloquearRetorno) return; // impede voltar para o step 2
+  if (etapaAtual > 1) {
+    etapaAtual--;
+    atualizarEtapa();
+  }
+});
+
+</script>
+
+
+
 
 <!-- Modal money -->
-<div class="modal fade" id="moneykModal" tabindex="-1" role="dialog" aria-labelledby="moneyModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title" id="moneyModalLabel">Pagamento no local ou transferência via Express</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<!-- Modal Moderno para Pagamento em Dinheiro/Express -->
+<div class="modal fade" id="moneykModal" tabindex="-1" aria-labelledby="moneyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-0 bg-primary text-white rounded-top-4" style="background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%);">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-money-bill-wave fa-lg"></i>
+          <h5 class="modal-title fw-bold mb-0" id="moneyModalLabel">Pagamento no Local ou Express</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
-
-      <div class="modal-body">
+      <div class="modal-body p-4">
         <form action="<?=ROOT?>payment/money/init.php" method="post" id="money-form">
-
-          <div class="form-group">
-            <label class="form-label">Diga-nos onde pretende receber o produto:</label>
-
-            <div class="radio-option">
-              <input type="radio" name="tipo_entrega" value="endereco" id="optEndereco" checked onclick="toggleEnderecoMoney(true)">
-              <label for="optEndereco">Entregar no meu endereço</label>
+          <div class="mb-4">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <i class="fas fa-truck fa-lg text-primary"></i>
+              <span class="fw-semibold" style="font-size: 1.1rem;">Como deseja receber seu pedido?</span>
             </div>
-
-            <div class="radio-option">
-              <input type="radio" name="tipo_entrega" value="loja" id="optLoja" onclick="toggleEnderecoMoney(false)">
-              <label for="optLoja">Levantar na loja(Sem Custo de Envio)</label>
+            <div class="row g-2">
+              <div class="col-12 col-md-6">
+                <div class="form-check p-3 rounded-3 border border-primary-subtle bg-light h-100">
+                  <input class="form-check-input" type="radio" name="tipo_entrega" value="endereco" id="optEndereco" checked onclick="toggleEnderecoMoney(true)">
+                  <label class="form-check-label fw-semibold" for="optEndereco">
+                    <i class="fas fa-home me-1 text-primary"></i> Entregar no meu endereço
+                  </label>
+                  <div class="small text-muted ms-4">Receba em casa, escritório ou outro local.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-check p-3 rounded-3 border border-success-subtle bg-light h-100">
+                  <input class="form-check-input" type="radio" name="tipo_entrega" value="loja" id="optLoja" onclick="toggleEnderecoMoney(false)">
+                  <label class="form-check-label fw-semibold" for="optLoja">
+                    <i class="fas fa-store me-1 text-success"></i> Retirar na loja
+                  </label>
+                  <div class="small text-muted ms-4">Sem custo de envio. Retire pessoalmente.</div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div class="form-group" id="campoEndereco">
-            <textarea class="form-control" name="location_now" required="" id="location_now_money" rows="3" placeholder="Ex: Perto do mercado municipal, ao lado das bombas de combustível"></textarea>
+          <div class="mb-4" id="campoEnderecoMoney">
+            <label class="form-label fw-semibold" for="location_now_money">
+              <i class="fas fa-map-marker-alt text-danger"></i> Onde deseja receber?
+            </label>
+            <textarea class="form-control rounded-3 shadow-sm" name="location_now" required id="location_now_money" rows="3"
+              placeholder="Ex: Perto do mercado municipal, ao lado das bombas de combustível"></textarea>
+            <div class="form-text text-muted mt-1">
+              Seja o mais detalhado possível para facilitar a entrega.
+            </div>
           </div>
-            <input type="hidden" name="customer_province" value="Benguela" class="provincia">
-            <input type="hidden" name="customer_municipio" value="" class="municipio">
-            <input type="hidden" name="customer_bairro" value="" class="bairro">
-            <input type="hidden" name="final_total" value="" class="final_total">
-            <input type="hidden" name="final_total_custo" value="" class="final_total_custo">
-
-          <div class="text-right">
-            <input type="submit" class="btn-details" value="Enviar pedido" name="form1">
+          <input type="hidden" name="customer_province" value="Benguela" class="provincia">
+          <input type="hidden" name="customer_municipio" value="" class="municipio">
+          <input type="hidden" name="customer_bairro" value="" class="bairro">
+          <input type="hidden" name="final_total" value="" class="final_total">
+          <input type="hidden" name="final_total_custo" value="" class="final_total_custo">
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary btn-lg px-4 d-flex align-items-center gap-2" name="form1">
+              <i class="fas fa-paper-plane"></i> Enviar pedido
+            </button>
           </div>
         </form>
       </div>
-
     </div>
   </div>
 </div>
+<script>
+function toggleEnderecoMoney(show) {
+  document.getElementById('campoEnderecoMoney').style.display = show ? 'block' : 'none';
+}
+</script>
+<style>
+#moneykModal .modal-content {
+  border-radius: 1.5rem;
+  border: none;
+}
+#moneykModal .modal-header {
+  border-bottom: none;
+  padding-bottom: 1rem;
+}
+#moneykModal .modal-title {
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+}
+#moneykModal .form-check-input:checked {
+  background-color: #000c78;
+  border-color: #000c78;
+}
+#moneykModal .form-check {
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+#moneykModal .form-check:hover {
+  box-shadow: 0 0 0 2px #000c7833;
+}
+#moneykModal .btn-primary {
+  background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%);
+  border: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px #000c7822;
+}
+#moneykModal .btn-primary:hover {
+  background: linear-gradient(90deg, #000a66 60%, #23235a 100%);
+}
+@media (max-width: 576px) {
+  #moneykModal .modal-dialog {
+    margin: 1rem;
+  }
+  #moneykModal .modal-content {
+    border-radius: 1rem;
+  }
+}
+</style>
+
 
 <?php 
 /*session_start();
@@ -609,6 +1074,7 @@ echo '<pre>';
 print_r($_SESSION);
 echo '</pre>';*/
 ?>
+
 <!--Esse script aqui e responsavel por buscar o custo de envio que foi salvo no lacalStorage
 la no produtct.php e fazer o preenchimento da tabela de checkout com os seus respectivos valores
 de total dos produtos e total+custo de envio caso tenha ou nao-->

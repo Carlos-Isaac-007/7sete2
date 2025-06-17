@@ -167,7 +167,7 @@ $stripe_secret_key = $row['stripe_secret_key'];
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>  AOS.init();</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://js.stripe.com/v2/"></script>
 <script src="<?=ROOT?>assets/js/megamenu.js"></script>
 <script src="assets/js/owl.carousel.min.js"></script>

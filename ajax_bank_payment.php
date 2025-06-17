@@ -1,28 +1,29 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 ob_start();
  require_once 'header.php'; 
 ob_end_clean();
 
-
 // Arquivo de conexão com o banco de dados
-
 header("Content-Type: application/json"); // Define resposta como JSON
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+$input = json_decode(file_get_contents('php://input'), true);
+
 
 $feedback = array("success"=>false,"message"=>"","paymentid"=>"");
 
-if(isset($_POST)) {
-$customer_province = $_POST['customer_province'];
-$customer_municipio = $_POST['customer_municipio'];
-$customer_bairro = $_POST['customer_bairro'];
+if(isset($input)) {
+$customer_province = $input['customer_province'];
+$customer_municipio = $input['customer_municipio'];
+$customer_bairro = $input['customer_bairro'];
 $customer_id = $_SESSION['customer']['cust_id'];
 
-if(isset($_POST['delivery_option']) and $_POST['delivery_option'] == 'loja'){
-    $final_total = $_POST['final_total'];
-    $_POST['location_now'] = $_POST['location_now'];
+if(isset($input['delivery_option']) and $input['delivery_option'] == 'loja'){
+    $final_total = $input['final_total'];
+    $input['location_now'] = 'Receber na Loja';
 } else{
-    $final_total = $_POST['final_total_custo'];
+    $final_total = $input['final_total_custo'];
 }
 
 $_SESSION['customer']['cust_b_country'] = $customer_province;
@@ -37,7 +38,7 @@ $stmt -> bindParam(':id', $customer_id);
 
 $stmt->execute();
    
-$_POST['transaction_info'] = $_POST['location_now'];
+$input['transaction_info'] = $input['location_now'];
 $payment_date = date('Y-m-d H:i:s');
 $payment_id = time();
 
@@ -69,7 +70,7 @@ $final_total,
 '',
 '', 
 '',
-$_POST['transaction_info'],
+$input['transaction_info'],
 'Transferência',
 'Pending',
 'Pending',
@@ -191,8 +192,9 @@ $mensagem = "Olá, $nome. Recebemos o seu pedido e já estamos a prepará-lo com
 enviarEmail($email, $nome, $assunto, $mensagem);
  // enviado o feedback no ajax
  $feedback['success'] = true;
-$feedback['message'] = " Olá " . $nome . " Muito obrigado por escolher a nossa loja. Seu pedido foi recebido com sucesso e está sendo processado. Fique tranquilo, em breve você receberá um e-mail com todas as informações para acompanhar sua entrega. Agradecemos pela confiança!";
+$feedback['message'] = "Olá ".$nome." obrigado por escolher nossa loja! Seu pedido foi recebido e está em processamento. Em breve você receberá um e-mail com os detalhes. Agradecemos pela confiança!";
 $feedback['paymentid'] = $payment_id;
+$feedback['name'] = $nome;
     
    echo json_encode($feedback);
     

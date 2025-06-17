@@ -6,7 +6,7 @@
   background-color: #e55300 !important;
   color: #fff;
   font-weight: 500;
-   padding: 8px 12px !important;
+  padding: 8px 12px !important;
   border-radius: 25px !important;
   transition: background-color 0.3s;
   cursor: pointer;

@@ -94,157 +94,32 @@ const cp = true;
 }
   
   
-{
- //-------------------------
- //+++++++++++++++++++++++
-/**esse script ja estava no codigo escrito pelo tyler posso voltar aqui para entender algumas coisas*/
-//+++++++++++++++++++++++++
-//------------------------
-     // codigo para abrir o modal succes 
-    function showSuccessModal(message = "Produto adicionado com sucesso!") {
-    const modal = document.getElementById("successModal");
-    const messageText = modal.querySelector(".modal-message");
-    const closeButton = modal.querySelector(".close-btn");
-
-    messageText.textContent = message; // Atualiza a mensagem
-    modal.style.display = "flex"; // Exibe o modal
-
-    // Fecha ao clicar no botão X
-    closeButton.onclick = function () {
-        modal.style.display = "none";
-    };
-
-    // Fecha automaticamente após 3 segundos
-    setTimeout(() => {
-        modal.style.display = "none";
-    }, 30000);
-}
-    
-  $(document).ready(function() {
-    $("#bank-form_go").submit(function(event) {
-        event.preventDefault(); // Evita o recarregamento da página
-        //Mostra Loader
-        const loader = document.getElementById("cart-loading");
-        loader.style.display = "flex";
-        $.ajax({
-            url: "ajax_bank_payment.php",
-            type: "POST",
-            data: $(this).serialize(), // Envia os dados do formulário
-            dataType: "json",
-            success: function(response) {
-              //esconder o loader
-                loader.style.display = "none";
-                if (response.success) {
-                     showSuccessModal(response.message)
-                     $("#saida_idP").html( response.paymentid)
-
-                     //ocultar a div apos sucesso
-                     $('#bank-form_go').hide();
-                     
-                } else {
-                      //mostar modal danger 
-                      showDangerModal(response.message)
-                    $("#cart-message").html('<div style="color: red;">' + response.message + '</div>');
-                }
-            },
-            error: function(xhr, status, error) {
-               //ocultar a div apos sucesso
-                loader.style.display = "none";
-
-                console.error("Erro AJAX:", xhr.responseText);
-                $("#cart-message").html('<div style="color: red;">Erro ao adicionar ao carrinho.</div>');
-            }
-        });
-    });
-});  
-    
-}
 
 {
-      // Copiar IBAN
-  document.getElementById("copiarIBAN").addEventListener("click", function () {
-    const iban = "AO06004000007508009710153"; // ou pegue dinamicamente
-    navigator.clipboard.writeText(iban).then(() => {
-      if (!/mobile|android|iphone|ipad|ipod/i.test(navigator.userAgent)) {
-        alert("IBAN copiado para a área de transferência!");
+        //Reponsvel por marcar a opcao de receber/buscar
+    function toggleEnderecoMoney(ativo) {
+      const campo = document.getElementById('campoEnderecoMoney');
+      console.log('Campo ', campo);
+      const input = document.getElementById('location_now_money');
+      if (ativo) {
+        campo.classList.remove('d-none');
+        input.required = true;
+        input.value = '';
+      } else {
+        campo.classList.add('d-none');
+        input.required = false;
+        input.value = 'Retirada na loja Bosque';
       }
-    });
-  });
+    }
 
-  // Copiar Conta
-  document.getElementById("copiarConta").addEventListener("click", function () {
-    const conta = document.getElementById("conta").innerText.trim();
-    navigator.clipboard.writeText(conta).then(() => {
-      if (!/mobile|android|iphone|ipad|ipod/i.test(navigator.userAgent)) {
-        alert("Número da conta copiado!");
+  document.addEventListener('DOMContentLoaded', () => {
+      if (document.getElementById('optLoja').checked) {
+        toggleEnderecoMoney(false);
       }
-    });
   });
 
-  // Link WhatsApp
-  document.addEventListener("DOMContentLoaded", function () {
-    const whatsappNumber = "244927606472";
-    const message = "Olá, estou enviando o comprovativo da compra.";
-    document.getElementById("whatsappButton").href =
-      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-  });
+}  
 
-  // Mostrar/ocultar campo localização com base na opção
-  document.getElementById("option_entrega").addEventListener("change", toggleLocationField);
-  document.getElementById("option_loja").addEventListener("change", toggleLocationField);
-
-  function toggleLocationField() {
-    const isEntrega = document.getElementById("option_entrega").checked;
-    document.getElementById("location_field").style.display = isEntrega ? "block" : "none";
-  }
-
-  // Executa ao carregar a página
-  //toggleLocationField();
-}
-
-{
-      //Reponsvel por marcar a opcao de receber/buscar
-   function toggleEnderecoMoney(ativo) {
-    const campo = document.getElementById('campoEndereco');
-    const input = document.getElementById('location_now_money');
-    if (ativo) {
-      campo.classList.remove('hidden');
-      input.required = true;
-      input.value = '';
-    } else {
-      campo.classList.add('hidden');
-      input.required = false;
-      input.value = 'Retirada na loja Bosque';
-    }
-  }
-
-      //Reponsvel por marcar a opcao de receber/buscar
-   function toggleEndereco(ativo) {
-
-    const campoTransf = document.getElementById('option_entrega');
-    const inputTransf = document.getElementById('location_now');
-    if (ativo) {
-      campoTransf.classList.remove('hidden');
-      inputTransf.required = true;
-      inputTransf.value = '';
-    } else {
-      campoTransf.classList.add('hidden');
-      inputTransf.required = false;
-      inputTransf.value = 'Retirada na loja Bosque';
-    }
-  }
-
- document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('optLoja').checked) {
-      toggleEndereco(false);
-    }
-    
-    if (document.getElementById('option_loja').checked) {
-      toggleEndereco(false);
-    }
- });
-   
-}
 
 {
   //aqui e adicionado nas variaveis do formulario os valores de localzacao para ser enviado em init

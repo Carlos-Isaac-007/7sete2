@@ -7,6 +7,7 @@
                 .product-item{
                     width: 100%;
                     margin: 0;
+                    margin-left: 10px;
                 }
             </style>
             <div class="product-item card-produto">

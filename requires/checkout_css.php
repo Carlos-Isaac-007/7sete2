@@ -82,53 +82,114 @@
 }
 /* tudo sobre modal */
 /* Mobile First - Inicialmente ajustado para dispositivos móveis */
+/* ---------- Modal Responsivo e Moderno ---------- */
+
 .modal-dialog {
-    max-width: 90%;
+  width: 100%;
+  max-width: 90%;
+  margin: 1.5rem auto;
+  transition: all 0.3s ease-in-out;
 }
 
 .modal-content {
-    border-radius: 8px;
-    padding: 15px;
+  border-radius: 16px;
+  border: none;
+  padding: 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  background-color: #ffffff;
+  overflow: hidden;
 }
 
+/* ---------- Cabeçalho ---------- */
 .modal-header {
-    border-bottom: 1px solid #ddd;
-    font-size: 1.2rem;
+  background-color: #000c78;
+  color: #fff;
+  padding: 1.25rem 1.5rem;
+  border-bottom: none;
 }
 
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ---------- Corpo ---------- */
+.modal-body {
+  padding: 2rem 1.5rem;
+}
+
+.modal-body p,
+.modal-body label,
+.modal-body h6 {
+  font-size: 1.05rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.modal-body p strong {
+  color: #000c78;
+}
+
+/* ---------- Rodapé ---------- */
 .modal-footer {
-    border-top: 1px solid #ddd;
+  padding: 1.25rem 1.5rem;
+  border-top: none;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
-.modal-body p {
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-/* Ajustes para telas maiores */
+/* ---------- Responsividade por Breakpoint ---------- */
 @media (min-width: 576px) {
-    .modal-dialog {
-        max-width: 500px;
-    }
+  .modal-dialog {
+    max-width: 540px;
+  }
 }
 
 @media (min-width: 768px) {
-    .modal-dialog {
-        max-width: 600px;
-    }
+  .modal-dialog {
+    max-width: 640px;
+  }
 }
 
 @media (min-width: 992px) {
-    .modal-dialog {
-        max-width: 700px;
-    }
+  .modal-dialog {
+    max-width: 720px;
+  }
 }
 
 @media (min-width: 1200px) {
-    .modal-dialog {
-        max-width: 800px;
-    }
+  .modal-dialog {
+    max-width: 800px;
+  }
 }
+
+/* ---------- Melhorias Visuais Gerais ---------- */
+
+.text-monospace {
+  color: #000c78;
+  font-weight: 500;
+}
+
+textarea.form-control {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+}
+
+/* Remove o foco azul feio do Bootstrap */
+textarea:focus,
+input:focus,
+button:focus {
+  box-shadow: none;
+  outline: 2px solid #000c78;
+}
+
 
 /* Login container*/
        
@@ -143,8 +204,8 @@
             margin: 0 auto !important;
             box-sizing: border-box !important;
             font-family: Arial, sans-serif !important;
-           
-                               }
+          
+          }
         .login_container h2 {
             margin-bottom: 10px !important;
             color: #000c78 !important;

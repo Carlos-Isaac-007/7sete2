@@ -654,169 +654,134 @@ $estimativa = calcularEstimativa();
 </div>
 
 <div class="row">
-<div class="col-md-12">
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-<li role="presentation" class="active"><a href="#description" aria-controls="description" role="tab" data-toggle="tab"><?php echo LANG_VALUE_59; ?></a></li>
-<li role="presentation"><a href="#feature" aria-controls="feature" role="tab" data-toggle="tab"><?php echo LANG_VALUE_60; ?></a></li>
-<li role="presentation"><a href="#condition" aria-controls="condition" role="tab" data-toggle="tab"><?php echo LANG_VALUE_61; ?></a></li>
-<li role="presentation"><a href="#return_policy" aria-controls="return_policy" role="tab" data-toggle="tab"><?php echo LANG_VALUE_62; ?></a></li>
-<!-- <li role="presentation"><a href="#review" aria-controls="review" role="tab" data-toggle="tab"><?php echo LANG_VALUE_63; ?></a></li> -->
-</ul>
+  <div class="col-md-12">
+    <!-- Nav tabs (Bootstrap 5)-->
+    <ul class="nav nav-tabs" id="productTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">
+          <?php echo LANG_VALUE_59; ?>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="feature-tab" data-bs-toggle="tab" data-bs-target="#feature" type="button" role="tab" aria-controls="feature" aria-selected="false">
+          <?php echo LANG_VALUE_60; ?>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="condition-tab" data-bs-toggle="tab" data-bs-target="#condition" type="button" role="tab" aria-controls="condition" aria-selected="false">
+          <?php echo LANG_VALUE_61; ?>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="return_policy-tab" data-bs-toggle="tab" data-bs-target="#return_policy" type="button" role="tab" aria-controls="return_policy" aria-selected="false">
+          <?php echo LANG_VALUE_62; ?>
+        </button>
+      </li>
+    </ul>
 
-<!-- Tab panes -->
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="description" style="margin-top: -30px;">
-<p>
-<?php
-if($p_description == '') {
-echo LANG_VALUE_70;
-} else {
-echo $p_description;
-}
-?>
-</p>
-</div>
-<div role="tabpanel" class="tab-pane" id="feature" style="margin-top: -30px;">
-<p>
-<?php
-if($p_feature == '') {
-echo LANG_VALUE_71;
-} else {
-echo $p_feature;
-}
-?>
-</p>
-</div>
-<div role="tabpanel" class="tab-pane" id="condition" style="margin-top: -30px;">
-<p>
-<?php
-if($p_condition == '') {
-echo LANG_VALUE_72;
-} else {
-echo $p_condition;
-}
-?>
-</p>
-</div>
-<div role="tabpanel" class="tab-pane" id="return_policy" style="margin-top: -30px;">
-<p>
-<?php
-if($p_return_policy == '') {
-echo LANG_VALUE_73;
-} else {
-echo $p_return_policy;
-}
-?>
-</p>
-</div>
-<div role="tabpanel" class="tab-pane" id="review" style="margin-top: -30px;">
+    <!-- Tab panes -->
+    <div class="tab-content pt-3" id="productTabContent">
+      <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+        <p>
+          <?php echo $p_description ?: LANG_VALUE_70; ?>
+        </p>
+      </div>
+      <div class="tab-pane fade" id="feature" role="tabpanel" aria-labelledby="feature-tab">
+        <p>
+          <?php echo $p_feature ?: LANG_VALUE_71; ?>
+        </p>
+      </div>
+      <div class="tab-pane fade" id="condition" role="tabpanel" aria-labelledby="condition-tab">
+        <p>
+          <?php echo $p_condition ?: LANG_VALUE_72; ?>
+        </p>
+      </div>
+      <div class="tab-pane fade" id="return_policy" role="tabpanel" aria-labelledby="return_policy-tab">
+        <p>
+          <?php echo $p_return_policy ?: LANG_VALUE_73; ?>
+        </p>
+      </div>
 
-<div class="review-form">
-<?php
-$statement = $pdo->prepare("SELECT * 
-FROM tbl_rating t1 
-JOIN tbl_customer t2 
-ON t1.cust_id = t2.cust_id 
-WHERE t1.p_id=?");
-$statement->execute(array($_REQUEST['id']));
-$total = $statement->rowCount();
-?>
-<h2><?php echo LANG_VALUE_63; ?> (<?php echo $total; ?>)</h2>
-<?php
-if($total) {
-$j=0;
-$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-foreach ($result as $row) {
-$j++;
-?>
-<div class="mb_10"><b><u><?php echo LANG_VALUE_64; ?> <?php echo $j; ?></u></b></div>
-<table class="table table-bordered">
-<tr>
-<th style="width:170px;"><?php echo LANG_VALUE_75; ?></th>
-<td><?php echo $row['cust_name']; ?></td>
-</tr>
-<tr>
-<th><?php echo LANG_VALUE_76; ?></th>
-<td><?php echo $row['comment']; ?></td>
-</tr>
-<tr>
-<th><?php echo LANG_VALUE_78; ?></th>
-<td>
-<div class="rating">
-<?php
-for($i=1;$i<=5;$i++) {
-?>
-<?php if($i>$row['rating']): ?>
-<i class="fa fa-star-o"></i>
-<?php else: ?>
-<i class="fa fa-star"></i>
-<?php endif; ?>
-<?php
-}
-?>
-</div>
-</td>
-</tr>
-</table>
-<?php
-}
-} else {
-echo LANG_VALUE_74;
-}
-?>
+      <!-- Reviews (opcional, descomente se quiser mostrar) -->
+      <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+        <div class="review-form">
+          <?php
+          $statement = $pdo->prepare("SELECT * FROM tbl_rating t1 JOIN tbl_customer t2 ON t1.cust_id = t2.cust_id WHERE t1.p_id=?");
+          $statement->execute(array($_REQUEST['id']));
+          $total = $statement->rowCount();
+          ?>
+          <h2><?php echo LANG_VALUE_63; ?> (<?php echo $total; ?>)</h2>
+          <?php if($total): ?>
+            <?php
+            $j = 0;
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $row): $j++;
+            ?>
+              <div class="mb-2"><strong><u><?php echo LANG_VALUE_64; ?> <?php echo $j; ?></u></strong></div>
+              <table class="table table-bordered">
+                <tr>
+                  <th style="width:170px;"><?php echo LANG_VALUE_75; ?></th>
+                  <td><?php echo $row['cust_name']; ?></td>
+                </tr>
+                <tr>
+                  <th><?php echo LANG_VALUE_76; ?></th>
+                  <td><?php echo $row['comment']; ?></td>
+                </tr>
+                <tr>
+                  <th><?php echo LANG_VALUE_78; ?></th>
+                  <td>
+                    <div class="rating">
+                      <?php for($i = 1; $i <= 5; $i++): ?>
+                        <i class="fa <?php echo ($i > $row['rating']) ? 'fa-star-o' : 'fa-star'; ?>"></i>
+                      <?php endfor; ?>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <?php echo LANG_VALUE_74; ?>
+          <?php endif; ?>
 
-<h2><?php echo LANG_VALUE_65; ?></h2>
-<?php
-if($error_message != '') {
-echo "<script>alert('".$error_message."')</script>";
-}
-if($success_message != '') {
-echo "<script>alert('".$success_message."')</script>";
-}
-?>
-<?php if(isset($_SESSION['customer'])): ?>
+          <h2><?php echo LANG_VALUE_65; ?></h2>
+          <?php
+          if ($error_message != '') echo "<script>alert('$error_message')</script>";
+          if ($success_message != '') echo "<script>alert('$success_message')</script>";
+          ?>
 
-<?php
-$statement = $pdo->prepare("SELECT * 
-FROM tbl_rating
-WHERE p_id=? AND cust_id=?");
-$statement->execute(array($_REQUEST['id'],$_SESSION['customer']['cust_id']));
-$total = $statement->rowCount();
-
-$total = 0;
-?>
-<?php if($total==0): ?>
-<form action="" method="post">
-<div class="rating-section">
-<input type="radio" name="rating" class="rating" value="1" checked>
-<input type="radio" name="rating" class="rating" value="2" checked>
-<input type="radio" name="rating" class="rating" value="3" checked>
-<input type="radio" name="rating" class="rating" value="4" checked>
-<input type="radio" name="rating" class="rating" value="5" checked>
-</div>                                            
-<div class="form-group">
-<textarea name="comment" class="form-control" cols="30" rows="10" placeholder="Write your comment (optional)" style="height:100px;"></textarea>
-</div>
-<input type="submit" class="btn btn-default" name="form_review" value="<?php echo LANG_VALUE_67; ?>">
-</form>
-<?php else: ?>
-<span style="color:red;"><?php echo LANG_VALUE_68; ?></span>
-<?php endif; ?>
-
-
-<?php else: ?>
-<p class="error">
-<?php echo LANG_VALUE_69; ?> <br>
-<a href="login.php" style="color:red;text-decoration: underline;"><?php echo LANG_VALUE_9; ?></a>
-</p>
-<?php endif; ?>                         
+          <?php if(isset($_SESSION['customer'])): ?>
+            <?php
+            $statement = $pdo->prepare("SELECT * FROM tbl_rating WHERE p_id=? AND cust_id=?");
+            $statement->execute(array($_REQUEST['id'], $_SESSION['customer']['cust_id']));
+            $total = $statement->rowCount();
+            ?>
+            <?php if($total == 0): ?>
+              <form action="" method="post">
+                <div class="rating-section mb-3">
+                  <?php for($i = 1; $i <= 5; $i++): ?>
+                    <input type="radio" name="rating" class="form-check-input" value="<?php echo $i; ?>">
+                  <?php endfor; ?>
+                </div>
+                <div class="mb-3">
+                  <textarea name="comment" class="form-control" placeholder="<?php echo LANG_VALUE_66; ?>" style="height: 100px;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" name="form_review"><?php echo LANG_VALUE_67; ?></button>
+              </form>
+            <?php else: ?>
+              <span class="text-danger"><?php echo LANG_VALUE_68; ?></span>
+            <?php endif; ?>
+          <?php else: ?>
+            <p class="text-danger">
+              <?php echo LANG_VALUE_69; ?><br>
+              <a href="login.php" class="text-decoration-underline text-danger"><?php echo LANG_VALUE_9; ?></a>
+            </p>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-</div>
-</div>
-</div>
-</div>
 
 </div>
 
@@ -902,8 +867,7 @@ window.addEventListener('scroll', () => {
           window.location.href = 'checkout.php';
         } else if(data.message.includes("Desculpas! á apenas")) {    
           // Exibe a mensagem de erro
-          alert(data.message);
-
+          Swal.fire('Estoque Baixo!', data.message, 'warning');
         }else {
           console.log(data);
           window.location.href = 'checkout.php';
