@@ -1,4 +1,31 @@
 <style>
+     @media (max-width: 576px) {
+    .modal-footer {
+      flex-direction: column;
+    }
+    .modal-footer .btn {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  }
+  @media (min-width: 768px) {
+  .modal-body .d-flex {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+  .modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .modal-header {
+    background-color: #000c78;
+    color: #fff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
 
   .form-label {
     font-weight: 600;

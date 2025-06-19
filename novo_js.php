@@ -25,7 +25,7 @@
         });
         // codigo java script para carregar dinamicamente do banco de dados
       $(document).ready(function() {
-    let limit = 6;  // Número de produtos por página
+    let limit = 5;  // Número de produtos por página
     let start = 0;  // Ponto inicial
     let action = 'inactive';
 

@@ -7,10 +7,9 @@
                 .product-item{
                     width: 100%;
                     margin: 0;
-                    margin-left: 10px;
                 }
             </style>
-            <div class="product-item card-produto">
+            <div class="product-item card-produto" style="border: 1px solid red">
                 <a href="product?id=<?= $row['p_id'] ?>" class="no-link">
                     <picture>
                       <source srcset="assets/uploads/<?= htmlspecialchars($row['p_featured_photo']) ?>" type="image/webp">

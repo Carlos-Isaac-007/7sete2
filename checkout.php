@@ -633,7 +633,7 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
                 <div class="card border-0 shadow-sm h-100">
                   <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
-                      <img src="uploads/bpc.webp" alt="BPC" style="height:32px;width:auto;" class="me-2">
+                      <img src="https://7setetech.com/uploads/bpc.webp" alt="BPC" style="height:32px;width:auto;" class="me-2">
                       <span class="fw-bold fs-6">BPC</span>
                     </div>
                     <div class="mb-2">
@@ -653,7 +653,7 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
                 <div class="card border-0 shadow-sm h-100">
                   <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
-                      <img src="uploads/BAI.webp" alt="BAI" style="height:32px;width:auto;" class="me-2">
+                      <img src="https://7setetech.com/uploads/BAI.webp" alt="BAI" style="height:32px;width:auto;" class="me-2">
                       <span class="fw-bold fs-6">BAI</span>
                     </div>
                     <div class="mb-2">
@@ -934,7 +934,7 @@ btnProximo.addEventListener('click', async () => {
 
     // Aguarda um pequeno tempo para o modal desaparecer antes do redirecionamento
   setTimeout(() => {
-    window.location.href = 'http://localhost/7sete/home'; // <-- Altere o caminho se necessário
+    window.location.href = 'https://7setetech.com/'; // <-- Altere o caminho se necessário
   }, 300);
   }
 });

@@ -25,11 +25,10 @@
 .produto_container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 20px;
     justify-content: center;
     align-items: stretch;
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -41,7 +40,7 @@
 
 @media (min-width: 1024px) {
     .produto_container {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(5, 1fr);
     }
 }
 
@@ -50,7 +49,7 @@
     flex-direction: column;
     justify-content: space-between;
     background: #fff;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
     text-align: center;
@@ -283,11 +282,9 @@
 .nav{
    background-color: #fff !important;
 }
-.menu ul li{
-    font-size: 10pt;
-}
+
 body {
-    padding-top: 70px; /* Deve ser maior ou igual à altura do header */
+    padding-top: 5px; /* Deve ser maior ou igual à altura do header */
 }
 
 .product-item {
@@ -313,7 +310,7 @@ body {
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            gap: 10px;
+            gap: 20px;
             padding: 10px;
             scroll-behavior: smooth;
         }
@@ -503,7 +500,6 @@ body {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     gap: 10px;
-    padding: 10px;
     scroll-behavior: smooth;
 }
 #product-list {
@@ -579,68 +575,9 @@ body {
 } 
 }
 
-/* nav bar*/
-.menu-container{
-    background-color: white !important;
-    color:#d8076f !important;
-}
-.menu a{
-  color:gray !important;   
-  text-decoration: none !important;
-}
-.menu a:hover{
-       background: rgb(183,211,253) !important;
-}
-
-
 /* tudo sobre o novo header*/
 
- /* Header Base */
- .header_new {
-    width: 100vw; /* Ocupa 100% da largura da tela */
-    position: fixed !important; /* Fixa o header no topo */
-    top: 0;
-    left: 0;
-    background: #fff;
-    z-index: 1000; /* Mantém o header acima dos outros elementos */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-/*-----------------------UPDATE------------------*/
-    .container-header_new {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-   
-    }
-    .logo {
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-      white-space: nowrap;
-    }
-    /* Responsividade para a imagem do logo */
-    .logo img {
-      width: 100%; /* Tamanho máximo para telas maiores */
-      display: block;
-    }
-    .icons {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .icons a {
-      color: #333;
-      font-size: 20px;
-      text-decoration: none;
-      transition: 0.3s;
-      position: relative;
-    }
-    .icons a:hover {
-      color: #007bff;
-    }
+ 
     /* Badge no ícone do carrinho */
     .badge {
       background: #000c78 !important;
@@ -662,58 +599,7 @@ body {
       50% { transform: scale(1.2); }
       100% { transform: scale(1); }
     }
-    /* Barra de Pesquisa Oculta */
-    .search-bar-overlay {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #fff;
-      padding: 10px 0;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      z-index: 100;
-    }
-    .search-bar {
-      position: relative;
-      max-width: 80%;
-      margin: auto;
-    }
-    .search-bar input {
-      width: 100%;
-      border-radius: 20px;
-      padding: 8px 35px 8px 12px;
-      font-size: 14px;
-    }
-    .search-bar button {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #666;
-      font-size: 18px;
-    }
-    .search-bar button:hover {
-      color: #007bff;
-    }
-    
-    /* Ajustes para telas pequenas */
-    @media (max-width: 576px) {
-      .container-header_new {
-        flex-wrap: nowrap !important;
-      }
-      .logo {
-        font-size: 18px !important;
-      }
-      .icons a {
-        font-size: 18px !important;
-      }
-      .logo img {
-        max-width: 150px !important; /* Reduz o tamanho da imagem para mobile */
-      }
-    }
+   
     /* tudo que tem haver com aquela barra de pesquisa que so aparece quando o usuario comeca a digitar*/
  #resultadoBusca {
     display: block !important;

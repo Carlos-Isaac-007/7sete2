@@ -4,10 +4,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$host = '127.0.0.1:3306';
-$user = 'u322980294_sete';
-$password = '7$Ete2@25';
-$database = 'u322980294_seteEcomerce';
+$host = 'localhost';
+$user = 'root';
+$password = '';
+$database = '7sete';
 
 function formatarKZ($valorTexto) {
     $numero = preg_replace('/[^\d]/', '', $valorTexto);

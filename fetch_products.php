@@ -4,8 +4,6 @@ $host = 'localhost';
 $user = 'root';
 $password =  '';
 $database = '7sete';
-// Setting up the time zone
-date_default_timezone_set('Africa/Luanda');
 
 function formatarKZ($valorTexto) {
     $numero = preg_replace('/[^\d]/', '', $valorTexto);
@@ -22,7 +20,7 @@ if ($conn->connect_error) {
    
 
 
-$limit = isset($_POST["limit"]) ? (int)$_POST["limit"] : 6;
+$limit = isset($_POST["limit"]) ? (int)$_POST["limit"] : 5;
 $start = isset($_POST["start"]) ? (int)$_POST["start"] : 0;
 
 $query = " SELECT * FROM tbl_product 

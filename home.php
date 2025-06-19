@@ -31,24 +31,23 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
 
 ?>
 
-<div class="home-todo"  id = "home_box">
-<!-- area do novo carrosel-->
-<div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" style="margin-bottom: 50px;">
-    <!-- Indicadores -->
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="2"></button>
-    </div>
-
-    <!-- Slides -->
-    <div class="carousel-inner">
-        <?php 
-            $i = 0;
-            $colors = ['#0116c7', '#de6769', '#ffba04'];
-            $statement = $pdo->prepare("SELECT * FROM tbl_slider");
-            $statement->execute();
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC); 
+<div class="home-todo" id="home_box" style="border-radius: 18px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 40px;">
+    <!-- Novo Carrossel com UI/UX Moderno -->
+    <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" style="margin-bottom: 40px;">
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <!-- Slides -->
+        <div class="carousel-inner rounded-4 shadow-sm">
+            <?php 
+                $i = 0;
+                $colors = ['#0116c7', '#fe6a00', '#ffba04'];
+                $statement = $pdo->prepare("SELECT * FROM tbl_slider");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC); 
             ?>
             <?php foreach ($result as $row): ?>
                 <div class="carousel-item <?php if($i == 0) echo 'active'; ?>">
@@ -56,168 +55,185 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                         src="<?=ROOT?>assets/uploads/<?=$row['photo']?>" 
                         alt="Imagem <?=$i+1?>" 
                         data-color="<?= $colors[$i % count($colors)] ?>"
+                        class="d-block w-100"
+                        style="object-fit:cover; height:320px; border-radius: 18px;"
                     >
+                    <?php if(!empty($row['caption'])): ?>
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-3">
+                            <h5 style="font-weight:700;"><?=htmlspecialchars($row['caption'])?></h5>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <?php $i++; ?>
             <?php endforeach; ?>
+        </div>
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: drop-shadow(0 2px 6px #222);"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="filter: drop-shadow(0 2px 6px #222);"></span>
+            <span class="visually-hidden">Próximo</span>
+        </button>
     </div>
+    <!-- Fim do Carrossel -->
 
-    <!-- Controles -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </button>
-</div>
+    <?php if($home_service_on_off == 1): ?>
+    <div class="service bg-white py-4" style="border-radius: 18px; margin-bottom: 32px;">
+        <div class="container">
+            <div class="row g-4">
+                <?php
+                $statement = $pdo->prepare("SELECT * FROM tbl_service");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
+                foreach ($result as $row) {
+                    // Escolhe um ícone moderno do Bootstrap Icons baseado no título
+                    $icon = 'bi-gear-fill';
+                    if (stripos($row['title'], 'Entrega') !== false) $icon = 'bi-truck';
+                    if (stripos($row['title'], 'Suporte') !== false) $icon = 'bi-headset';
+                    if (stripos($row['title'], 'Pagamento') !== false) $icon = 'bi-credit-card-2-front-fill';
+                ?>
+                <div class="col-md-4">
+                    <div class="item text-center p-4 shadow-sm rounded-4 h-100" style="background: #f8fafc;">
+                        <div class="mb-3">
+                            <span class="d-inline-flex align-items-center justify-content-center rounded-circle" style="background: #e0e7ff; width: 64px; height: 64px;">
+                                <i class="bi <?=$icon?>" style="font-size: 2rem; color: #4F8A8B;"></i>
+                            </span>
+                        </div>
+                        <h3 class="fw-bold mb-2" style="font-size: 1.2rem;"><?php echo $row['title']; ?></h3>
+                        <p class="text-muted" style="font-size: 1rem;">
+                            <?php echo nl2br($row['content']); ?>
+                        </p>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 
-<!-- Fim da Area do novo Carrosel-->
+    <?php if($home_featured_product_on_off == 1): ?>
+    <div class="product mb-4">
+        <div class="container" style="background: linear-gradient(90deg, #fff 60%, #e0e7ff 100%); border-radius: 18px; padding-top: 25px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="headline d-flex align-items-center mb-3 fire-icon">
+                        <span class="me-2" style="font-size: 2.2rem; color: #ff4b6e;">
+                            <i class="bi bi-fire"></i>
+                        </span>
+                        <h2 class="titulo-com-linha gradiente-brilho" style="margin: 0; font-weight: 700; font-size: 1.5rem; color: #222;">
+                            <?php echo $featured_product_title; ?>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: -20px;">
+                <div class="col-md-12">
+                    <?php 
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
+                    $statement->execute(array(1,1));
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    if (is_array($result)){
+                        require_once('carrosel_horizontal_feacture.php');
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 
-
-<?php if($home_service_on_off == 1): ?>
-<div class="service bg-gray">
-<div class="container">
-<div class="row">
-<?php
-$statement = $pdo->prepare("SELECT * FROM tbl_service");
-$statement->execute();
-$result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
-foreach ($result as $row) {
-?>
-<div class="col-md-4">
-<div class="item">
-<div class="photo"><img src="assets/uploads/<?php echo $row['photo']; ?>" width="150px" alt="<?php echo $row['title']; ?>"></div>
-<h3><?php echo $row['title']; ?></h3>
-<p>
-<?php echo nl2br($row['content']); ?>
-</p>
+    <?php if($home_latest_product_on_off == 1): ?>
+    <div class="product mb-4" style="background: linear-gradient(90deg, #f8fafc 60%, #e0e7ff 100%); border-radius: 18px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="headline d-flex align-items-center mb-3">
+                        <span class="me-2" style="font-size: 2.2rem; color: #4F8A8B;">
+                            <i class="bi bi-stars"></i>
+                        </span>
+                        <h2 class="gradiente-brilho" style="margin: 0; font-weight: 700; font-size: 1.5rem; color: #222;">
+                            <?php echo $latest_product_title; ?>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: -20px">
+                <div class="col-md-12">
+                    <?php  
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY RAND() LIMIT ".$total_latest_product_home);
+                    $statement->execute(array(1));
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC); 
+                    if (is_array($result)){
+                        require_once('carrosel_horizontal_latest.php');
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
-</div>
-<?php
-}
-?>
-</div>
-</div>
-</div>
-<?php endif; ?>
-
-<?php if($home_featured_product_on_off == 1): ?>
-<div class="product">
-<div class="container" style=" background-color: rgba(255, 255, 255, 0.7); /* Ajuste aqui a opacidade (0.4 = 40% escuro) */; border-radius: 20px; border-bottom-left-radius:0; border-bottom-right-radius:0; padding-top: 25px;">
-
-<div class="row">
-<div class="col-md-12">
-<div class="fire-icon">
-
-<div class="headline">
-<h2 class="titulo-com-linha"><i class="bi bi-fire"></i> <?php echo $featured_product_title; ?></h2>
-<!--<h3><?php echo $featured_product_subtitle; ?></h3>-->
-</div>
-</div>
-</div>
-</div>
-
-<div class="row" style="margin-top: -40px;">
-<div class="col-md-12">
-<?php 
-$statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
-$statement->execute(array(1,1));
-$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-if ( is_array($result)){
-   
-   require_once('carrosel_horizontal_feacture.php');
-}
-
-?>
-
-</div>
-</div>
-
-</div>
-</div>
-<?php endif; ?>
-
-
-<?php if($home_latest_product_on_off == 1): ?>
-<div class="product" style="background-color: #d1d1e0 ;">
-<div class="container">
-<div class="row">
-<div class="col-md-12">
-<div class="headline">
-<h2 data-aos="fade-up" style="margin-top: 30px;"><i class="bi bi-stars"></i> <?php echo $latest_product_title; ?></h2>
-<!--<h3><?php echo $latest_product_subtitle; ?></h3>-->
-</div>
-</div>
-</div>
-<div class="row" style="margin-top: -40px">
-<div class="col-md-12">
-<!-- aQUI VAI O COMPONENETE CARROSEL HORIZONTAL-->
-<?php  
-$statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY RAND() LIMIT ".$total_latest_product_home);
-$statement->execute(array(1));
-$result = $statement->fetchAll(PDO::FETCH_ASSOC); 
-
-if (is_array($result)){
-    require_once('carrosel_horizontal_latest.php');
-}
-?>
-</div>
-</div>
-</div>
-<?php endif; ?>
 
 
 <?php if($home_popular_product_on_off == 1): ?>
-<div class="product">
-<div class="container">
-<div class="row">
-<div class="col-md-12">
-<div class="headline">
-<h2 class="gradiente-brilho" style="margin-top: 30px;"><i class="bi-heart-fill"></i> <?php echo $popular_product_title; ?></h2>
-<!--<h3><?php echo $popular_product_subtitle; ?></h3>-->
-</div>
-</div>
-</div>
-
-<div class="row" style="margin-top: -40px;">
-<div class="col-md-12">
-   <?php 
-        $statement = $pdo->prepare("SELECT * FROM tbl_product  WHERE p_is_active=? ORDER BY RAND() LIMIT ".$total_popular_product_home);
-        $statement->execute(array(1));
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if(is_array(($result))){
-            require_once('carrosel_horizontal_popular.php');
-        }
-        ?>
-
-
-</div>
-</div>
-</div>
+<div class="product" style="background: linear-gradient(90deg, #f8fafc 60%, #ffe5ec 100%); border-radius: 18px; margin-bottom: 40px; box-shadow: 0 2px 16px rgba(255, 105, 135, 0.08);">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-md-12 d-flex align-items-center mb-2">
+                <span class="me-2" style="font-size: 2.2rem; color: #ff4b6e;">
+                    <i class="bi bi-heart-fill"></i>
+                </span>
+                <div class="headline mb-0">
+                    <h2 class="gradiente-brilho" style="margin: 0; font-weight: 700; font-size: 1.7rem; color: #222;">
+                        <?php echo $popular_product_title; ?>
+                    </h2>
+                    <!--<h3 class="text-muted" style="font-size: 1rem;"><?php echo $popular_product_subtitle; ?></h3>-->
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -20px;">
+            <div class="col-md-12">
+                <?php 
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY RAND() LIMIT ".$total_popular_product_home);
+                    $statement->execute(array(1));
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    if(is_array($result)){
+                        require_once('carrosel_horizontal_popular.php');
+                    }
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
 <?php endif; ?>
-<!-- aqui vai aparecer uma div que vai carregar os produtos sem para -->
-<div class="product">
-<div class="container">
-      <div class="row">
-    <div class="col-md-12">
-    <div class="headline">
-    <h2 class="letra-animada" style="margin-top: 30px;">📦 Todos os Produtos</h2>
-    <!--<h3>Lista de produtos disponível no stoke</h3>-->
-    </div>
-    </div>
-    </div>
-    
-    <div id="product-list" class="container23" style="margin-top: -40px;">
-        <!-- Os produtos serão carregados aqui via AJAX -->
-        
-    </div>
-    <div class="loading">
-        <p>Carregando...</p>
-    </div>
-</div>
-</div>
 
+<!-- aqui vai aparecer uma div que vai carregar os produtos sem para -->
+<div class="product bg-gray" style="padding-bottom: 40px;">
+    <div class="container">
+        <div class="row align-items-center" style="margin-bottom: 20px;">
+            <div class="col-md-12 d-flex align-items-center">
+                <span class="me-2" style="font-size: 2rem; color: #4F8A8B;">
+                    <i class="bi bi-box-seam-fill"></i>
+                </span>
+                <div class="headline mb-0">
+                    <h2 style="margin: 0; font-weight: 700; font-size: 1.7rem; color: #222;">
+                        Todos os Produtos
+                    </h2>
+                    <!--<h3 class="text-muted" style="font-size: 1rem;">Lista de produtos disponível no estoque</h3>-->
+                </div>
+            </div>
+        </div>
+        
+        <div id="product-list" class="row g-3" style="min-height: 120px;">
+            <!-- Produtos serão carregados aqui via AJAX -->
+        </div>
+        <div class="loading d-flex justify-content-center align-items-center" style="height: 60px; display: none;">
+            <div class="spinner-border text-primary me-2" role="status"></div>
+            <span style="font-size: 1.1rem; color: #555;">Carregando...</span>
+        </div>
+    </div>
 </div>
 
 </div>
