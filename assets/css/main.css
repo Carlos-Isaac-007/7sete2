@@ -12,7 +12,14 @@ body {
   
 }
 @media (max-width: 991px) {
-
+  body{
+    padding-top: 130px;
+  }
+}
+@media (min-width: 991px) {
+  body{
+    padding-top: 260px;
+  }
 }
 ul, ol, li{
   list-style: none;

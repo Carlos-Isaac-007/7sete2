@@ -1,89 +1,82 @@
-$(document).ready(function() {
-  $("#IputPesquisar").on("keyup", function() {
-    let termo = $(this).val().trim();
-    if (termo.length === 0) {
-      $("#resultadoBusca").hide();
-      return;
-    }
-    $.ajax({
-      url: "<?=ROOT?>busca_ajax.php",
-      method: "POST",
-      data: { search_text: termo },
-      dataType: "json",
-      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-      success: function(data) {
-        let html = "<ul>";
-        if (data.length > 0) {
-          data.forEach(produto => {
-            html += `<li class="item-busca"><a href="<?=ROOT?>search-result?search_text=${encodeURIComponent(produto.p_name)}" class="text-decoration-none text-dark d-block">${produto.p_name}</a></li>`;
-          });
-        } else {
-          html += "<li class='item-busca'>Nenhum produto encontrado</li>";
+const ROOT = "localhost/7sete/";
+
+$(document).ready(function () {
+  const campos = [
+    { input: "#InputPesquisarDesktop", resultado: "#resultadoBuscaDesktop" },
+    { input: "#InputPesquisarMobile", resultado: "#resultadoBuscaMobile" }
+  ];
+
+  campos.forEach(({ input, resultado }) => {
+    const $input = $(input);
+    const $resultado = $(resultado);
+
+    let debounceTimer;
+
+    // Evento de digitação com debounce
+    $input.on("keyup", function () {
+      clearTimeout(debounceTimer);
+
+      debounceTimer = setTimeout(() => {
+        const termo = $(this).val().trim();
+        console.log(termo);
+
+        if (termo.length === 0) {
+          $resultado.hide();
+          return;
         }
-        html += "</ul>";
-        $("#resultadoBusca").html(html).fadeIn(100);
-      },
-      error: function(xhr, status, error) {
-        $("#resultadoBusca").hide();
+
+        $.ajax({
+          url: ROOT + "busca_ajax.php",
+          method: "POST",
+          data: { search_text: termo },
+          dataType: "json",
+          success: function (data) {
+            let html = "<ul class='lista-resultados list-group'>";
+            if (data.length > 0) {
+              data.forEach(produto => {
+                html += `
+                  <li class="item-busca list-group-item">
+                    <a href="${ROOT}search-result?search_text=${encodeURIComponent(produto.p_name)}"
+                       class="text-decoration-none text-dark d-block">
+                      ${produto.p_name}
+                    </a>
+                  </li>`;
+              });
+            } else {
+              html += "<li class='item-busca list-group-item'>Nenhum produto encontrado</li>";
+            }
+            html += "</ul>";
+            $resultado.html(html).fadeIn(100);
+          },
+          error: function (xhr, status, error) {
+            console.error("Erro AJAX:", error);
+            $resultado.hide();
+          }
+        });
+      }, 300); // 300ms debounce
+    });
+
+    // Mostrar resultado ao focar no input (se tiver texto)
+    $input.on("focus", function () {
+      if ($(this).val().trim().length > 0) {
+        $resultado.fadeIn(100);
       }
     });
   });
 
-  // Esconde resultados ao clicar fora
-  $(document).on('click', function(e) {
-    if (!$(e.target).closest('.custom-searchbar').length) {
-      $("#resultadoBusca").fadeOut(100);
+  // Esconde resultados ao clicar fora de qualquer campo
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".custom-searchbar").length) {
+      $("#resultadoBuscaDesktop, #resultadoBuscaMobile").fadeOut(100);
     }
   });
-  // Mostra resultados ao focar no input se houver texto
-  $("#IputPesquisar").on('focus', function() {
-    if ($(this).val().trim().length > 0) {
-      $("#resultadoBusca").fadeIn(100);
-    }
-  });
-});
 
-{
-        // quando o usuario pesquisar , faz uma pesquisa sem refresh
-        $(document).ready(function() {
-    $("#IputPesquisar").on("keyup", function() {
-        let termo = $(this).val().trim();
+  // -----------------------------
+  // Carrinho: Animação e contador
+  // -----------------------------
 
-            $.ajax({
-              url: "<?=ROOT?>busca_ajax.php",
-                method: "POST",
-                data: { search_text: termo },
-                dataType: "json",
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                success: function(data) {
-                    //console.log("Dados recebidos:", data); // Teste para ver se os dados chegam no AJAX
-
-                    let html = "<ul class='lista-resultados'>"; // Adiciona uma classe para estilização
-                    if (data.length > 0) {
-                        data.forEach(produto => {
-                            html += `<a href="<?=ROOT?>search-result?search_text=${produto.p_name}">
-                              <li class="item-busca">${produto.p_name}</li>
-                            <a/>`;
-                        });
-                    } else {
-                        html += "<li class='item-busca'>Nenhum produto encontrado</li>";
-                    }
-                    html += "</ul>";
-
-                    $("#resultadoBusca").html(html).show(); // Exibe os resultados
-                },
-                error: function(xhr, status, error) {
-                    console.error("Erro AJAX:", status, error);
-                }
-            });
-       
-    });
-});
-    
-  // Variáveis do carrinho
   let cartCount = 0;
 
-  // Atualiza o badge do carrinho
   function updateCartBadge() {
     const badge = document.getElementById('cart-badge');
     if (cartCount > 0) {
@@ -94,7 +87,6 @@ $(document).ready(function() {
     }
   }
 
-  // Animação de pulso no ícone do carrinho
   function animateCart() {
     const cartIcon = document.getElementById('cart-icon');
     cartIcon.classList.add('pulse');
@@ -103,10 +95,12 @@ $(document).ready(function() {
     }, 500);
   }
 
-  // Evento para adicionar um produto
-  document.getElementById('add-product').addEventListener('click', function() {
-    cartCount++;
-    updateCartBadge();
-    animateCart();
-  });
-}
+  const addToCartBtn = document.getElementById('Add_To_Cart');
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', function () {
+      cartCount++;
+      updateCartBadge();
+      animateCart();
+    });
+  }
+});

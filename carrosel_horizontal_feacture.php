@@ -16,26 +16,60 @@
     margin: 0 10px;
 }
 
-.carousel-btn {
+</style>
+<style>
+
+.brand-logo {
+    width: 48px;
+    height: 24px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+
+
+.carousel-controls {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0,0,0,0.4);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+    left: 0; right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
     z-index: 10;
+    padding: 0 12px;
 }
-.prev-btn, .next-btn{ background-color: transparent !important; color:rgb(97, 95, 95) !important; font-size: 24pt;}
-.prev-btn:hover, .next-btn:hover{color:rgb(20, 19, 19) !important;}
-.prev-btn { left: 10px;}
-.next-btn { right: 10px; }
 
+.carousel-btn {
+    background: rgba(255,255,255,0.95);
+    color: #000c78;
+    font-size: 2.2rem;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    cursor: pointer;
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+.carousel-btn:hover {
+    background: #000c78;
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .carousel-container { gap: 12px; padding: 0 16px; }
+    .carousel-btn { width: 38px; height: 38px; font-size: 1.5rem; }
+}
 </style>
-
 <div class="carousel-wrapper">
-    <button class="carousel-btn prev-btn" aria-label="Anterior">&#10094;</button>
 
     <div class="carousel-container">
         <?php foreach ($result as $row): ?>
@@ -75,7 +109,10 @@
         <?php endforeach; ?>
     </div>
 
-    <button class="carousel-btn next-btn" aria-label="Próximo">&#10095;</button>
+    <div class="carousel-controls">
+        <button class="carousel-btn prev-btn" aria-label="Anterior">&#10094;</button>
+        <button class="carousel-btn next-btn" aria-label="Próximo">&#10095;</button>
+    </div>
 </div>
 
 

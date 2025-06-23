@@ -4,7 +4,6 @@ if (!isset($_SESSION['customer']['cust_id'])) {
 }
 
 ?>
-?>
 <style>
   body {
     background-color: #f8f9fa !important;
@@ -201,7 +200,7 @@ require_once './requires/product_files.php';
 <li>></li>
 <li><a href="<?php echo URL.'product-category?id='.$tcat_id.'&type=top-category' ?>"><?php echo $tcat_name; ?></a></li>
 <li>></li>
-<li><a href="<?php echo URL.'product-categoryid='.$mcat_id.'&type=mid-category' ?>"><?php echo $mcat_name; ?></a></li>
+<li><a href="<?php echo URL.'product-categoryid?='.$mcat_id.'&type=mid-category' ?>"><?php echo $mcat_name; ?></a></li>
 <li>></li>
 <li><a href="<?php echo URL.'product-category?id='.$ecat_id.'&type=end-category' ?>"><?php echo $ecat_name; ?></a></li>
 <li>></li>
@@ -558,35 +557,99 @@ $estimativa = calcularEstimativa();
     <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>"> <!-- ID do produto vindo da URL -->
 
 
-    <div class="p-quantity">
-    <label><?php echo LANG_VALUE_55; ?></label>
-    <div class="qty-container">
+    <div class="p-quantity mb-4">
+      <label class="form-label fw-semibold" style="font-size:15px;">
+        <i class="fas fa-sort-numeric-up-alt"></i> <?php echo LANG_VALUE_55; ?>
+      </label>
+      <div class="qty-container d-flex align-items-center gap-2" style="max-width: 180px;">
         <?php if(!strpos($final_ebook_name, '.pdf')): ?>
-        <button class="qty-btn minus">−</button>
-        <input type="number" class="input-text qty" step="1" min="1" name="p_qty" value="1">
-        <button class="qty-btn plus">+</button>
+          <button type="button" class="qty-btn minus btn btn-outline-secondary rounded-circle shadow-sm" style="width:38px;height:38px;font-size:20px;display:flex;align-items:center;justify-content:center;">−</button>
+          <input 
+            type="number" 
+            class="input-text qty form-control text-center shadow-sm" 
+            step="1" min="1" name="p_qty" value="1"
+            style="width:60px;font-size:18px;font-weight:600;"
+          >
+          <button type="button" class="qty-btn plus btn btn-outline-secondary rounded-circle shadow-sm" style="width:38px;height:38px;font-size:20px;display:flex;align-items:center;justify-content:center;">+</button>
         <?php endif; ?>
         <?php if(strpos($final_ebook_name, '.pdf')): ?>
-        <input type="hidden" class="input-text qty" step="1" min="1" max="1" name="p_qty" value="1">
+          <input type="hidden" class="input-text qty" step="1" min="1" max="1" name="p_qty" value="1">
         <?php endif; ?>
+      </div>
     </div>
-   </div>
 
-   
-    <?php if(!strpos($final_ebook_name, '.pdf')): ?>
-    <div class="btn-cart btn-cart1">
-        <button type="submit" id="Add_To_Cart" class="btn-details2"><?php echo LANG_VALUE_154; ?></button>
+    <div class="d-flex flex-column flex-md-row gap-3 mb-3">
+      <?php if(!strpos($final_ebook_name, '.pdf')): ?>
+        <button type="submit" id="Add_To_Cart" class="btn-details2 w-100" style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;">
+          <i class="fas fa-shopping-cart"></i> <?php echo LANG_VALUE_154; ?>
+        </button>
+      <?php endif; ?>
+
+      <button type="button" class="btn-details2 w-100" style="background:#1abc9c;display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;" onclick="pagarAgora()">
+        <i class="fas fa-bolt"></i> Pagar Agora
+      </button>
     </div>
-    <?php endif; ?>
-    
-    <div class="btn-cart btn-cart1">
-      <button type="button" class="btn-details2" onclick="pagarAgora()">Pagar Agora</button>
-    </div>
-    
 
-
-    
-        <!-- Estilo do botão -->
+    <style>
+      .qty-container {
+        background: #f3f5fa;
+        border-radius: 8px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        min-width: 120px;
+      }
+      .qty-btn {
+        border: none !important;
+        background: #f8f9fa !important;
+        color: #222 !important;
+        font-weight: bold;
+        transition: background 0.2s, color 0.2s;
+      }
+      .qty-btn:hover, .qty-btn:focus {
+        background: #e0e7ff !important;
+        color: #000c78 !important;
+      }
+      .input-text.qty {
+        border: 1.5px solid #d1d5db !important;
+        border-radius: 6px !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+      }
+      @media (max-width: 576px) {
+        .qty-container {
+          flex-direction: row !important;
+          gap: 6px !important;
+          padding: 6px 6px;
+        }
+        .btn-details2 {
+          font-size: 15px !important;
+          padding: 10px 10px !important;
+        }
+      }
+    </style>
+    <script>
+      // Modern increment/decrement for quantity
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.qty-btn.minus').forEach(function(btn) {
+          btn.onclick = function(e) {
+            e.preventDefault();
+            let qtyInput = btn.parentElement.querySelector('input.qty');
+            let val = parseInt(qtyInput.value, 10) || 1;
+            if(val > 1) qtyInput.value = val - 1;
+          };
+        });
+        document.querySelectorAll('.qty-btn.plus').forEach(function(btn) {
+          btn.onclick = function(e) {
+            e.preventDefault();
+            let qtyInput = btn.parentElement.querySelector('input.qty');
+            let val = parseInt(qtyInput.value, 10) || 1;
+            qtyInput.value = val + 1;
+          };
+        });
+      });
+    </script>
 <style>
   .btn-read-ebook {
     background-color: #000c78;

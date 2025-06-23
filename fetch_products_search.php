@@ -9,10 +9,10 @@ $user = 'root';
 $password = '';
 $database = '7sete';
 
-function formatarKZ($valorTexto) {
-    $numero = preg_replace('/[^\d]/', '', $valorTexto);
-    $fmt = new NumberFormatter('pt_AO', NumberFormatter::CURRENCY);
-    return $fmt->formatCurrency($numero, 'AOA');
+if (!function_exists('formatarKZ')) {
+  function formatarKZ($valor) {
+    return number_format($valor, 2, ',', '.') . ' Kz';
+  }
 }
 
 try {

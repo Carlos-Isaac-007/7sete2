@@ -31,23 +31,25 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
 
 ?>
 
-<div class="home-todo" id="home_box" style="border-radius: 18px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 40px;">
-    <!-- Novo Carrossel com UI/UX Moderno -->
+<div class="home-todo" id="home_box" style="border-radius: 18px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 40px; background: #000c78;">
+    <!-- Carrossel Moderno com botões de paginação -->
     <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" style="margin-bottom: 40px;">
-        <!-- Indicadores -->
+        <!-- Indicadores circulares personalizados -->
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="2"></button>
-        </div>
-        <!-- Slides -->
-        <div class="carousel-inner rounded-4 shadow-sm">
             <?php 
-                $i = 0;
-                $colors = ['#0116c7', '#fe6a00', '#ffba04'];
                 $statement = $pdo->prepare("SELECT * FROM tbl_slider");
                 $statement->execute();
                 $result = $statement->fetchAll(PDO::FETCH_ASSOC); 
+                $slideCount = count($result);
+                for($j = 0; $j < $slideCount; $j++): 
+            ?>
+                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="<?=$j?>" class="<?php if($j == 0) echo 'active'; ?>" aria-current="<?php if($j == 0) echo 'true'; ?>" aria-label="Slide <?=$j+1?>" style="background-color: #000c78; width: 14px; height: 14px; border-radius: 50%; border: none; margin: 0 6px;"></button>
+            <?php endfor; ?>
+        </div>
+        <div class="carousel-inner rounded-4 shadow-sm">
+            <?php 
+                $i = 0;
+                $colors = ['#0166ff', '#fe6a00', '#ffba04'];
             ?>
             <?php foreach ($result as $row): ?>
                 <div class="carousel-item <?php if($i == 0) echo 'active'; ?>">
@@ -56,7 +58,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                         alt="Imagem <?=$i+1?>" 
                         data-color="<?= $colors[$i % count($colors)] ?>"
                         class="d-block w-100"
-                        style="object-fit:cover; height:320px; border-radius: 18px;"
+                        style="border-radius: 18px;"
                     >
                     <?php if(!empty($row['caption'])): ?>
                         <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-3">
@@ -67,20 +69,11 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                 <?php $i++; ?>
             <?php endforeach; ?>
         </div>
-        <!-- Controles -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: drop-shadow(0 2px 6px #222);"></span>
-            <span class="visually-hidden">Anterior</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true" style="filter: drop-shadow(0 2px 6px #222);"></span>
-            <span class="visually-hidden">Próximo</span>
-        </button>
     </div>
     <!-- Fim do Carrossel -->
 
     <?php if($home_service_on_off == 1): ?>
-    <div class="service bg-white py-4" style="border-radius: 18px; margin-bottom: 32px;">
+    <div class="service py-4" style="border-radius: 18px; margin-bottom: 32px; background: #fff;">
         <div class="container">
             <div class="row g-4">
                 <?php
@@ -88,7 +81,6 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                 $statement->execute();
                 $result = $statement->fetchAll(PDO::FETCH_ASSOC);                            
                 foreach ($result as $row) {
-                    // Escolhe um ícone moderno do Bootstrap Icons baseado no título
                     $icon = 'bi-gear-fill';
                     if (stripos($row['title'], 'Entrega') !== false) $icon = 'bi-truck';
                     if (stripos($row['title'], 'Suporte') !== false) $icon = 'bi-headset';
@@ -175,7 +167,6 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
     </div>
     <?php endif; ?>
 </div>
-
 
 <?php if($home_popular_product_on_off == 1): ?>
 <div class="product" style="background: linear-gradient(90deg, #f8fafc 60%, #ffe5ec 100%); border-radius: 18px; margin-bottom: 40px; box-shadow: 0 2px 16px rgba(255, 105, 135, 0.08);">

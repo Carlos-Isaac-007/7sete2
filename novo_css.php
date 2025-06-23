@@ -580,7 +580,7 @@ body {
  
     /* Badge no ícone do carrinho */
     .badge {
-      background: #000c78 !important;
+      background: #ff6b01 !important;
       color: #fff !important;
       font-size: 12px !important;
       padding: 2px 6px !important;

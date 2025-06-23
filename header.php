@@ -1,4 +1,4 @@
-<?php require_once "requires/heade.php" ?>
+<?php define("ROOT", "https://7setetech.com/"); require_once "requires/head.php" ?>
 <body>
 <!-- top bar -->
 <style>
@@ -26,47 +26,102 @@
         <div class="custom-searchbar-wrapper flex-grow-1 d-none d-lg-flex justify-content-center align-items-center" style="min-width:0;">
           <div class="custom-searchbar w-100" style="max-width:420px;min-width:180px;">
             <form class="input-group" action="<?=ROOT?>search-result" method="get" autocomplete="off">
-              <input type="text" class="form-control rounded-start-pill" placeholder="<?php echo LANG_VALUE_2; ?>" name="search_text" id="IputPesquisar" required>
+              <input type="text" class="form-control rounded-start-pill" placeholder="<?php echo LANG_VALUE_2; ?>" name="search_text" id="InputPesquisarDesktop" required>
               <button class="btn btn-outline-primary rounded-end-pill px-3" type="submit" title="Pesquisar">
                 <i class="bi bi-search"></i>
               </button>
             </form>
-            <div id="resultadoBusca" class="custom-search-results position-absolute w-100 z-3"></div>
+            <div id="resultadoBuscaDesktop" class="custom-search-results position-absolute w-100 z-3"></div>
           </div>
         </div>
       
         <!-- Ícones à direita -->
         <div class="d-flex align-items-center gap-2 custom-header-actions ms-lg-3 ms-auto">
           <?php if(isset($_SESSION['customer'])):?>
-            <a href="<?=ROOT?>dashboard" class="btn btn-light rounded-circle p-2" title="Painel">
-              <i class="bi bi-person fs-5 text-primary"></i>
+            <a href="<?=ROOT?>dashboard" class="nav-icon-btn" title="Painel">
+              <i class="bi bi-person fs-5"></i>
             </a>
           <?php else:?>
-            <a href="<?=ROOT?>login" class="btn btn-light rounded-circle p-2" title="Entrar">
-              <i class="bi bi-box-arrow-in-right fs-5 text-primary"></i>
+            <a href="<?=ROOT?>login" class="nav-icon-btn" title="Entrar">
+              <i class="bi bi-box-arrow-in-right fs-5"></i>
             </a>
           <?php endif;?>
-            <a href="<?=ROOT?>cart" id="cart-icon" class="btn btn-light rounded-circle p-2 position-relative" title="Carrinho">
-              <i class="bi bi-cart fs-5 text-primary"></i>
+          <!-- Botão moderno -->
+
+            <style>
+              .nav-icon-btn {
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  background-color: #000c78;
+                  color: #ffffff;
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  transition: all 0.3s ease;
+                  text-decoration: none;
+                  box-shadow: 0 2px 8px rgba(0, 12, 120, 0.15);
+                  position: relative;
+                }
+
+                .nav-icon-btn:hover {
+                  background-color: #ffffff;
+                  color: #000c78;
+                  border: 2px solid #000c78;
+                  transform: translateY(-2px);
+                }
+
+                .nav-icon-btn:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 3px rgba(0, 12, 120, 0.3);
+                }
+
+            </style>
+
+            <a href="<?=ROOT?>cart" id="cart-icon" class="nav-icon-btn position-relative" title="Carrinho">
+              <i class="bi bi-cart fs-5"></i>
             <?php if($qt > 0): ?>
-            <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill+ bg-danger"><?=$qt?></span>
+            <span id="cart-badge" class="badge"><?=$qt?></span>
             <?php endif; ?>
           </a>
-           <button id="menuToggle" class="main-navbar-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <style>
+            #menuToggle {
+              background: transparent;
+              border: none;
+              font-size: 1.5rem;
+              color: #000c78;
+              cursor: pointer;
+              z-index: 1001;
+              transition: transform 0.3s ease;
+              border-left: 1px solid #000c78;
+              padding-left: 5px;
+            }
+
+            #menuToggle:focus {
+              outline: none;
+              transform: scale(1.1);
+            }
+          </style>
+            <button id="menuToggle" class="" aria-label="Abrir menu" aria-expanded="false">
                 <i class="fas fa-bars"></i>
-              </button>
+            </button>
         </div>
       </div>
           <!-- Barra de pesquisa: visível apenas no mobile (abaixo dos ícones e logo) -->
       <div class="custom-searchbar-wrapper mt-2 d-lg-none">
-        <div class="custom-searchbar" style="max-width:100vw;min-width:0;">
+        <div class="" style="max-width:100vw;min-width:0;">
           <form class="input-group" action="<?=ROOT?>search-result" method="get" autocomplete="off">
-            <input type="text" class="form-control rounded-start-pill" placeholder="<?php echo LANG_VALUE_2; ?>" name="search_text" id="IputPesquisar" required>
-            <button class="btn btn-outline-primary rounded-end-pill px-3" type="submit" title="Pesquisar">
-              <i class="bi bi-search"></i>
+            <input type="text" class="form-control rounded-start-pill" placeholder="<?php echo LANG_VALUE_2; ?>" name="search_text" id="InputPesquisarMobile" required>
+            <button class="btn btn-outline-primary rounded-end-pill px-3" type="submit" title="Pesquisar">  
+            <style>
+              .bi-search{
+                color: #000c78 !important;
+              }
+            </style>
+            <i class="bi bi-search fs-5" style="color: #000c78;"></i>
             </button>
           </form>
-          <div id="resultadoBusca" class="custom-search-results position-absolute w-100 z-3"></div>
+          <div id="resultadoBuscaMobile" class="custom-search-results position-absolute w-100 z-3"></div>
         </div>
       </div>
       </div>
@@ -256,13 +311,29 @@
                 $statement = $pdo->prepare("SELECT * FROM tbl_top_category WHERE show_on_menu=1");
                 $statement->execute();
                 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $icones = ['bolsa.webp', 'beleza.webp', 'escritorio.webp', 'car.webp',
+                'books.webp', 'pet.webp', 'tecn.webp', 'drink.webp', 'beleza.webp'];
+                $i = 0;
                 foreach ($result as $row) {
                   // Limita o nome da categoria a 18 caracteres
-                  $tcat_name = mb_strlen($row['tcat_name']) > 18 ? mb_substr($row['tcat_name'], 0, 13) . '…' : $row['tcat_name'];
+                  $tcat_name = mb_strlen($row['tcat_name']) > 18 ? mb_substr($row['tcat_name'], 0, 25) . '…' : $row['tcat_name'];
                 ?>
                   <li class="main-navbar-dropdown">
                     <a href="<?=ROOT?>product-category?id=<?php echo $row['tcat_id']; ?>&type=top-category" title="<?php echo htmlspecialchars($row['tcat_name']); ?>">
-                      <i class="fas fa-th-large"></i> <span><?php echo $tcat_name; ?></span>
+                    <style>
+                      .icone-img-<?=$i?>{
+                          display: inline-block;
+                          width: 40px;
+                          height: 40px;
+                          background-image: url('uploads/<?=$icones[$i]?>');
+                          background-size: cover;
+                          background-position: center;
+                          border-radius: 50%;
+                          transition: 0.3s ease-in-out;
+                      }
+                      
+                    </style>  
+                    <span class="icone-img-<?=$i?>"></span> <span><?php echo $tcat_name; ?></span>
                       <i class="fas fa-chevron-down main-navbar-dropdown-icon"></i>
                     </a>
                     <ul class="main-navbar-dropdown-menu">
@@ -297,7 +368,7 @@
                       <?php } ?>
                     </ul>
                   </li>
-                <?php } ?>
+                <?php $i++; } ?>
 
                 <?php
                 $statement = $pdo->prepare("SELECT * FROM tbl_page WHERE id=1");
@@ -336,6 +407,7 @@
   </nav>
 </div>
 <style>
+  
 /* Modern UI/UX Styles for Navigation */
 .main-navbar-modern {
   background: #fff;
@@ -387,6 +459,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.main-navbar-list > li > a > i{
+  color: #000c78;
+}
 .main-navbar-list > li > a:hover, .main-navbar-list > li > a:focus {
   background: #f5f5f5;
   color: #007bff;
@@ -430,6 +505,7 @@
   background: #f0f4ff;
   color: #007bff;
 }
+
 .main-navbar-dropdown-submenu {
   position: relative;
 }
@@ -488,7 +564,7 @@
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: #222;
+    color: #000c78;
     cursor: pointer;
     margin-left: auto;
     padding: 0.75rem;
@@ -562,6 +638,20 @@
     const isOpen = menu.classList.toggle('active');
     menu.classList.toggle('hidden', !isOpen);
     updateMenuButton(isOpen);
+
+    //Lógica extra: aplicar estilo se o menu for fechado manualmente sem rolagem
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if(isDesktop()){
+      if (!isOpen && scrollY <= 10) {
+        // Aqui você pode alterar qualquer estilo — exemplo:
+        document.body.style.paddingTop = "70px"; // ou menu.style.backgroundColor = "#ccc";
+        // Exemplo com transição suave:
+        menu.style.transition = "opacity 0.3s ease";
+      } else{
+        document.body.style.paddingTop = "260px";
+        menu.style.transition = "opacity 0.3s ease";
+      }
+    }
   });
 
   // Ocultar ao rolar (apenas no desktop)
@@ -572,6 +662,8 @@
       if (currentScroll > lastScrollTop && currentScroll > 100) {
         menu.classList.add('hidden');
         menu.classList.remove('active');
+        document.body.style.paddingTop = "260px";
+        menu.style.transition = "opacity 0.3s ease";
         updateMenuButton(false);
       } else if (currentScroll < lastScrollTop && currentScroll <= 10) {
         menu.classList.remove('hidden');

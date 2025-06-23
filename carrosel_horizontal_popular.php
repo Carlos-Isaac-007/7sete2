@@ -1,6 +1,4 @@
  <div class="carousel-wrapper">
-    <button class="carousel-btn prev-btn" aria-label="Anterior">&#10094;</button>
-
     <div class="carousel-container">
         <?php foreach($result as $row): ?>
             <div class="product-item">
@@ -39,5 +37,8 @@
         <?php endforeach;?>
     </div>
 
-    <button class="carousel-btn next-btn" aria-label="Próximo">&#10095;</button>
+    <div class="carousel-controls">
+        <button class="carousel-btn prev-btn" aria-label="Anterior">&#10094;</button>
+        <button class="carousel-btn next-btn" aria-label="Próximo">&#10095;</button>
+    </div>
 </div>
