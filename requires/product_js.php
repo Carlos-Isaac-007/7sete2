@@ -45,6 +45,29 @@ function showDangerModal(message = "Este produto já foi adicionado!") {
 // showDangerModal("Produto sem estoque!");
 
 
+  // -----------------------------
+  // Carrinho: Animação e contador
+  // -----------------------------
+
+  
+function updateCartBadge(qt) {
+  const badge = document.getElementById('cart-badge');
+  if (qt > 0) {
+    badge.textContent = qt;
+    badge.classList.remove('d-none');
+  } else {
+    badge.classList.add('d-none');
+  }
+  console.log("element após click: ", badge);
+}
+
+function animateCart() {
+  const cartIcon = document.getElementById('cart-icon');
+  cartIcon.classList.add('pulse');
+  setTimeout(() => {
+    cartIcon.classList.remove('pulse');
+  }, 500);
+}
 // codigo do adicionar ao carrinho com AJx
 $(document).ready(function() {
     $("#add_to_cart_form").submit(function(event) {
@@ -56,9 +79,12 @@ $(document).ready(function() {
             data: $(this).serialize(), // Envia os dados do formulário
             dataType: "json",
             success: function(response) {
+                console.log('reposta json: ', response)
                 if (response.success) {
                      // mostrando modal de teste
                        showSuccessModal(response.message)
+                       updateCartBadge(response.qt);// valor real do servidor
+                       animateCart();
                     $("#cart-message").html('<div style="color: green;">' + response.message + '</div>');
                     $("#cart-badge").html(response.qt)
                      

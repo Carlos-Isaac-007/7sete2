@@ -86,5 +86,29 @@
         <span class="close-btn">&times;</span>
         <div class="modal-icon">✔</div>
         <p class="modal-message">Produto adicionado com sucesso!</p>
+        <a href="<?=ROOT?>cart" class="go-cart-btn">Ir para o carrinho</a>
     </div>
 </div>
+<style>
+.go-cart-btn {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 12px 28px;
+    background: linear-gradient(90deg, #000c78 0%, #3b4cca 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(59, 76, 202, 0.10);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+}
+.go-cart-btn:hover, .go-cart-btn:focus {
+    background: linear-gradient(90deg, #3b4cca 0%, #000c78 100%);
+    transform: translateY(-2px) scale(1.03);
+    color: #fff;
+    text-decoration: none;
+}
+</style>

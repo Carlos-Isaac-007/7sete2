@@ -305,11 +305,9 @@ if($cur_page == ROOT.'customer-order') {
 <?php echo $after_body; ?>
  <?php
   // Quantidade de produtos no carrinho
-  $qt = 0;
-  if(isset($_SESSION['cart_p_qty'])){
-    $qt_check = $_SESSION['cart_p_qty'];
-    foreach($qt_check as $row){
-  $qt = $qt + 1;
-    }
-  }
+   $qt = 0;
+   if(isset($_SESSION['cart_p_qty'])){
+    $qt = array_sum($_SESSION['cart_p_qty']);
+   }
+   echo $qt;
 ?>

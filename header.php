@@ -80,9 +80,7 @@
 
             <a href="<?=ROOT?>cart" id="cart-icon" class="nav-icon-btn position-relative" title="Carrinho">
               <i class="bi bi-cart fs-5"></i>
-            <?php if($qt > 0): ?>
-            <span id="cart-badge" class="badge"><?=$qt?></span>
-            <?php endif; ?>
+            <span id="cart-badge" class="badge <?= $qt <= 0 ? 'd-none' : '' ?>"><?=$qt?></span>
           </a>
           <style>
             #menuToggle {

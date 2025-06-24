@@ -71,36 +71,4 @@ $(document).ready(function () {
     }
   });
 
-  // -----------------------------
-  // Carrinho: Animação e contador
-  // -----------------------------
-
-  let cartCount = 0;
-
-  function updateCartBadge() {
-    const badge = document.getElementById('cart-badge');
-    if (cartCount > 0) {
-      badge.textContent = cartCount;
-      badge.classList.remove('d-none');
-    } else {
-      badge.classList.add('d-none');
-    }
-  }
-
-  function animateCart() {
-    const cartIcon = document.getElementById('cart-icon');
-    cartIcon.classList.add('pulse');
-    setTimeout(() => {
-      cartIcon.classList.remove('pulse');
-    }, 500);
-  }
-
-  const addToCartBtn = document.getElementById('Add_To_Cart');
-  if (addToCartBtn) {
-    addToCartBtn.addEventListener('click', function () {
-      cartCount++;
-      updateCartBadge();
-      animateCart();
-    });
-  }
 });

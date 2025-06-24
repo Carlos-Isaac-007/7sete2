@@ -200,7 +200,7 @@ require_once './requires/product_files.php';
 <li>></li>
 <li><a href="<?php echo URL.'product-category?id='.$tcat_id.'&type=top-category' ?>"><?php echo $tcat_name; ?></a></li>
 <li>></li>
-<li><a href="<?php echo URL.'product-categoryid?='.$mcat_id.'&type=mid-category' ?>"><?php echo $mcat_name; ?></a></li>
+<li><a href="<?php echo URL.'product-category?id='.$mcat_id.'&type=mid-category' ?>"><?php echo $mcat_name; ?></a></li>
 <li>></li>
 <li><a href="<?php echo URL.'product-category?id='.$ecat_id.'&type=end-category' ?>"><?php echo $ecat_name; ?></a></li>
 <li>></li>
