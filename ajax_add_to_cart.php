@@ -16,7 +16,6 @@ $feedback = array("success"=>false,"message"=>"","qt"=>"");
 $data = json_decode(file_get_contents("php://input"), true);
 
 
-
 if(isset($_POST['id'], $_POST['p_qty'])) {
     $p_id = $_POST['id'];
     $p_qty = intval($_POST['p_qty']);

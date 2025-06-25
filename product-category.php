@@ -1,365 +1,255 @@
-<?php require_once('header.php');
-if (!isset($_SESSION['customer']['cust_id'])) {
-    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI']; // ou $_SERVER['REQUEST_URI'] se quiser o caminho exato
-}
-
-?> ?>
-
-<style>
-.product-cat .col-md-2 {
-  
-  
-}
-.product-cat .col-md-2 {
-    flex: 0 0 16%; /* ou 24%, dependendo da margem/padding */
-    
-   
-    box-sizing: border-box;
-}
-    .product-cat .row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: start; /* melhor para alinhamento natural */
-    }
-
-    .col-md-2 {
-        padding: 10px;
-        box-sizing: border-box;
-        transition: transform 0.3s ease;
-    }
-
-    .card-produto {
-        border: 1px solid #ddd;
-        padding: 30px;
-        border-radius: 12px;
-        background-color: #fff;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .card-produto:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-produto > .produto-img {
-        max-width: 100% !important;
-        height: 150px;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .card-produto:hover img {
-        transform: scale(1.1);
-    }
-
-    .produto-nome {
-        font-size: 16px !important;
-        font-weight: 600;
-        margin: 10px 0;
-        color: #333;
-        transition: color 0.3s ease;
-        
-        display: -webkit-box;
-        -webkit-line-clamp: 2;         /* Número de linhas visíveis */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        
-        line-height: 1.2em;
-        height: 2.4em; /* 1.2em x 2 linhas = 2.4em */
-        
-    }
-
-    .card-produto:hover .produto-nome {
-        color: #000c78;
-    }
-
-    .preco {
-        font-size: 18px;
-        font-weight: bold;
-        color: #e55300;
-        margin-bottom: 15px;
-    }
-
-    .brand-wrapper {
-        min-height: 60px; /* Garantir espaço mínimo */
-        max-height: 70px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 0px;
-        overflow: hidden; /* Prevenir que imagens maiores estourem */
-        padding: 5px;
-    }
-
-    .brand-logo {
-        height: 20px !important;
-        object-fit: contain !important;
-        display: block !important;
-        margin: 0 auto !important;
-    }
-
-    .btn-primary {
-        background-color: #000c78;
-        border: none;
-        color: #fff;
-        padding: 8px 16px;
-        font-size: 14px;
-        border-radius: 25px;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary:hover {
-        background-color: #085117;
-    }
-
-    /* Responsividade */
-    @media (max-width: 1199px) {
-        .col-md-2 {
-            width: 30%; /* 3 por linha */
-        }
-    }
-
-    @media (max-width: 767px) {
-        .col-md-2 {
-            width: 48%; /* 2 por linha */
-            margin: 0 auto;
-        }
-        
-        .produto-nome{
-            font-size: 10px;
-        }
-        .preco{
-            font-size: 14px;
-        }
-        .btn-primary{
-            margin: 0 auto;
-            font-size: 12px;
-            padding: 4px 8px;
-        }
-        
-         .brand-wrapper {
-            margin: -20px 0 !important; /* reduz a margem vertical */
-            padding: 2px !important;  /* reduz o padding interno */
-        }
-
-      .brand-logo {
-        height: 20px !important; /* menor altura */
-      }
-    
-      .preco {
-        margin: 5px !important; /* reduz a margem abaixo do preço */
-        font-size: 14px !important;    /* ajusta o tamanho da fonte se necessário */
-      }
-    }
-    
-</style>
-
-
-
 <?php
-$statement = $pdo->prepare("SELECT * FROM tbl_settings WHERE id=1");
-$statement->execute();
-$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-foreach ($result as $row) {
-    $banner_product_category = $row['banner_product_category'];
-}
+    // Inclui o cabeçalho da página
+    require_once('header.php');
+    // Inclui o arquivo que trata a lógica da categoria de produtos
+    require_once('requires/product-category.php');
+    // Inclui o CSS específico para a categoria de produtos
+    require_once('requires/prod-cat-css.php');
+
+    // Se o cliente não está logado, salva a URL atual para redirecionar após login
+    if (!isset($_SESSION['customer']['cust_id'])) {
+        $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+    }
 ?>
 
-<?php
-if (!isset($_REQUEST['id']) || !isset($_REQUEST['type'])) {
-    header('location:' . ROOT . 'home');
-    exit;
-} else {
-    if ($_REQUEST['type'] != 'top-category' && $_REQUEST['type'] != 'mid-category' && $_REQUEST['type'] != 'end-category') {
-        header('location:' . ROOT . 'home');
-        exit;
-    } else {
-        $top = $top1 = $mid = $mid1 = $mid2 = $end = $end1 = $end2 = [];
-
-        $statement = $pdo->prepare("SELECT * FROM tbl_top_category");
-        $statement->execute();
-        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $top[] = $row['tcat_id'];
-            $top1[] = $row['tcat_name'];
-        }
-
-        $statement = $pdo->prepare("SELECT * FROM tbl_mid_category");
-        $statement->execute();
-        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $mid[] = $row['mcat_id'];
-            $mid1[] = $row['mcat_name'];
-            $mid2[] = $row['tcat_id'];
-        }
-
-        $statement = $pdo->prepare("SELECT * FROM tbl_end_category");
-        $statement->execute();
-        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $end[] = $row['ecat_id'];
-            $end1[] = $row['ecat_name'];
-            $end2[] = $row['mcat_id'];
-        }
-
-        if ($_REQUEST['type'] == 'top-category') {
-            if (!in_array($_REQUEST['id'], $top)) {
-                header('location:' . ROOT . 'home');
-                exit;
-            } else {
-                for ($i = 0; $i < count($top); $i++) {
-                    if ($top[$i] == $_REQUEST['id']) {
-                        $title = $top1[$i];
-                        break;
-                    }
-                }
-                $arr1 = $arr2 = [];
-                for ($i = 0; $i < count($mid); $i++) {
-                    if ($mid2[$i] == $_REQUEST['id']) {
-                        $arr1[] = $mid[$i];
-                    }
-                }
-                for ($j = 0; $j < count($arr1); $j++) {
-                    for ($i = 0; $i < count($end); $i++) {
-                        if ($end2[$i] == $arr1[$j]) {
-                            $arr2[] = $end[$i];
-                        }
-                    }
-                }
-                $final_ecat_ids = $arr2;
-            }
-        }
-
-        if ($_REQUEST['type'] == 'mid-category') {
-            if (!in_array($_REQUEST['id'], $mid)) {
-                header('location:' . ROOT . 'home');
-                exit;
-            } else {
-                for ($i = 0; $i < count($mid); $i++) {
-                    if ($mid[$i] == $_REQUEST['id']) {
-                        $title = $mid1[$i];
-                        break;
-                    }
-                }
-                $arr2 = [];
-                for ($i = 0; $i < count($end); $i++) {
-                    if ($end2[$i] == $_REQUEST['id']) {
-                        $arr2[] = $end[$i];
-                    }
-                }
-                $final_ecat_ids = $arr2;
-            }
-        }
-
-        if ($_REQUEST['type'] == 'end-category') {
-            if (!in_array($_REQUEST['id'], $end)) {
-                header('location:' . ROOT . 'home');
-                exit;
-            } else {
-                for ($i = 0; $i < count($end); $i++) {
-                    if ($end[$i] == $_REQUEST['id']) {
-                        $title = $end1[$i];
-                        break;
-                    }
-                }
-                $final_ecat_ids = [$_REQUEST['id']];
-            }
-        }
-    }
-}
-?>
-
-<div class="page-banner" style="background-image: url(assets/uploads/<?php echo $banner_product_category; ?>);">
-    <div class="inner">
-        <h1><?php echo $title; ?></h1>
-    </div>
-</div>
-
-<div class="page" style="width: 90%; margin: 0 auto;">
-    <div class="page-inner" style="width: 100%;">
-        <div class="row" style="width: 100%;">
-            <div class="col-md-12" style="width: 100%;">
-                <div class="product product-cat">
-                    <?php
-                    function formatarKZ($valorTexto) {
-                        $numero = preg_replace('/[^\d]/', '', $valorTexto);
-                        $fmt = new NumberFormatter('pt_AO', NumberFormatter::CURRENCY);
-                        return $fmt->formatCurrency($numero, 'AOA');
-                    }
-
-                    $prod_count = 0;
-                    $statement = $pdo->prepare("SELECT * FROM tbl_product");
-                    $statement->execute();
-                    foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                        $prod_table_ecat_ids[] = $row['ecat_id'];
-                    }
-
-                    for ($ii = 0; $ii < count($final_ecat_ids); $ii++) {
-                        if (in_array($final_ecat_ids[$ii], $prod_table_ecat_ids)) {
-                            $prod_count++;
-                        }
-                    }
-
-                    if ($prod_count == 0) {
-                        echo '<div class="pl_15">' . LANG_VALUE_153 . '</div>';
-                    } else {
-                        $produtos = [];
-                        for ($ii = 0; $ii < count($final_ecat_ids); $ii++) {
-                            $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE ecat_id=? AND p_is_active=? ORDER BY p_name ASC");
-                            $statement->execute([$final_ecat_ids[$ii], 1]);
-                            $produtos = array_merge($produtos, $statement->fetchAll(PDO::FETCH_ASSOC));
-                        }
-
-                        $count = 0;
-                        echo '<div class="row">';
-                        foreach ($produtos as $produto) {
-                            echo '<div class="col-md-2">';
-                            // Produto renderizado como card
-                            ?>
-                           <div class="card-produto">
-                                <!-- Imagem do Produto -->
-                                <img src="assets/uploads/<?php echo htmlspecialchars($produto['p_featured_photo']); ?>" 
-                                     alt="<?php echo htmlspecialchars($produto['p_name']); ?>" 
-                                     class="produto-img">
-                            
-                                <!-- Nome do Produto -->
-                                <h4 class="produto-nome"><?php echo htmlspecialchars($produto['p_name']); ?></h4>
-                            
-                                <!-- Brand -->
-                                <div class="brand-wrapper">
-                                    <img src="<?php echo empty($produto['brand']) || !$produto['brand'] 
-                                                    ? 'assets/uploads/SETE-NOVO-LOGOTIPO.png' 
-                                                    : 'assets/uploads/' . htmlspecialchars($produto['brand']); ?>" 
-                                         class="brand-logo" 
-                                         alt="Logo da Marca">
+<main class="container-fluid py-4 bg-white">
+    <!-- Banner Carousel -->
+    <section class="mb-4">
+        <div id="promoCarousel" class="carousel slide rounded shadow-sm overflow-hidden" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php foreach ($promocionais as $idx => $promo): ?>
+                    <!-- Item do carrossel de promoções -->
+                    <div class="carousel-item <?= $idx === 0 ? 'active' : '' ?>">
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between" style="min-height:220px;">
+                            <!-- Imagem do produto promocional -->
+                            <img src="assets/uploads/<?= htmlspecialchars($promo['p_featured_photo']) ?>"
+                                 class="d-block w-100 w-md-50 object-fit-cover"
+                                 alt="<?= htmlspecialchars($promo['p_name']) ?>"
+                                 style="max-height:220px;">
+                            <!-- Informações do produto promocional -->
+                           <div class="carousel-caption d-block text-start bg-white bg-opacity-75 p-3 rounded shadow-sm ms-md-3">
+                                <h5 class="fw-bold text-dark"><?= htmlspecialchars($promo['p_name']) ?></h5>
+                                <p class="mb-2 text-muted"><?= htmlspecialchars($promo['p_short_desc'] ?? '') ?></p>
+                                <div class="mb-2">
+                                    <?php if (!empty($promo['p_old_price'])): ?>
+                                        <!-- Preço antigo riscado -->
+                                        <span class="text-decoration-line-through text-secondary me-2"><?= formatarKZ($promo['p_old_price']) ?></span>
+                                    <?php endif; ?>
+                                    <!-- Preço atual -->
+                                    <span class="fw-bold text-primary" style="color:#000c78 !important;"><?= formatarKZ($promo['p_current_price']) ?></span>
                                 </div>
-                            
-                                <!-- Preço -->
-                                <p class="preco"><?php echo formatarKZ($produto['p_current_price']); ?></p>
-                            
-                                <!-- Link para o Produto -->
-                                <a href="product?id=<?= $produto['p_id'] ?>" class="btn btn-primary btn-sm mt-auto">
-                                    <i class="fa fa-info-circle"></i> Ver Detalhes
+                                <!-- Botão para ver detalhes -->
+                                <a href="product?id=<?= $promo['p_id'] ?>" class="btn btn-sm btn-primary me-2" style="background:#000c78;border:none;">
+                                    Ver detalhes
                                 </a>
+                                <!-- Botão para adicionar ao carrinho -->
+                                
+                                    <!-- Botão para adicionar ao carrinho -->
+                                <form class="add-cart" method="POST" style="display: inline;">
+                                    <input type="hidden" name="id" value="<?= $promo['p_id'] ?>">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary" style="color:#000c78;border-color:#000c78;">
+                                        <i class="bi bi-cart-plus"></i> Adicionar ao carrinho
+                                    </button>
+                                </form>
                             </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <!-- Controles do carrossel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+    </section>
 
-
-                            <?php
-                            echo '</div>';
-                            $count++;
-                            if ($count % 6 == 0) {
-                                echo '</div><div class="row">';
-                            }
-                        }
-                        echo '</div>'; // Fecha a última row
-                    }
-                    ?>
+    <div class="row gx-4">
+        <!-- Filtros Lateral -->
+        <aside class="col-lg-3 mb-4 mb-lg-0">
+            <!-- Botão para abrir filtros no mobile -->
+            <button class="btn btn-outline-primary d-lg-none mb-3 w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters" style="color:#000c78;border-color:#000c78;">
+                <i class="bi bi-funnel"></i> Filtros
+            </button>
+            <!-- Offcanvas para mobile -->
+            <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Filtros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <!-- Inclui filtros para mobile -->
+                    <?php include 'requires/prod-cat-filters.php'; ?>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <!-- Filtros desktop -->
+            <div class="d-none d-lg-block">
+                <!-- Inclui filtros para desktop -->
+                <?php include 'requires/prod-cat-filters.php'; ?>
+            </div>
+        </aside>
 
-<?php require_once('footer.php'); ?>
+        <!-- Grade de Produtos -->
+        <section class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Título da categoria -->
+                <h2 class="fs-4 fw-bold mb-0"><?= htmlspecialchars($title) ?></h2>
+                <!-- Quantidade de produtos -->
+                <span class="text-muted small"><?= $prod_count ?> produtos</span>
+            </div>
+            <?php if ($prod_count == 0): ?>
+                <!-- Mensagem caso não haja produtos -->
+                <div class="alert alert-info">Nenhum produto encontrado nesta categoria.</div>
+            <?php else: ?>
+                <div class="row g-3">
+                    <?php foreach ($produtos as $produto): ?>
+                        <!-- Card de produto -->
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="card produto-card h-100 shadow-sm border-0">
+                                <div class="position-relative">
+                                    <!-- Imagem do produto -->
+                                    <img src="assets/uploads/<?= htmlspecialchars($produto['p_featured_photo']) ?>"
+                                         class="card-img-top produto-img"
+                                         alt="<?= htmlspecialchars($produto['p_name']) ?>">
+                                    <?php if (!empty($produto['p_old_price']) && $produto['p_current_price'] < $produto['p_old_price']): ?>
+                                        <!-- Selo de promoção -->
+                                        <span class="badge bg-danger position-absolute top-0 start-0 m-2">Promoção</span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <!-- Nome do produto -->
+                                    <h5 class="card-title produto-nome mb-1"><?= htmlspecialchars($produto['p_name']) ?></h5>
+                                    <!-- Marca do produto -->
+                                    <div class="mb-2 d-flex align-items-center gap-2">
+                                        <img src="<?= empty($produto['brand']) ? 'assets/uploads/SETE-NOVO-LOGOTIPO.png' : 'assets/uploads/' . htmlspecialchars($produto['brand']) ?>"
+                                             alt="Marca"
+                                             class="brand-logo rounded"
+                                             style="width:24px;height:24px;object-fit:contain;">
+                                        <span class="text-muted small"><?= htmlspecialchars($produto['brand_name'] ?? '') ?></span>
+                                    </div>
+                                    <!-- Preço do produto -->
+                                    <div class="mb-2">
+                                        <?php if (!empty($produto['p_old_price']) && $produto['p_current_price'] < $produto['p_old_price']): ?>
+                                            <span class="text-decoration-line-through text-secondary me-2"><?= formatarKZ($produto['p_old_price']) ?></span>
+                                        <?php endif; ?>
+                                        <span class="fw-bold text-primary" style="color:#000c78 !important;"><?= formatarKZ($produto['p_current_price']) ?></span>
+                                    </div>
+                                    <!-- Botões de ação -->
+                                    <div class="mt-auto d-flex gap-2">
+                                        <form id="add-cart" class="add-cart" method="POST" style="display: inline;">
+                                            <input type="hidden" name="p_qty" value="1">
+                                            <input type="hidden" name="id" value="<?= $produto['p_id'] ?>">
+                                            <input type="hidden" name="p_current_price" value="<?= $produto['p_current_price'] ?>">
+                                            <input type="hidden" name="p_name" value="<?= $produto['p_name'] ?>">
+                                            <input type="hidden" name="p_featured_photo" value="<?= $produto['p_featured_photo'] ?>">
+                                            <button type="submit" class="btn btn-primary btn-sm flex-fill" style="background:#000c78;border:none;">
+                                                <i class="bi bi-cart-plus"></i> Carrinho
+                                            </button>
+                                        </form>
+                                        <a href="product?id=<?= $produto['p_id'] ?>" class="btn btn-outline-primary btn-sm flex-fill" style="color:#000c78;border-color:#000c78;">
+                                            <i class="bi bi-info-circle"></i> Detalhes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
+    </div>
+</main>
+
+<!-- Estilos customizados -->
+<style>
+    /* Estilo do card de produto */
+    .produto-card {
+        transition: box-shadow .2s, transform .2s;
+        border-radius: 0.75rem;
+        background: #fff;
+    }
+    .produto-card:hover {
+        box-shadow: 0 6px 24px rgba(0,12,120,0.08);
+        transform: translateY(-2px) scale(1.01);
+    }
+    /* Imagem do produto */
+    .produto-img {
+        object-fit: cover;
+        height: 180px;
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+        background: #f6f8fa;
+    }
+    /* Logo da marca */
+    .brand-logo {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 2px;
+    }
+    /* Botão primário */
+    .btn-primary, .btn-outline-primary:hover {
+        background: #000c78 !important;
+        border-color: #000c78 !important;
+    }
+    /* Botão outline primário */
+    .btn-outline-primary {
+        color: #000c78 !important;
+        border-color: #000c78 !important;
+        background: #fff !important;
+    }
+    .btn-outline-primary:active, .btn-outline-primary:focus {
+        background: #000c78 !important;
+        color: #fff !important;
+    }
+    /* Legenda do carrossel */
+    .carousel-caption {
+        color: #000c78 !important;
+    }
+    /* Responsividade para mobile */
+    @media (max-width: 767.98px) {
+        .produto-img {
+            height: 120px;
+        }
+        .produto-card {
+            font-size: 0.97rem;
+        }
+    }
+</style>
+
+<script>
+    document.querySelectorAll('.add-cart').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const dados = new FormData(this);
+
+        try {
+            const resposta = await fetch('<?=ROOT?>ajax_add_to_cart.php', {
+                method: 'POST',
+                body: dados
+            });
+            const texto = await resposta.text();
+            console.log('Resposta bruta:', texto);
+
+            // Só tenta converter se houver conteúdo
+            if (texto) {
+            const resultado = JSON.parse(texto);
+            console.log(resultado);
+            } else {
+            console.warn('Resposta vazia do servidor');
+            }
+            // Aqui você pode mostrar uma mensagem de sucesso, atualizar o carrinho, etc.
+        } catch (erro) {
+            console.error('Erro ao adicionar ao carrinho:', erro);
+        }
+    });
+});
+</script>
+<?php require_once('footer.php'); // Inclui o rodapé da página ?>
