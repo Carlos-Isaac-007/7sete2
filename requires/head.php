@@ -309,5 +309,4 @@ if($cur_page == ROOT.'customer-order') {
    if(isset($_SESSION['cart_p_qty'])){
     $qt = array_sum($_SESSION['cart_p_qty']);
    }
-   echo $qt;
 ?>

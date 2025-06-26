@@ -22,6 +22,16 @@ if(isset($_POST['id'], $_POST['p_qty'])) {
     $new_qt = 0;
     $qt = 0;
     
+     // Verifica se o carrinho existe e se o produto já está lá
+    if (isset($_POST['metod']) && isset($_SESSION['cart_p_id']) && in_array($p_id, $_SESSION['cart_p_id'])) {
+        // Produto já está no carrinho
+        echo json_encode([
+            'success' => true,
+            'already_in_cart' => true,
+            'message' => 'Produto já está no carrinho.'
+        ]);
+        exit;
+    }
    
         // everuthing start here
             

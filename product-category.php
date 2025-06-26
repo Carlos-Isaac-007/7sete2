@@ -39,18 +39,24 @@
                                     <span class="fw-bold text-primary" style="color:#000c78 !important;"><?= formatarKZ($promo['p_current_price']) ?></span>
                                 </div>
                                 <!-- Botão para ver detalhes -->
-                                <a href="product?id=<?= $promo['p_id'] ?>" class="btn btn-sm btn-primary me-2" style="background:#000c78;border:none;">
-                                    Ver detalhes
-                                </a>
-                                <!-- Botão para adicionar ao carrinho -->
-                                
+                                <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-0">
+                                    <a href="product?id=<?= $promo['p_id'] ?>" class="btn btn-sm btn-primary me-2 w-100 w-sm-unset" style="background:#000c78;border:none;">
+                                        Ver detalhes
+                                    </a>
                                     <!-- Botão para adicionar ao carrinho -->
-                                <form class="add-cart" method="POST" style="display: inline;">
-                                    <input type="hidden" name="id" value="<?= $promo['p_id'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-primary" style="color:#000c78;border-color:#000c78;">
-                                        <i class="bi bi-cart-plus"></i> Adicionar ao carrinho
-                                    </button>
-                                </form>
+                                    
+                                        <!-- Botão para adicionar ao carrinho -->
+                                    <form class="add-cart" method="POST" style="display: inline;">
+                                        <input type="hidden" name="p_qty" value="1">
+                                        <input type="hidden" name="id" value="<?= $promo['p_id'] ?>">
+                                        <input type="hidden" name="p_current_price" value="<?= $promo['p_current_price'] ?>">
+                                        <input type="hidden" name="p_name" value="<?= $promo['p_name'] ?>">
+                                        <input type="hidden" name="p_featured_photo" value="<?= $promo['p_featured_photo'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary w-100 w-sm-unset" style="color:#000c78;border-color:#000c78;">
+                                            <i class="bi bi-cart-plus"></i> Adicionar ao carrinho
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,9 +105,9 @@
                 <!-- Título da categoria -->
                 <h2 class="fs-4 fw-bold mb-0"><?= htmlspecialchars($title) ?></h2>
                 <!-- Quantidade de produtos -->
-                <span class="text-muted small"><?= $prod_count ?> produtos</span>
+                <span class="text-muted small"><?= count($produtos) ?> produtos</span>
             </div>
-            <?php if ($prod_count == 0): ?>
+            <?php if (count($produtos) == 0): ?>
                 <!-- Mensagem caso não haja produtos -->
                 <div class="alert alert-info">Nenhum produto encontrado nesta categoria.</div>
             <?php else: ?>
@@ -197,6 +203,7 @@
     .btn-primary, .btn-outline-primary:hover {
         background: #000c78 !important;
         border-color: #000c78 !important;
+        color: #fff !important;
     }
     /* Botão outline primário */
     .btn-outline-primary {
@@ -221,9 +228,65 @@
             font-size: 0.97rem;
         }
     }
+
+    @media (max-width: 575.98px) {
+        .carousel-caption .btn {
+            font-size: 0.875rem;
+            padding: 0.375rem 0.75rem;
+        }
+}
+
+    @media (min-width: 576px) {
+        .w-sm-unset {
+            width: unset !important;
+        }
+    }
 </style>
 
 <script>
+    // codigo para abrir o modal succes 
+    function showSuccessModal(message = "Produto adicionado com sucesso!") {
+    const modal = document.getElementById("successModal");
+    const messageText = modal.querySelector(".modal-message");
+    const closeButton = modal.querySelector(".close-btn");
+
+    messageText.textContent = message; // Atualiza a mensagem
+    modal.style.display = "flex"; // Exibe o modal
+
+    // Fecha ao clicar no botão X
+    closeButton.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    // Fecha automaticamente após 3 segundos
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 3000);
+}
+
+// Exemplo: chamando a função quando necessário
+
+// codigo java script para chamar o modal danger de alerta
+    function showDangerModal(message = "Este produto já foi adicionado!") {
+        const modal = document.getElementById("dangerModal");
+        const messageText = modal.querySelector(".modal-danger-message");
+        const closeButton = modal.querySelector(".modal-danger-close");
+
+        messageText.textContent = message; // Atualiza a mensagem
+        modal.style.display = "flex"; // Exibe o modal
+
+        // Fecha ao clicar no botão X
+        closeButton.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        // Fecha automaticamente após 3 segundos
+        setTimeout(() => {
+            modal.style.display = "none";
+        }, 8000);
+    }
+
+
     document.querySelectorAll('.add-cart').forEach(form => {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -240,7 +303,14 @@
 
             // Só tenta converter se houver conteúdo
             if (texto) {
-            const resultado = JSON.parse(texto);
+                const resultado = JSON.parse(texto);
+                if(resultado.success){
+                    showSuccessModal(resultado.message);
+                    updateCartBadge(resultado.qt);
+                    animateCart();
+                } else{
+                    showDangerModal(resultado.message);
+                }
             console.log(resultado);
             } else {
             console.warn('Resposta vazia do servidor');
@@ -252,4 +322,6 @@
     });
 });
 </script>
+<?php require_once 'modal_success.php';  ?>
+<?php require_once 'modal_danger.php';  ?>
 <?php require_once('footer.php'); // Inclui o rodapé da página ?>

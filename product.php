@@ -916,7 +916,8 @@ window.addEventListener('scroll', () => {
       // Obtenha os dados do formulário
       const form = document.getElementById('add_to_cart_form');
       const formData = new FormData(form);
-    
+      formData.append('metod', 'PagarAgora');
+
       fetch("<?=ROOT?>ajax_add_to_cart.php", {
         method: 'POST',
         body: formData
@@ -942,7 +943,8 @@ window.addEventListener('scroll', () => {
       });
     }
 </script>
-<?php require_once('footer.php'); ?>
+
 <?php require_once 'modal_success.php';  ?>
 <?php require_once 'modal_danger.php';  ?>
 <?php require_once './requires/product_js.php' ?>
+<?php require_once('footer.php'); ?>

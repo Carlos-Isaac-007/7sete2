@@ -114,28 +114,22 @@ if (!isset($_REQUEST['id']) || !isset($_REQUEST['type'])) {
 
 
 // --- Lógica PHP separada ---
-$prod_count = 0;
-$prod_table_ecat_ids = [];
-$statement = $pdo->prepare("SELECT * FROM tbl_product");
-$statement->execute();
-foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
-    $prod_table_ecat_ids[] = $row['ecat_id'];
+if (!empty($final_ecat_ids)) {
+    // Garante que $final_ecat_ids contenha apenas inteiros para segurança
+$placeholders = implode(',', array_fill(0, count($final_ecat_ids), '?'));
+
+$statement = $pdo->prepare("
+  SELECT * FROM tbl_product
+  WHERE ecat_id IN ($placeholders)
+    AND p_is_active = ?
+  ORDER BY p_name ASC
+");
+
+$params = array_merge($final_ecat_ids, [1]);
+$statement->execute($params);
+$produtos = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
-for ($ii = 0; $ii < count($final_ecat_ids); $ii++) {
-    if (in_array($final_ecat_ids[$ii], $prod_table_ecat_ids)) {
-        $prod_count++;
-    }
-}
-
-$produtos = [];
-if ($prod_count > 0) {
-    for ($ii = 0; $ii < count($final_ecat_ids); $ii++) {
-        $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE ecat_id=? AND p_is_active=? ORDER BY p_name ASC");
-        $statement->execute([$final_ecat_ids[$ii], 1]);
-        $produtos = array_merge($produtos, $statement->fetchAll(PDO::FETCH_ASSOC));
-    }
-}
 
 $promocionais = [];
 foreach ($final_ecat_ids as $ecat_id) {
