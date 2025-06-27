@@ -18,7 +18,7 @@ body {
 }
 @media (min-width: 991px) {
   body{
-    padding-top: 260px;
+    padding-top: 200px;
   }
 }
 ul, ol, li{

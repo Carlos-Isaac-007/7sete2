@@ -82,7 +82,12 @@
                 <i class="bi bi-funnel"></i> Filtros
             </button>
             <!-- Offcanvas para mobile -->
-            <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+             <style>
+                .z-top {
+                    z-index: 1100 !important; /* maior que modal do Bootstrap */
+                    }
+             </style>
+            <div class="offcanvas offcanvas-start d-lg-none end-ids z-top" data-final_ecat_ids="<?= implode(',', $final_ecat_ids) ?>" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Filtros</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>

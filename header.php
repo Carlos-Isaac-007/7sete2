@@ -293,24 +293,26 @@
 
   <!-- Inicio da nova nav -->
 
-  <nav class="main-navbar-modern">
+  <nav class="main-navbar-modern" style="margin: 0 auto">
     <div class="container">
       <div class="row">
         <div class="col-md-12 pl_0 pr_0">
           <div class="main-navbar-container">
             <div class="main-navbar-menu">
               <ul class="main-navbar-list align-items-center">
+                <!-- Home -->
                 <li>
                   <a href="<?=ROOT?>home">
                     <i class="fas fa-home"></i> <span>Home</span>
                   </a>
                 </li>
+                
                 <?php
                 $statement = $pdo->prepare("SELECT * FROM tbl_top_category WHERE show_on_menu=1");
                 $statement->execute();
                 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $icones = ['bolsa.webp', 'beleza.webp', 'escritorio.webp', 'car.webp',
-                'books.webp', 'pet.webp', 'tecn.webp', 'drink.webp', 'beleza.webp'];
+                $icones = ['bolsa.webp', 'beleza.webp', 'escritorio.webp', 'car.webp', 
+                           'books.webp', 'pet.webp', 'tecn.webp', 'drink.webp', 'beleza.webp'];
                 $i = 0;
                 foreach ($result as $row) {
                   // Limita o nome da categoria a 18 caracteres
@@ -329,45 +331,13 @@
                           border-radius: 50%;
                           transition: 0.3s ease-in-out;
                       }
-                      
                     </style>  
                     <span class="icone-img-<?=$i?>"></span> <span><?php echo $tcat_name; ?></span>
-                      <i class="fas fa-chevron-down main-navbar-dropdown-icon"></i>
                     </a>
-                    <ul class="main-navbar-dropdown-menu">
-                      <?php
-                      $statement1 = $pdo->prepare("SELECT * FROM tbl_mid_category WHERE tcat_id=?");
-                      $statement1->execute(array($row['tcat_id']));
-                      $result1 = $statement1->fetchAll(PDO::FETCH_ASSOC);
-                      foreach ($result1 as $row1) {
-                        $mcat_name = mb_strlen($row1['mcat_name']) > 18 ? mb_substr($row1['mcat_name'], 0, 16) . '…' : $row1['mcat_name'];
-                      ?>
-                      <li class="main-navbar-dropdown-submenu">
-                        <a href="<?=ROOT?>product-category?id=<?php echo $row1['mcat_id']; ?>&type=mid-category" title="<?php echo htmlspecialchars($row1['mcat_name']); ?>">
-                          <i class="fas fa-layer-group"></i> <span><?php echo $mcat_name; ?></span>
-                          <i class="fas fa-chevron-right main-navbar-dropdown-icon"></i>
-                        </a>
-                        <ul class="main-navbar-dropdown-menu">
-                          <?php
-                          $statement2 = $pdo->prepare("SELECT * FROM tbl_end_category WHERE mcat_id=?");
-                          $statement2->execute(array($row1['mcat_id']));
-                          $result2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
-                          foreach ($result2 as $row2) {
-                            $ecat_name = mb_strlen($row2['ecat_name']) > 18 ? mb_substr($row2['ecat_name'], 0, 16) . '…' : $row2['ecat_name'];
-                          ?>
-                          <li>
-                            <a href="<?=ROOT?>product-category?id=<?php echo $row2['ecat_id']; ?>&type=end-category" title="<?php echo htmlspecialchars($row2['ecat_name']); ?>">
-                              <i class="fas fa-cube"></i> <span><?php echo $ecat_name; ?></span>
-                            </a>
-                          </li>
-                          <?php } ?>
-                        </ul>
-                      </li>
-                      <?php } ?>
-                    </ul>
                   </li>
                 <?php $i++; } ?>
 
+                <!-- Páginas estáticas -->
                 <?php
                 $statement = $pdo->prepare("SELECT * FROM tbl_page WHERE id=1");
                 $statement->execute();
@@ -375,34 +345,36 @@
                 foreach ($result as $row) {
                   $about_title = $row['about_title'];
                   $faq_title = $row['faq_title'];
-                  $blog_title = $row['blog_title'];
                   $contact_title = $row['contact_title'];
-                  $pgallery_title = $row['pgallery_title'];
-                  $vgallery_title = $row['vgallery_title'];
                 }
                 ?>
+                
                 <li>
                   <a href="<?=ROOT?>about">
                     <i class="fas fa-info-circle"></i> <span><?php echo $about_title; ?></span>
                   </a>
                 </li>
+                
                 <li>
                   <a href="<?=ROOT?>faq">
                     <i class="fas fa-question-circle"></i> <span><?php echo $faq_title; ?></span>
                   </a>
                 </li>
+
                 <li>
                   <a href="<?=ROOT?>contact">
                     <i class="fas fa-envelope"></i> <span><?php echo $contact_title; ?></span>
                   </a>
                 </li>
-                </ul>
+                
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </nav>
+</nav>
+
 </div>
 <style>
   
@@ -415,7 +387,6 @@
   width: 100%;
   max-width: 1300px;
   min-width: 320px;
- 
 }
 .main-navbar-menu {
   width: 100%;
@@ -660,7 +631,7 @@
       if (currentScroll > lastScrollTop && currentScroll > 100) {
         menu.classList.add('hidden');
         menu.classList.remove('active');
-        document.body.style.paddingTop = "260px";
+        document.body.style.paddingTop = "200px";
         menu.style.transition = "opacity 0.3s ease";
         updateMenuButton(false);
       } else if (currentScroll < lastScrollTop && currentScroll <= 10) {

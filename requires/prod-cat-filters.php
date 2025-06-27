@@ -1,5 +1,5 @@
 <!-- Sidebar Filters Only -->
-<div class="card shadow-sm border-0 mb-3 custom-filter-card">
+<div class="card shadow-sm border-0 mb-3 custom-filter-card ">
     <div class="card-body">
         <!-- Título do filtro -->
         <h5 class="fw-bold mb-3" style="color:#000c78;">Filtrar</h5>
@@ -7,32 +7,33 @@
         <!-- Filtro de Categoria Média -->
         <div class="mb-4">
             <label class="form-label fw-semibold">Categoria Média</label>
-            <select class="form-select form-select-sm rounded-pill mid-cat" id="mid-category-filter" data-id="<?=$_GET['id']?>" name="mid_category">
-                <option value="">Todas</option>
+            <select class="form-select form-select-sm rounded-pill mid-cat" id="mid-category-filter" data-table="tbl_mid_category"
+                data-select="mcat_id, mcat_name" data-id="<?=$_GET['id']?>" data-where_field="tcat_id" name="mid_category">
+                <option value="all">Todas</option>
             </select>
         </div>
 
         <!-- Filtro de Categoria Final -->
         <div class="mb-4">
             <label class="form-label fw-semibold">Categoria Final</label>
-            <select class="form-select form-select-sm rounded-pill" id="end-category-filter" name="end_category">
-                <option value="">Todas</option>
+            <select class="form-select form-select-sm rounded-pill end-cat" id="end-category-filter" name="end_category">
+                <option value="all">Todas</option>
             </select>
         </div>
 
-        <!-- Filtro de Preço -->
+        <!-- Filtro de Preço 
         <div class="mb-4">
             <label class="form-label fw-semibold">Faixa de Preço</label>
             <div class="d-flex align-items-center gap-2">
-                <!-- Campo para valor mínimo -->
+                 Campo para valor mínimo 
                 <input type="number" id="preco-min" class="form-control form-control-sm rounded-pill" placeholder="Mín" min="0">
                 <span class="mx-1">-</span>
-                <!-- Campo para valor máximo -->
+                 Campo para valor máximo 
                 <input type="number" id="preco-max" class="form-control form-control-sm rounded-pill" placeholder="Máx" min="0">
             </div>
-        </div>
+        </div>-->
         
-        <!-- Filtro de Tamanhos/Variantes -->
+        <!-- Filtro de Tamanhos/Variantes 
         <div class="mb-4">
             <label class="form-label fw-semibold">Tamanhos</label>
             <div class="d-flex flex-wrap gap-2">
@@ -42,9 +43,9 @@
                     <button type="button" class="btn btn-outline-primary btn-sm rounded-pill custom-size-btn"><?php echo $size; ?></button>
                 <?php endforeach; ?>
             </div>
-        </div>
+        </div>-->
         
-        <!-- Filtro de Marcas -->
+        <!-- Filtro de Marcas 
         <div class="mb-4">
             <label class="form-label fw-semibold">Marcas</label>
             <select class="form-select form-select-sm rounded-pill" >
@@ -57,7 +58,7 @@
                     </option>
                 <?php endforeach; ?>
             </select>
-        </div>
+        </div>-->
         
         <!--Filtro de Classificação (Estrelas) 
         <div class="mb-4">
@@ -80,7 +81,7 @@
             </div>
         </div>-->
         
-        <!-- Filtro de Promoções -->
+        <!-- Filtro de Promoções 
         <div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="promoOnly">
@@ -88,7 +89,7 @@
                     Apenas Promoções
                 </label>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 
@@ -116,42 +117,79 @@
 
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     const midCats = document.querySelectorAll('.mid-cat');
-    if (!midCats.length) {
-        console.warn('Elemento(s) .mid-cat não encontrado(s)');
+    const endCats = document.querySelectorAll('.end-cat');
+
+    if (midCats.length !== endCats.length) {
+        console.warn('Quantidade diferente de .mid-cat e .end-cat. Pares inconsistentes.');
         return;
     }
 
-    midCats.forEach(midCat => {
-        const apiUrl = 'api/product_category/busca_categorias.php?id=' + encodeURIComponent(midCat.dataset.id);
+    midCats.forEach((midCat, index) => {
+        const endCat = endCats[index];
 
+        if (!midCat || !endCat) return;
+
+        // Função para carregar categorias finais
+        async function carregarCategoriasFinais(midCatId) {
+        while (endCat.options.length > 1) {
+            endCat.remove(1);
+        }
+
+        if (!midCatId) return;
+
+        try {
+            const apiUrl = `api/product_category/busca_categorias.php?table=tbl_end_category&select=ecat_id,ecat_name&id=${encodeURIComponent(midCatId)}&where_field=mcat_id`;
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error('Erro na resposta da API');
+
+            const data = await response.json();
+
+            data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.ecat_id;
+            option.textContent = item.ecat_name;
+            endCat.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar categorias finais:', error);
+        }
+        }
+
+        // Carregar categorias médias no carregamento da página
         (async () => {
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error('Erro na resposta da API');
+        const apiUrl = `api/product_category/busca_categorias.php?table=${encodeURIComponent(midCat.dataset.table)}&select=${encodeURIComponent(midCat.dataset.select)}&id=${encodeURIComponent(midCat.dataset.id)}&where_field=${encodeURIComponent(midCat.dataset.where_field)}`;
 
-                const data = await response.json();
-                console.log('Categorias recebidas:', data);
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error('Erro na resposta da API');
 
-                // Mantém a primeira opção ("Todas")
-                while (midCat.options.length > 1) {
-                    midCat.remove(1);
-                }
+            const data = await response.json();
 
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.mcat_id;
-                    option.textContent = item.mcat_name;
-                    midCat.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Erro ao carregar categorias médias:', error);
+            while (midCat.options.length > 1) {
+            midCat.remove(1);
             }
+
+            data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.mcat_id;
+            option.textContent = item.mcat_name;
+            midCat.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar categorias médias:', error);
+        }
         })();
+
+        // Evento ao mudar a categoria média
+        midCat.addEventListener('change', () => {
+        carregarCategoriasFinais(midCat.value);
+        });
     });
-});
+    });
 </script>
+
 
 <script>
 function getFiltros() {
@@ -161,7 +199,8 @@ function getFiltros() {
         // tamanho: document.querySelector('.custom-size-btn.active')?.textContent || '',
         // marca: document.getElementById('brand-select').value,
         // promocao: document.getElementById('promoOnly').checked ? 1 : 0,
-        mid_cat: Array.from(document.querySelectorAll('.mid-cat')).map(el => el.value)
+        mid_cat: Array.from(document.querySelectorAll('.mid-cat')).map(el => el.value),
+        end_cat: Array.from(document.querySelectorAll('.end-cat')).map(el => el.value)
     };
 }
 
@@ -169,6 +208,13 @@ function getFiltros() {
 document.querySelectorAll('.mid-cat').forEach(select => {
     select.addEventListener('change', filtrarProdutos);
 });
+// Evento para filtro de Categoria final (end-cat)
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('end-cat')) {
+        filtrarProdutos();
+    }
+});
+
 
 function filtrarProdutos() {
     const filtros = getFiltros();
@@ -180,8 +226,24 @@ function filtrarProdutos() {
             if (id) formData.append('mid_cat[]', id); // importante usar []
         });
     }
+    // end_cat pode ser um array — precisamos iterar
+    if (Array.isArray(filtros.end_cat)) {
+        filtros.end_cat.forEach(id => {
+            if (id) formData.append('end_cat[]', id); // importante usar []
+        });
+    }
 
-    console.log([...formData.entries()]); // para debug
+    const defaultIds = document.querySelector('.end-ids')?.dataset.final_ecat_ids;
+
+    if (defaultIds) {
+        // Adiciona também os IDs reais, que o back-end vai usar 
+        defaultIds.split(',').forEach(id => {
+            formData.append('final_ecat_ids[]', id.trim());
+        });
+    }
+
+    console.log('o que é enviado: ', [...formData.entries()]); // para debug
+
 
     fetch('api/product_category/filtrar_produtos.php', {
         method: 'POST',
@@ -189,7 +251,7 @@ function filtrarProdutos() {
     })
     .then(res => res.text())
     .then(html => {
-        document.querySelector('.row.g-3').innerHTML = html;
+        document.querySelector('.col-lg-9').innerHTML = html;
     })
 
 }
