@@ -292,8 +292,7 @@
 
 
   <!-- Inicio da nova nav -->
-
-  <nav class="main-navbar-modern" style="margin: 0 auto">
+  <nav class="main-navbar-modern">
     <div class="container">
       <div class="row">
         <div class="col-md-12 pl_0 pr_0">
@@ -316,7 +315,7 @@
                 $i = 0;
                 foreach ($result as $row) {
                   // Limita o nome da categoria a 18 caracteres
-                  $tcat_name = mb_strlen($row['tcat_name']) > 18 ? mb_substr($row['tcat_name'], 0, 25) . '…' : $row['tcat_name'];
+                  $tcat_name = mb_strlen($row['tcat_name']) > 18 ? mb_substr($row['tcat_name'], 0, 14) . '…' : $row['tcat_name'];
                 ?>
                   <li class="main-navbar-dropdown">
                     <a href="<?=ROOT?>product-category?id=<?php echo $row['tcat_id']; ?>&type=top-category" title="<?php echo htmlspecialchars($row['tcat_name']); ?>">
@@ -380,6 +379,7 @@
   
 /* Modern UI/UX Styles for Navigation */
 .main-navbar-modern {
+  margin: 25px auto;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   border-radius: 12px;
@@ -387,6 +387,7 @@
   width: 100%;
   max-width: 1300px;
   min-width: 320px;
+ 
 }
 .main-navbar-menu {
   width: 100%;
@@ -580,7 +581,9 @@
 }
 </style>
 
-
+<script>
+  const ROOT = '<?=ROOT?>';
+</script>
 <script>
  document.addEventListener('DOMContentLoaded', function () {
   const toggle = document.getElementById('menuToggle');
@@ -613,12 +616,14 @@
     if(isDesktop()){
       if (!isOpen && scrollY <= 10) {
         // Aqui você pode alterar qualquer estilo — exemplo:
-        document.body.style.paddingTop = "70px"; // ou menu.style.backgroundColor = "#ccc";
+        document.body.style.paddingTop = "40px"; // ou menu.style.backgroundColor = "#ccc";
+         document.querySelector('.main-navbar-modern').style.margin = "0 auto";
         // Exemplo com transição suave:
         menu.style.transition = "opacity 0.3s ease";
       } else{
-        document.body.style.paddingTop = "260px";
+        document.body.style.paddingTop = "188px";
         menu.style.transition = "opacity 0.3s ease";
+        document.querySelector('.main-navbar-modern').style.margin = "25px auto";
       }
     }
   });
@@ -632,11 +637,13 @@
         menu.classList.add('hidden');
         menu.classList.remove('active');
         document.body.style.paddingTop = "200px";
+        document.querySelector('.main-navbar-modern').style.margin = "0 auto";
         menu.style.transition = "opacity 0.3s ease";
         updateMenuButton(false);
       } else if (currentScroll < lastScrollTop && currentScroll <= 10) {
         menu.classList.remove('hidden');
         menu.classList.add('active');
+        document.querySelector('.main-navbar-modern').style.margin = "25px auto";
         updateMenuButton(true);
       }
 

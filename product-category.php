@@ -3,8 +3,6 @@
     require_once('header.php');
     // Inclui o arquivo que trata a lógica da categoria de produtos
     require_once('requires/product-category.php');
-    // Inclui o CSS específico para a categoria de produtos
-    require_once('requires/prod-cat-css.php');
 
     // Se o cliente não está logado, salva a URL atual para redirecionar após login
     if (!isset($_SESSION['customer']['cust_id'])) {
@@ -19,7 +17,7 @@
             <div class="carousel-inner">
                 <?php foreach ($promocionais as $idx => $promo): ?>
                     <!-- Item do carrossel de promoções -->
-                    <div class="carousel-item <?= $idx === 0 ? 'active' : '' ?>">
+                    <div class="carousel-item <?= $idx === 0 ? 'active' : '' ?>" >
                         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between" style="min-height:220px;">
                             <!-- Imagem do produto promocional -->
                             <img src="assets/uploads/<?= htmlspecialchars($promo['p_featured_photo']) ?>"
@@ -177,6 +175,15 @@
 
 <!-- Estilos customizados -->
 <style>
+    .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.6em; /* opcional, para manter o espaço de 2 linhas mesmo em nomes curtos */
+
+    }
     /* Estilo do card de produto */
     .produto-card {
         transition: box-shadow .2s, transform .2s;
@@ -248,85 +255,7 @@
     }
 </style>
 
-<script>
-    // codigo para abrir o modal succes 
-    function showSuccessModal(message = "Produto adicionado com sucesso!") {
-    const modal = document.getElementById("successModal");
-    const messageText = modal.querySelector(".modal-message");
-    const closeButton = modal.querySelector(".close-btn");
-
-    messageText.textContent = message; // Atualiza a mensagem
-    modal.style.display = "flex"; // Exibe o modal
-
-    // Fecha ao clicar no botão X
-    closeButton.onclick = function () {
-        modal.style.display = "none";
-    };
-
-    // Fecha automaticamente após 3 segundos
-    setTimeout(() => {
-        modal.style.display = "none";
-    }, 3000);
-}
-
-// Exemplo: chamando a função quando necessário
-
-// codigo java script para chamar o modal danger de alerta
-    function showDangerModal(message = "Este produto já foi adicionado!") {
-        const modal = document.getElementById("dangerModal");
-        const messageText = modal.querySelector(".modal-danger-message");
-        const closeButton = modal.querySelector(".modal-danger-close");
-
-        messageText.textContent = message; // Atualiza a mensagem
-        modal.style.display = "flex"; // Exibe o modal
-
-        // Fecha ao clicar no botão X
-        closeButton.onclick = function () {
-            modal.style.display = "none";
-        };
-
-        // Fecha automaticamente após 3 segundos
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 8000);
-    }
-
-
-    document.querySelectorAll('.add-cart').forEach(form => {
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const dados = new FormData(this);
-
-        try {
-            const resposta = await fetch('<?=ROOT?>ajax_add_to_cart.php', {
-                method: 'POST',
-                body: dados
-            });
-            const texto = await resposta.text();
-            console.log('Resposta bruta:', texto);
-
-            // Só tenta converter se houver conteúdo
-            if (texto) {
-                const resultado = JSON.parse(texto);
-                if(resultado.success){
-                    showSuccessModal(resultado.message);
-                    updateCartBadge(resultado.qt);
-                    animateCart();
-                } else{
-                    showDangerModal(resultado.message);
-                }
-            console.log(resultado);
-            } else {
-            console.warn('Resposta vazia do servidor');
-            }
-            // Aqui você pode mostrar uma mensagem de sucesso, atualizar o carrinho, etc.
-        } catch (erro) {
-            console.error('Erro ao adicionar ao carrinho:', erro);
-        }
-    });
-});
-</script>
 <?php require_once 'modal_success.php';  ?>
 <?php require_once 'modal_danger.php';  ?>
+<script src="assets/js/add-cart.js?v=<?= time(); ?>"></script>
 <?php require_once('footer.php'); // Inclui o rodapé da página ?>

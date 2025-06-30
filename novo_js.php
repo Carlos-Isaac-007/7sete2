@@ -8,7 +8,7 @@
             const prevBtn = wrapper.querySelector(".prev-btn");
             const nextBtn = wrapper.querySelector(".next-btn");
 
-            const productWidth = container.querySelector(".product-item").offsetWidth + 10;
+            const productWidth = container.querySelector(".custom-product-card").offsetWidth + 10;
 
             nextBtn.addEventListener("click", () => {
             const maxScrollLeft = container.scrollWidth - container.offsetWidth;

@@ -164,6 +164,7 @@ $stripe_public_key = $row['stripe_public_key'];
 $stripe_secret_key = $row['stripe_secret_key'];
 }
 ?>
+<script src="assets/js/add-cart.js?v=<?= time(); ?>"></script>
 <script src="assets/js/search.js?v=<?= time(); ?>"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>  AOS.init();</script>

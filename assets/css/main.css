@@ -18,7 +18,7 @@ body {
 }
 @media (min-width: 991px) {
   body{
-    padding-top: 200px;
+    padding-top: 188px;
   }
 }
 ul, ol, li{
@@ -414,13 +414,8 @@ a:hover {
   transform: scale(1);
 }
 
-.product-cat {
-  padding-top: 14px;
-}
 
-.product-cat .item {
-  margin-bottom: 30px;
-}
+
 
 .product .item-product-cat {
   border: 0;

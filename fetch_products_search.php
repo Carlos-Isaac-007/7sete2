@@ -6,15 +6,15 @@ error_reporting(E_ALL);
 
 $host = 'localhost';
 $user = 'root';
-$password = '';
+$password =  '';
 $database = '7sete';
 
-if (!function_exists('formatarKZ')) {
-  function formatarKZ($valor) {
-    return number_format($valor, 2, ',', '.') . ' Kz';
-  }
-}
+function formatarKZ($valorTexto) {
+    $numero = preg_replace('/[^\d]/', '', $valorTexto);
+    $fmt = new NumberFormatter('pt_AO', NumberFormatter::CURRENCY);
+    return $fmt->formatCurrency($numero, 'AOA');
 
+}
 try {
     // Conectar ao banco de dados com PDO
     $conn = new PDO("mysql:host=$host;dbname=$database;charset=utf8", $user, $password);
@@ -28,7 +28,7 @@ try {
     }
 
     // Definir limite e início para paginação
-    $limit = isset($_POST["limit"]) ? (int)$_POST["limit"] : 6;
+    $limit = isset($_POST["limit"]) ? (int)$_POST["limit"] : 5;
     $start = isset($_POST["start"]) ? (int)$_POST["start"] : 0;
 
     // Preparar a consulta SQL com segurança

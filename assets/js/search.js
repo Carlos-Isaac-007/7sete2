@@ -1,29 +1,6 @@
-const ROOT = "localhost/7sete/";
-
-
   // -----------------------------
   // Carrinho: Animação e contador
   // -----------------------------
-
-  
-function updateCartBadge(qt) {
-  const badge = document.getElementById('cart-badge');
-  if (qt > 0) {
-    badge.textContent = qt;
-    badge.classList.remove('d-none');
-  } else {
-    badge.classList.add('d-none');
-  }
-  console.log("element após click: ", badge);
-}
-
-function animateCart() {
-  const cartIcon = document.getElementById('cart-icon');
-  cartIcon.classList.add('pulse');
-  setTimeout(() => {
-    cartIcon.classList.remove('pulse');
-  }, 500);
-}
 
 $(document).ready(function () {
   const campos = [

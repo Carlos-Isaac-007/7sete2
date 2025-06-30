@@ -59,7 +59,7 @@ echo $search_text;
     
     // codigo java script para carregar dinamicamente do banco de dados
       $(document).ready(function() {
-    let limit = 6;  // Número de produtos por página
+    let limit = window.innerWidth >= 992 ? 5 : 2;  // Número de produtos por página
     let start = 0;  // Ponto inicial
     let action = 'inactive';
     let search_text = "<?=$_GET['search_text']?>";

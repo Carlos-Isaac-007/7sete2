@@ -127,7 +127,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                     $statement->execute(array(1,1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if (is_array($result)){
-                        require_once('carrosel_horizontal_feacture.php');
+                        require('componentes/carrosel_horizontal_cards.php');
                     }
                     ?>
                 </div>
@@ -158,7 +158,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                     $statement->execute(array(1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC); 
                     if (is_array($result)){
-                        require_once('carrosel_horizontal_latest.php');
+                        require('componentes/carrosel_horizontal_cards.php');
                     }
                     ?>
                 </div>
@@ -191,7 +191,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                     $statement->execute(array(1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if(is_array($result)){
-                        require_once('carrosel_horizontal_popular.php');
+                        require('componentes/carrosel_horizontal_cards.php');
                     }
                 ?>
             </div>
@@ -226,13 +226,13 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
         </div>
     </div>
 </div>
-
 </div>
-  <!-- Fazendo a inclucao do arquivo novojs que vai lidar com o carrosel e a rolagem infinita -->
-     <?php require_once('novo_js.php')  ?>
-  
-   
-    
+
+<?php require_once 'modal_success.php';  ?>
+<?php require_once 'modal_danger.php';  ?>
+<!-- Fazendo a inclucao do arquivo novojs que vai lidar com o carrosel e a rolagem infinita -->
+<?php require_once('novo_js.php')  ?>
+
 <script>
 const carousel = document.querySelector('#newsCarousel');
 const homeBox = document.querySelector('#home_box');

@@ -1,3 +1,5 @@
+  let bairroNaoEncontradoExibido = false;
+
   function carregarBairros(municipioId) {
   const input = document.getElementById('bairroInput');
   const ce = document.getElementById('custoEnvio');
@@ -82,83 +84,92 @@
   });
 
   // 3) Ao digitar/selecionar o bairro
-  document.getElementById('bairroInput').addEventListener('input', function() {
-    const nomeDigitado = this.value.trim();
-    const ce = document.getElementById('custoEnvio');
+document.getElementById('bairroInput').addEventListener('input', function () {
+  const nomeDigitado = this.value.trim();
+  const ce = document.getElementById('custoEnvio');
 
-    // Se veio “Outro bairro...”
-    if (!nomeDigitado) {
-     //ce.textContent = '';
-     resetOtherBairro();
-     return;
-    }
+  if (!nomeDigitado) {
+    resetOtherBairro();
+    bairroNaoEncontradoExibido = false; // Resetar controle
+    return;
+  }
 
-    // Normaliza string para evitar erros com acentos e letras maiúsculas
-    function normalizar(str){
-      return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); 
-    }
+  function normalizar(str) {
+    return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
 
-    const nomeNormalizado = normalizar(nomeDigitado);
+  const nomeNormalizado = normalizar(nomeDigitado);
 
-    // Verifica se existe uma correspondência exata
-    const bairroExato = (window.bairrosDisponiveis || []).find(b => normalizar(b.nome_bairro) === nomeNormalizado);
+  const bairroExato = (window.bairrosDisponiveis || []).find(b => normalizar(b.nome_bairro) === nomeNormalizado);
+  const correspondenciaParcial = (window.bairrosDisponiveis || []).some(b => normalizar(b.nome_bairro).includes(nomeNormalizado));
 
-    // Verifica se existe alguma correspondência parcial
-    const correspondenciaParcial = (window.bairrosDisponiveis || []).some(b => normalizar(b.nome_bairro).includes(nomeNormalizado));
-
-    if (bairroExato) {
-      // Bairro existente → busca o custo normalmente
-      resetOtherBairro();
-      fetch(`api/get_custo_envio.php?id_bairro=${bairroExato.bairro_id}`)
-        .then(r => r.json())
-        .then(data => {
-          if (data.custo !== undefined) {
-            if(typeof cp !== "undefined"){
-                atualizarTotais(parseFloat(data.custo));
-            } else{
-                ce.textContent = 'Custo de envio: ' + data.custo + ' KZ';
-            }
-          } else if (data.erro) {
-            ce.textContent = 'Erro: ' + (data.erro === 'Custo de envio não encontrado.' ? 'Entraremos em contacto para informar o custo de envio. Pode proceguir com a compra.' : data.erro);
-            if(typeof cp !=="undefined"){
-                atualizarTotais(NaN);
-            }
+  if (bairroExato) {
+    resetOtherBairro();
+    bairroNaoEncontradoExibido = false; // Resetar controle
+    fetch(`api/get_custo_envio.php?id_bairro=${bairroExato.bairro_id}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.custo !== undefined) {
+          if (typeof cp !== "undefined") {
+            atualizarTotais(parseFloat(data.custo));
           } else {
-            ce.textContent = 'Custo de envio indisponível.';
+            ce.textContent = 'Custo de envio: ' + data.custo + ' KZ';
           }
-          localStorage.setItem('endereco.bairro', JSON.stringify({
-            id: bairroExato.bairro_id,
-            nome: bairroExato.nome_bairro,
-            custo: data.custo
-          }));
-        })
-        .catch(() => {
-          ce.textContent = 'Erro ao buscar o custo.';
-        });
-    } else if (!correspondenciaParcial) {
-      // Nenhuma correspondência parcial → mostrar "Outro bairro"
-      document.getElementById('otherBairroContainer').style.display = 'block';
-      document.getElementById('otherBairroInput').value = nomeDigitado;
+        } else if (data.erro) {
+          ce.textContent = 'Erro: ' + (data.erro === 'Custo de envio não encontrado.' ? 'Entraremos em contacto para informar o custo de envio. Pode proceguir com a compra.' : data.erro);
+          if (typeof cp !== "undefined") {
+            atualizarTotais(NaN);
+          }
+        } else {
+          ce.textContent = 'Custo de envio indisponível.';
+        }
 
-      // Mostra um modal informativo
+        localStorage.setItem('endereco.bairro', JSON.stringify({
+          id: bairroExato.bairro_id,
+          nome: bairroExato.nome_bairro,
+          custo: data.custo
+        }));
+      })
+      .catch(() => {
+        ce.textContent = 'Erro ao buscar o custo.';
+      });
+  } else if (!correspondenciaParcial) {
+    // Só mostra o alerta se ainda não mostramos
+    if (!bairroNaoEncontradoExibido) {
+      // Atualiza valor de outro campo ANTES de mostrar o modal
+      const otherInput = document.getElementById('otherBairroInput');
+      otherInput.value = nomeDigitado;
+      otherInput.dataset.original = nomeDigitado; // guarda a versão original (opcional para comparação futura)
+
+      document.getElementById('otherBairroContainer').style.display = 'block';
+
+
       Swal.fire({
         icon: 'info',
         title: 'Bairro não encontrado',
         text: 'Não encontramos este bairro. Clique em "Enviar" para calcular o Custo de Envio.',
         confirmButtonText: 'Entendi'
-      }); 
-        if(typeof cp !== "undefined"){
-             atualizarTotais(NaN);
-            } else{
-               e.textContent = 'Entraremos em contacto para informar o custo de envio. Pode proceguir com a compra.';
-            }
-    } else {
-      // Ainda está digitando algo que pode bater com bairros conhecidos
-      resetOtherBairro();
-      //ce.textContent = '';
-    }
+      }).then(() => {
+    // 🔽 Foca no campo após o alerta ser fechado
+        setTimeout(() => {
+          otherInput.focus();
+        }, 100);
+      });
 
-  });
+      if (typeof cp !== "undefined") {
+        atualizarTotais(NaN);
+      } else {
+        ce.textContent = 'Entraremos em contacto para informar o custo de envio. Pode proceguir com a compra.';
+      }
+
+      bairroNaoEncontradoExibido = true; // Marca como exibido
+    }
+  } else {
+    resetOtherBairro();
+    bairroNaoEncontradoExibido = false; // Resetar controle se encontrar algo parcialmente
+  }
+});
+
 
   // 4) Quando o usuário digitar e clicar em “Enviar” para adicionar novo bairro
 document.getElementById('otherBairroSubmit').addEventListener('click', async function(event) {
@@ -166,7 +177,10 @@ document.getElementById('otherBairroSubmit').addEventListener('click', async fun
   event.stopPropagation();
 
   const municipioId = document.getElementById('municipioSelect').value;
-  const nomeNovo = document.getElementById('otherBairroInput').value.trim();
+  const bairroDigitadoAtual = document.getElementById('bairroInput').value.trim();
+  document.getElementById('otherBairroInput').value = bairroDigitadoAtual; // força atualização
+  const nomeNovo = bairroDigitadoAtual;
+
   const ce = document.getElementById('custoEnvio');
 
   if (!nomeNovo) {

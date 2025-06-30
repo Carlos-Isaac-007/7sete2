@@ -92,7 +92,7 @@
 .current-price {
     font-size: 20px;
     font-weight: bold;
-    color: #000;
+    color: #e55300 !important;
 }
 
 .old-price {
@@ -124,14 +124,6 @@
 
 
 
-
-
-
-/* fim brand conf */
-
-.current-price{
-    color: #e55300 !important;
-}
 /* tudo que haver com a estetica da seccao categorias*/
 
 /* Estilo do botão Detalhes */

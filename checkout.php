@@ -676,10 +676,10 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
             </div>
           </div>
 
-          <!-- Etapa 2: Escolha de Entrega -->
-          <div class="step d-none" data-step="2">
+          <!-- Etapa 3: Escolha de Entrega -->
+          <div class="step d-none" data-step="3">
             <div class="mb-4 text-center">
-              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-truck me-2"></i>2. Como deseja receber?</span>
+              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-truck me-2"></i>3. Como deseja receber?</span>
               <p class="mb-0 text-muted"  style="margin-top: 10px;">Escolha a forma de entrega do seu pedido:</p>
             </div>
             <form id="deliveryForm">
@@ -720,19 +720,19 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
             </form>
           </div>
 
-          <!-- Etapa 3: Enviar Comprovativo -->
-          <div class="step d-none" data-step="3">
+          <!-- Etapa 2: Enviar Comprovativo -->
+          <div class="step d-none" data-step="2">
             <div class="mb-4 text-center">
-              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-paperclip me-2"></i>3. Envie o comprovativo</span>
-              <p class="mb-0 text-muted"  style="margin-top: 10px;">Finalize enviando o comprovativo da transferência:</p>
+              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-paperclip me-2"></i>2. Envie o comprovativo</span>
+              <p class="mb-0 text-muted"  style="margin-top: 10px;">Envie o comprovativo da transferência:</p>
             </div>
             <div class="d-flex flex-column align-items-center justify-content-center">
-              <a id="whatsappBtn" target="_blank" class="btn btn-success btn-lg d-flex align-items-center gap-2 px-4 py-2 mb-3 shadow-sm" style="font-size:1.15rem;">
+              <a id="whatsappBtn"  href= "https://api.whatsapp.com/send?phone=244927606472&text=Olá, envio em anexo o comprovativo de pagamento." target="_blank" class="btn btn-success btn-lg d-flex align-items-center gap-2 px-4 py-2 mb-3 shadow-sm" style="font-size:1.15rem;">
                 <i class="fab fa-whatsapp fa-lg"></i> Mandar Comprovativo
               </a>
               <div class="alert alert-success d-flex align-items-center" style="font-size: 1rem;">
                 <i class="fas fa-check-circle me-2"></i>
-                Pronto! Após o envio, aguarde nossa confirmação.
+                Pronto! Após o envio, Siga para proxima etapa.
               </div>
             </div>
           </div>
@@ -845,7 +845,7 @@ const atualizarEtapa = () => {
   });
 
   btnAnterior.disabled = etapaAtual === 1 || (etapaAtual === 3 && bloquearRetorno);
-  btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Fechar' : 'Próximo';
+  btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Finalizar' : 'Próximo';
 };
 
 // Copiar número
@@ -864,7 +864,7 @@ document.querySelectorAll('input[name="delivery_option"]').forEach(radio => {
 });
 
 btnProximo.addEventListener('click', async () => {
-  if (etapaAtual === 2) {
+  if (etapaAtual === 3) {
     const opcao = document.querySelector('input[name="delivery_option"]:checked').value;
     const endereco = document.getElementById('endereco').value.trim();
 
@@ -905,11 +905,16 @@ btnProximo.addEventListener('click', async () => {
         icon: 'success',
         title: 'Pedido enviado',
         text: data.message
-      });
+      }).then((result) => {
+      if (result.isConfirmed || result.isDismissed) {
+        // Redirecionar, por exemplo, para a página de pedidos:
+        window.location.href = `${ROOT}customer-order.php`;
+      }
+    });
 
-      const mensagem = `Olá, segue em anexo o comprovativo de pagamento do meu pedido com o id:${data.paymentid}. Obrigado, ${data.name}!`;
-      const whatsappurl = `https://api.whatsapp.com/send?phone=244927606472&text=${encodeURIComponent(mensagem)}`;
-      document.getElementById('whatsappBtn').href = whatsappurl;
+      //const mensagem = `Olá, segue em anexo o comprovativo de pagamento do meu pedido com o id:${data.paymentid}. Obrigado, ${data.name}!`;
+      //const whatsappurl = `https://api.whatsapp.com/send?phone=244927606472&text=${encodeURIComponent(mensagem)}`;
+      //document.getElementById('whatsappBtn').href = whatsappurl;
       etapaAtual++;
       bloquearRetorno = true; // impede voltar do step 3
       atualizarEtapa();

@@ -1,0 +1,77 @@
+.custom-product-card {
+  flex: 0 0 calc(20% - 16px); /* 5 cards por linha (100% / 5) */
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.custom-product-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.custom-product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.6em;
+}
+
+.custom-brand-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: #fff;
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .custom-product-card {
+    flex: 0 0 calc(25% - 16px); /* 4 por linha */
+  }
+}
+
+/* Celulares médios */
+@media (max-width: 768px) {
+  .custom-product-card {
+    flex: 0 0 calc(50% - 16px); /* 2 por linha */
+  }
+}
+
+/* Celulares pequenos 
+@media (max-width: 480px) {
+    .custom-product-card {
+    flex: 0 0 100%; /* 1 por linha se necessário 
+  }
+    .custom-product-image {
+    height: 160px;
+  }
+} */
+
+  @media (max-width: 900px) {
+  .custom-product-card {
+    width: 180px;
+  }
+
+   .custom-product-image {
+    height: 150px;
+  }
+}
+
+.custom-product-image-wrapper {
+  position: relative;
+}
