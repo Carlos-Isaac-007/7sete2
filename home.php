@@ -32,10 +32,10 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
 ?>
 
 <div class="home-todo" id="home_box" style="border-radius: 18px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 40px; background: #000c78;">
-    <!-- Carrossel Moderno com botões de paginação -->
-    <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" style="margin-bottom: 40px;">
+    <!-- Carrossel Heroico e Interativo para E-commerce -->
+    <div id="newsCarousel" class="carousel slide position-relative" data-bs-ride="carousel" style="margin-bottom: 40px;">
         <!-- Indicadores circulares personalizados -->
-        <div class="carousel-indicators">
+        <div class="carousel-indicators mb-0" style="bottom: 18px;">
             <?php 
                 $statement = $pdo->prepare("SELECT * FROM tbl_slider");
                 $statement->execute();
@@ -43,34 +43,75 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                 $slideCount = count($result);
                 for($j = 0; $j < $slideCount; $j++): 
             ?>
-                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="<?=$j?>" class="<?php if($j == 0) echo 'active'; ?>" aria-current="<?php if($j == 0) echo 'true'; ?>" aria-label="Slide <?=$j+1?>" style="background-color: #000c78; width: 14px; height: 14px; border-radius: 50%; border: none; margin: 0 6px;"></button>
+                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="<?=$j?>" class="<?php if($j == 0) echo 'active'; ?>" aria-current="<?php if($j == 0) echo 'true'; ?>" aria-label="Slide <?=$j+1?>" style="background: linear-gradient(135deg, #0166ff 0%, #ff4b6e 100%); width: 16px; height: 16px; border-radius: 50%; border: none; margin: 0 7px; opacity: 0.7; transition: opacity 0.3s;"></button>
             <?php endfor; ?>
         </div>
-        <div class="carousel-inner rounded-4 shadow-sm">
+        <div class="carousel-inner rounded-4 shadow-lg">
             <?php 
                 $i = 0;
-                $colors = ['#0166ff', '#fe6a00', '#ffba04'];
+                $colors = ['#000c78', '#d0752f', '#b37071', '#ff4b6e', '#4F8A8B'];
             ?>
             <?php foreach ($result as $row): ?>
                 <div class="carousel-item <?php if($i == 0) echo 'active'; ?>">
-                    <img 
-                        src="<?=ROOT?>assets/uploads/<?=$row['photo']?>" 
-                        alt="Imagem <?=$i+1?>" 
-                        data-color="<?= $colors[$i % count($colors)] ?>"
-                        class="d-block w-100"
-                        style="border-radius: 18px;"
-                    >
-                    <?php if(!empty($row['caption'])): ?>
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-3">
-                            <h5 style="font-weight:700;"><?=htmlspecialchars($row['caption'])?></h5>
+                    <div class="position-relative" style="min-height: 340px;">
+                        <img 
+                            src="uploads/<?=$row['photo']?>" 
+                            alt="Imagem <?=$i+1?>" 
+                            data-color="<?= $colors[$i % count($colors)] ?>"
+                            class="d-block w-100"
+                            style="object-fit: cover; height: 340px; filter: brightness(0.75) blur(0.5px); border-radius: 18px;"
+                        >
+                        <!-- Overlay com CTA -->
+                        <div class="carousel-caption d-flex flex-column justify-content-center align-items-start h-100 w-100 px-4" style="left:0; right:0; top:0; bottom:0; background: linear-gradient(90deg, rgba(0,12,120,0.85) 0%, rgba(0,0,0,0.15) 80%); border-radius: 18px;">
+                            <h2 class="fw-bold mb-2 animate__animated animate__fadeInDown" style="font-size: 2.2rem; color: #fff; text-shadow: 0 2px 12px #000c78;">
+                                <?=!empty($row['caption']) ? htmlspecialchars($row['caption']) : 'Bem-vindo à nossa loja!'?>
+                            </h2>
+                            <?php if(!empty($row['description'])): ?>
+                                <p class="lead mb-3 animate__animated animate__fadeInLeft" style="color: #f8fafc; max-width: 500px; text-shadow: 0 1px 8px #000;">
+                                    <?=htmlspecialchars($row['description'])?>
+                                </p>
+                            <?php endif; ?>
+                            <a href="<?=!empty($row['cta_url']) ? htmlspecialchars($row['cta_url']) : '#produtos';?>" class="btn btn-lg btn-gradient-primary shadow animate__animated animate__pulse animate__delay-1s" style="background: linear-gradient(90deg, #ff4b6e 0%, #0166ff 100%); color: #fff; border: none; font-weight: 700; border-radius: 32px; padding: 12px 36px; font-size: 1.2rem; letter-spacing: 1px;">
+                                <?=!empty($row['cta_text']) ? htmlspecialchars($row['cta_text']) : 'Ver Ofertas'?>
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                            <?php if(!empty($row['promo_badge'])): ?>
+                                <span class="badge bg-warning text-dark mt-3 animate__animated animate__bounceIn" style="font-size: 1rem; border-radius: 12px; padding: 8px 18px; box-shadow: 0 2px 8px #ffba04; margin-right: 10px;">
+                                    <?=htmlspecialchars($row['promo_badge'])?>
+                                </span>
+                            <?php endif; ?>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
                 <?php $i++; ?>
             <?php endforeach; ?>
         </div>
+        <!-- Botões de navegação customizados -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev" style="width: 56px;">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-image: linear-gradient(135deg, #0166ff 0%, #ff4b6e 100%); border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 2px 8px #000c78;"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next" style="width: 56px;">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="background-image: linear-gradient(135deg, #ff4b6e 0%, #0166ff 100%); border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 2px 8px #000c78;"></span>
+            <span class="visually-hidden">Próximo</span>
+        </button>
     </div>
-    <!-- Fim do Carrossel -->
+    <!-- Fim do Carrossel Heroico -->
+
+    <!-- Animações Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        .btn-gradient-primary:hover, .btn-gradient-primary:focus {
+            background: linear-gradient(90deg, #0166ff 0%, #ff4b6e 100%) !important;
+            color: #fff !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px #0166ff44;
+        }
+        .carousel-indicators [data-bs-target].active {
+            opacity: 1 !important;
+            box-shadow: 0 0 0 4px #fff, 0 2px 8px #0166ff55;
+        }
+    </style>
 
     <?php if($home_service_on_off == 1): ?>
     <div class="service py-4" style="border-radius: 18px; margin-bottom: 32px; background: #fff;">
@@ -106,34 +147,112 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
     <?php endif; ?>
 
     <?php if($home_featured_product_on_off == 1): ?>
-    <div class="product mb-4">
-        <div class="container" style="background: linear-gradient(90deg, #fff 60%, #e0e7ff 100%); border-radius: 18px; padding-top: 25px;">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="headline d-flex align-items-center mb-3 fire-icon">
-                        <span class="me-2" style="font-size: 2.2rem; color: #ff4b6e;">
-                            <i class="bi bi-fire"></i>
-                        </span>
-                        <h2 class="titulo-com-linha gradiente-brilho" style="margin: 0; font-weight: 700; font-size: 1.5rem; color: #222;">
-                            <?php echo $featured_product_title; ?>
-                        </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: -20px;">
-                <div class="col-md-12">
-                    <?php 
-                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
+    <!-- Seções Promocionais e Destaque lado a lado no desktop, em bloco no mobile -->
+    <div class="container-fluid mb-4" style="padding-left: 0; padding-right: 0;">
+        <div class="row g-4 flex-lg-nowrap">
+            <!-- Seção de Produtos Promocionais -->
+            <div class="col-12 col-lg-6 d-flex">
+                <div class="product flex-fill w-100 h-100" style="background: linear-gradient(90deg, #fff 60%, #ffe5ec 100%); border-radius: 18px; box-shadow: 0 2px 16px rgba(255, 105, 135, 0.08);">
+                    <div class="py-4 px-3 px-lg-4">
+                        <div class="d-flex align-items-center mb-2 headline">
+                            <span class="me-2" style="font-size: 2.2rem; color: #ff4b6e;">
+                                <i class="bi bi-percent"></i>
+                            </span>
+                            <div class="mb-0">
+                                <h2 class="gradiente-brilho" style="margin: 0; font-weight: 700; font-size: 1.5rem; color: #222;">
+                                    Produtos em Promoção
+                                </h2>
+                                <h3 class="text-muted" style="font-size: 1rem;">Ofertas imperdíveis para você economizar!</h3>
+                            </div>
+                        </div>
+                        <div style="margin-top: -20px;">
+                            <?php 
+                           $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
                     $statement->execute(array(1,1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if (is_array($result)){
                         require('componentes/carrosel_horizontal_cards.php');
-                    }
-                    ?>
+                    } else {
+                                echo '<div class="alert alert-info text-center">Nenhum produto promocional no momento.</div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Seção de Produtos em Destaque -->
+            <div class="col-12 col-lg-6 d-flex">
+                <div class="product flex-fill w-100 h-100" style="background: linear-gradient(90deg, #f8fafc 60%, #e0e7ff 100%); border-radius: 18px; box-shadow: 0 2px 16px rgba(1, 102, 255, 0.08);">
+                    <div class="py-4 px-3 px-lg-4">
+                        <div class="d-flex align-items-center mb-2 headline fire-icon">
+                            <span class="me-2" style="font-size: 2.2rem; color: #ff4b6e;">
+                            <i class="bi bi-fire"></i>
+                            </span>
+                            <div class="mb-0">
+                                <h2 class="gradiente-brilho" style="margin: 0; font-weight: 700; font-size: 1.5rem; color: #222;">
+                                    <?php echo $featured_product_title; ?>
+                                </h2>
+                                <?php if(!empty($featured_product_subtitle)): ?>
+                                <h3 class="text-muted" style="font-size: 1rem;"><?php echo $featured_product_subtitle; ?></h3>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div style="margin-top: -20px;">
+                            <?php 
+                           $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
+                    $statement->execute(array(1,1));
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    if (is_array($result)){
+                        require('componentes/carrosel_horizontal_cards.php');
+                    } else {
+                                echo '<div class="alert alert-info text-center">Nenhum produto em destaque no momento.</div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <style>
+        /* UI/UX Moderno para cards e carrossel */
+        .product .headline .gradiente-brilho {
+            background: linear-gradient(90deg, #ff4b6e 0%, #0166ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        @media (max-width: 991.98px) {
+            .product .headline h2 {
+                font-size: 1.1rem !important;
+            }
+            .product .headline h3 {
+                font-size: 0.95rem !important;
+            }
+            .product {
+                padding: 0.5rem !important;
+            }
+        }
+        .product .headline {
+            align-items: center;
+            gap: 10px;
+        }
+        .product .headline span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @media (min-width: 992px) {
+            .product {
+                min-height: 420px;
+            }
+        }
+        /* Remove container padding for full width */
+        .container-fluid {
+            padding-left: 10 !important;
+            padding-right: 10 !important;
+        }
+    </style>
     <?php endif; ?>
 
     <?php if($home_latest_product_on_off == 1): ?>

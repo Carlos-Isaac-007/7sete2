@@ -515,16 +515,73 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
 });
 
 </script>
-<div class="cart-buttons">
-  <div>
-    <a href="<?=ROOT?>cart" class="btn btn-secondary">
-      <i class="fas fa-arrow-left"></i> <?php echo LANG_VALUE_21; ?>
-    </a>
-  </div>
-</div>
 
-<!--<div class="clear"></div>
-<h3 class="special"><?php echo LANG_VALUE_33; ?></h3>-->
+<!-- Botão moderno de voltar ao carrinho -->
+<div class="cart-buttons mb-4">
+  <a href="<?=ROOT?>cart" class="btn btn-back-cart d-inline-flex align-items-center gap-2 shadow-sm">
+    <span class="icon-wrapper">
+      <i class="fas fa-arrow-left"></i>
+    </span>
+    <span class="back-text"><?php echo LANG_VALUE_21; ?></span>
+  </a>
+</div>
+<style>
+.btn-back-cart {
+  background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.08rem;
+  border: none;
+  border-radius: 0.85rem;
+  padding: 0.7rem 1.6rem 0.7rem 1.2rem;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  box-shadow: 0 2px 10px #000c7820;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  text-decoration: none !important;
+}
+.btn-back-cart .icon-wrapper {
+  background: #fff;
+  color: #000c78;
+  border-radius: 50%;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.3rem;
+  font-size: 1.15rem;
+  box-shadow: 0 1px 6px #000c7822;
+  transition: background 0.18s, color 0.18s;
+}
+.btn-back-cart:hover, .btn-back-cart:focus {
+  background: linear-gradient(90deg, #23235a 60%, #000c78 100%);
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 18px #000c7830;
+  text-decoration: none;
+}
+.btn-back-cart:hover .icon-wrapper, .btn-back-cart:focus .icon-wrapper {
+  background: #000c78;
+  color: #fff;
+}
+@media (max-width: 576px) {
+  .btn-back-cart {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+  }
+  .btn-back-cart .icon-wrapper {
+    margin-right: 0.5rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 1rem;
+  }
+}
+</style>
+
 <div class="row">
   <div class="col-md-12">
     <div class="row">
@@ -532,16 +589,16 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
         <label for="" class="fw-bold" style="font-size:1.1rem;">
           <i class="fas fa-credit-card text-primary"></i> <?php echo LANG_VALUE_34; ?> *
         </label>
-        <div class="d-flex flex-wrap gap-3 p-3 justify-content-between align-items-center" style="background: #f3f5ff; border-radius: 1rem; box-shadow: 0 2px 12px #000c7822;">
+        <div class="d-flex flex-wrap gap-3 p-3 justify-content-between align-items-center payment-btn-group" style="background: #f3f5ff; border-radius: 1rem; box-shadow: 0 2px 12px #000c7822;">
           <?php if($_SESSION['cart_p_name'][1] != "Alice de Almeida - Técnicas Infalíveis de Estudo, Memorização e Aprendizagem – Do Jeito que Funciona pra Você"): ?>   
-            <button type="button" class="btn btn-lg btn-light border border-primary d-flex align-items-center gap-2 shadow-sm"
+            <button type="button" class="btn btn-lg btn-light border border-primary d-flex align-items-center gap-2 shadow-sm payment-btn"
               data-bs-toggle="modal" data-bs-target="#moneykModal" style="border-radius: 0.75rem; font-weight:600;">
               <i class="fas fa-money-bill-wave fa-lg text-success"></i>
               <span>Pagar em dinheiro</span>
             </button>
           <?php endif; ?>
           <!-- Botão para abrir o Modal bank -->
-          <button type="button" class="btn btn-lg btn-light border border-primary d-flex align-items-center gap-2 shadow-sm"
+          <button type="button" class="btn btn-lg btn-light border border-primary d-flex align-items-center gap-2 shadow-sm payment-btn"
             data-bs-toggle="modal" data-bs-target="#bankModal" style="border-radius: 0.75rem; font-weight:600;">
             <i class="fas fa-university fa-lg text-primary"></i>
             <span>Transferência Bancária</span>
@@ -555,6 +612,23 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
     <?php endif; ?>
   </div>
 </div>
+
+
+<style>
+@media (max-width: 576px) {
+  .payment-btn-group {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1rem !important;
+  }
+  .payment-btn {
+    width: 100% !important;
+    max-width: 320px;
+    justify-content: center !important;
+    font-size: 1.05rem;
+  }
+}
+</style>
 
 <style>
   .step {
@@ -624,93 +698,101 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
         <div id="stepper">
           <!-- Etapa 1: Dados Bancários -->
           <div class="step" data-step="1">
-            <div class="mb-4 text-center">
-              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-money-check-alt me-2"></i>1. Transfira o valor</span>
-              <p class="mb-0 text-muted" style="margin-top: 10px;">Escolha uma das contas abaixo para realizar a transferência:</p>
+        <div class="mb-4 text-center">
+          <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-money-check-alt me-2"></i>1. Transfira o valor</span>
+          <p class="mb-0 text-muted" style="margin-top: 10px;">Escolha uma das contas abaixo para realizar a transferência:</p>
+        </div>
+        <div class="row g-3 justify-content-center">
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <img src="https://7setetech.com/uploads/bfa.webp" alt="BPC" style="height:32px;width:auto;" class="me-2">
+              <span class="fw-bold fs-6">BFA</span>
             </div>
-            <div class="row g-3 justify-content-center">
-              <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                  <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                      <img src="https://7setetech.com/uploads/bpc.webp" alt="BPC" style="height:32px;width:auto;" class="me-2">
-                      <span class="fw-bold fs-6">BPC</span>
-                    </div>
-                    <div class="mb-2">
-                      <i class="fas fa-hashtag text-primary"></i>
-                      <span class="text-monospace">0455X01688011</span>
-                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('0455X01688011')"><i class="fas fa-copy"></i></button>
-                    </div>
-                    <div>
-                      <i class="fas fa-barcode text-secondary"></i>
-                      <span class="text-monospace">AO06001004550330168801152</span>
-                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('001004550330168801152')"><i class="fas fa-copy"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                  <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                      <img src="https://7setetech.com/uploads/BAI.webp" alt="BAI" style="height:32px;width:auto;" class="me-2">
-                      <span class="fw-bold fs-6">BAI</span>
-                    </div>
-                    <div class="mb-2">
-                      <i class="fas fa-hashtag text-primary"></i>
-                      <span class="text-monospace">245080097</span>
-                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('245080097')"><i class="fas fa-copy"></i></button>
-                    </div>
-                    <div>
-                      <i class="fas fa-barcode text-secondary"></i>
-                      <span class="text-monospace">AO06004000007508009710153</span>
-                      <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('004000007508009710153')"><i class="fas fa-copy"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="mb-2">
+              <i class="fas fa-hashtag text-primary"></i>
+              <span class="text-monospace">33600260530001</span>
+              <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('0455X01688011')"><i class="fas fa-copy"></i></button>
             </div>
-            <div class="alert alert-info mt-4 d-flex align-items-center" style="font-size: 1rem;">
-              <i class="fas fa-info-circle me-2"></i>
-              Após transferir, avance para informar a entrega.
+            <div>
+              <i class="fas fa-barcode text-secondary"></i>
+              <span class="text-monospace">AO06000600003600260530147</span>
+              <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('001004550330168801152')"><i class="fas fa-copy"></i></button>
             </div>
           </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <img src="https://7setetech.com/uploads/BAI.webp" alt="BAI" style="height:32px;width:auto;" class="me-2">
+              <span class="fw-bold fs-6">BAI</span>
+            </div>
+            <div class="mb-2">
+              <i class="fas fa-hashtag text-primary"></i>
+              <span class="text-monospace">245080097</span>
+              <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('245080097')"><i class="fas fa-copy"></i></button>
+            </div>
+            <div>
+              <i class="fas fa-barcode text-secondary"></i>
+              <span class="text-monospace">AO06004000007508009710153</span>
+              <button class="btn btn-sm btn-outline-primary ms-2" onclick="copiarTexto('004000007508009710153')"><i class="fas fa-copy"></i></button>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+          <div class="col-auto">
+            <a id="whatsappBtn" href="https://api.whatsapp.com/send?phone=244927606472&text=Olá, envio em anexo o comprovativo de pagamento." target="_blank" class="btn btn-success btn-lg d-flex align-items-center gap-2 px-4 py-2 shadow-sm" style="font-size:1.15rem;">
+          <i class="fab fa-whatsapp fa-lg"></i>
+          <span>Mandar Comprovativo</span>
+            </a>
+          </div>
+        </div>
+        <div class="alert alert-info mt-4 d-flex align-items-center" style="font-size: 1rem;">
+          <i class="fas fa-info-circle me-2"></i>
+          Após transferir, avance para informar a entrega.
+        </div>
+          </div>
 
-          <!-- Etapa 3: Escolha de Entrega -->
-          <div class="step d-none" data-step="3">
+            <!-- Etapa 3: Escolha de Entrega -->
+            <div class="step d-none" data-step="2">
             <div class="mb-4 text-center">
               <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-truck me-2"></i>3. Como deseja receber?</span>
               <p class="mb-0 text-muted"  style="margin-top: 10px;">Escolha a forma de entrega do seu pedido:</p>
             </div>
             <form id="deliveryForm">
               <div class="row g-3 mb-3">
-                <div class="col-12 col-md-6">
-                  <div class="form-check p-3 rounded-3 border border-primary-subtle bg-light h-100">
-                    <input class="form-check-input" type="radio" name="delivery_option" id="opt_entrega" value="entrega" checked>
-                    <label class="form-check-label fw-semibold" for="opt_entrega">
-                      <i class="fas fa-home me-1 text-primary"></i> Entregar no meu endereço
-                    </label>
-                    <div class="small text-muted ms-4">Receba em casa, escritório ou outro local.</div>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6">
-                  <div class="form-check p-3 rounded-3 border border-success-subtle bg-light h-100">
-                    <input class="form-check-input" type="radio" name="delivery_option" id="opt_loja" value="loja">
-                    <label class="form-check-label fw-semibold" for="opt_loja">
-                      <i class="fas fa-store me-1 text-success"></i> Retirar na loja
-                    </label>
-                    <div class="small text-muted ms-4">Sem custo de envio. Retire pessoalmente.</div>
-                  </div>
+              <div class="col-12 col-md-6">
+                <div class="form-check p-3 rounded-3 border border-primary-subtle bg-light h-100 delivery-option-div" data-radio="opt_entrega" style="cursor:pointer;">
+                <input class="form-check-input" type="radio" name="delivery_option" id="opt_entrega" value="entrega" checked>
+                <label class="form-check-label fw-semibold" for="opt_entrega">
+                  <i class="fas fa-home me-1 text-primary"></i> Entregar no meu endereço
+                </label>
+                <div class="small text-muted ms-4">Receba em casa, escritório ou outro local.</div>
                 </div>
               </div>
-              <div class="mb-3" id="campoEndereco">
-                <label for="endereco" class="form-label fw-semibold">
-                  <i class="fas fa-map-marker-alt text-danger"></i> Descreva sua localização
+              <div class="col-12 col-md-6">
+                <div class="form-check p-3 rounded-3 border border-success-subtle bg-light h-100 delivery-option-div" data-radio="opt_loja" style="cursor:pointer;">
+                <input class="form-check-input" type="radio" name="delivery_option" id="opt_loja" value="loja">
+                <label class="form-check-label fw-semibold" for="opt_loja">
+                  <i class="fas fa-store me-1 text-success"></i> Retirar na loja
                 </label>
-                <textarea id="endereco" class="form-control rounded-3 shadow-sm" rows="3" name="location_now" placeholder="Ex: Perto do mercado municipal, ao lado das bombas de combustível"></textarea>
-                <div class="form-text text-muted mt-1">
-                  Seja o mais detalhado possível para facilitar a entrega.
+                <div class="small text-muted ms-4">Sem custo de envio. Retire pessoalmente.</div>
                 </div>
+              </div>
+              </div>
+              <div class="mb-3" id="campoEndereco">
+              <label for="endereco" class="form-label fw-semibold">
+                <i class="fas fa-map-marker-alt text-danger"></i> Descreva sua localização
+              </label>
+              <textarea id="endereco" class="form-control rounded-3 shadow-sm" rows="3" name="location_now" placeholder="Ex: Perto do mercado municipal, ao lado das bombas de combustível"></textarea>
+              <div class="form-text text-muted mt-1">
+                Seja o mais detalhado possível para facilitar a entrega.
+              </div>
               </div>
               <input type="hidden" name="customer_province" value="Benguela" class="provincia">
               <input type="hidden" name="customer_municipio" value="" class="municipio">
@@ -718,242 +800,238 @@ document.getElementById('toggleEntrega').addEventListener('change', function () 
               <input type="hidden" name="final_total" value="" class="final_total">
               <input type="hidden" name="final_total_custo" value="" class="final_total_custo">
             </form>
+            </div>
+          </div>
           </div>
 
-          <!-- Etapa 2: Enviar Comprovativo -->
-          <div class="step d-none" data-step="2">
-            <div class="mb-4 text-center">
-              <span class="badge rounded-pill bg-primary fs-5 px-4 py-2 mb-2"><i class="fas fa-paperclip me-2"></i>2. Envie o comprovativo</span>
-              <p class="mb-0 text-muted"  style="margin-top: 10px;">Envie o comprovativo da transferência:</p>
-            </div>
-            <div class="d-flex flex-column align-items-center justify-content-center">
-              <a id="whatsappBtn"  href= "https://api.whatsapp.com/send?phone=244927606472&text=Olá, envio em anexo o comprovativo de pagamento." target="_blank" class="btn btn-success btn-lg d-flex align-items-center gap-2 px-4 py-2 mb-3 shadow-sm" style="font-size:1.15rem;">
-                <i class="fab fa-whatsapp fa-lg"></i> Mandar Comprovativo
-              </a>
-              <div class="alert alert-success d-flex align-items-center" style="font-size: 1rem;">
-                <i class="fas fa-check-circle me-2"></i>
-                Pronto! Após o envio, Siga para proxima etapa.
-              </div>
-            </div>
+          <!-- Botões do Rodapé -->
+          <div class="modal-footer border-0 d-flex justify-content-between bg-light rounded-bottom-4">
+          <button class="btn-custom btn-secondary-custom" id="btnAnterior" disabled>
+            <i class="fas fa-arrow-left me-1"></i> Anterior
+          </button>
+          <button class="btn-custom btn-primary-custom" id="btnProximo">
+            Próximo <i class="fas fa-arrow-right ms-1"></i>
+          </button>
           </div>
         </div>
+        </div>
       </div>
+      <style>
+      #bankModal .modal-content {
+        border-radius: 1.5rem;
+        border: none;
+        overflow: hidden;
+      }
+      #bankModal .modal-header {
+        border-bottom: none;
+        padding-bottom: 1rem;
+      }
+      #bankModal .modal-title {
+        font-size: 1.25rem;
+        letter-spacing: 0.01em;
+      }
+      #bankModal .form-check-input:checked {
+        background-color: #000c78;
+        border-color: #000c78;
+      }
+      #bankModal .form-check {
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+      }
+      #bankModal .form-check:hover {
+        box-shadow: 0 0 0 2px #000c7833;
+      }
+      #bankModal .btn-primary-custom {
+        background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%);
+        border: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 2px 8px #000c7822;
+      }
+      #bankModal .btn-primary-custom:hover {
+        background: linear-gradient(90deg, #000a66 60%, #23235a 100%);
+      }
+      #bankModal .btn-secondary-custom {
+        background: #fff;
+        color: #000c78;
+        border: 2px solid #000c78;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-radius: 0.75rem;
+      }
+      #bankModal .btn-secondary-custom:hover {
+        background: #000c78;
+        color: #fff;
+      }
+      #bankModal .badge {
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+      }
+      #bankModal .card {
+        border-radius: 1rem;
+        border: none;
+        background: #fff;
+      }
+      #bankModal .card-body {
+        padding: 1.2rem 1rem;
+      }
+      #bankModal .alert-info, #bankModal .alert-success {
+        border-radius: 0.75rem;
+        font-size: 1rem;
+      }
+      @media (max-width: 576px) {
+        #bankModal .modal-dialog {
+        margin: 1rem;
+        }
+        #bankModal .modal-content {
+        border-radius: 1rem;
+        }
+        #bankModal .card-body {
+        padding: 1rem 0.5rem;
+        }
+      }
+      </style>
+      <script>
+      let data = null;
+      let etapaAtual = 1;
+      const totalEtapas = 2;
+      let bloquearRetorno = false; // Flag para impedir o retorno ao Step 2
 
-      <!-- Botões do Rodapé -->
-      <div class="modal-footer border-0 d-flex justify-content-between bg-light rounded-bottom-4">
-        <button class="btn-custom btn-secondary-custom" id="btnAnterior" disabled>
-          <i class="fas fa-arrow-left me-1"></i> Anterior
-        </button>
-        <button class="btn-custom btn-primary-custom" id="btnProximo">
-          Próximo <i class="fas fa-arrow-right ms-1"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<style>
-#bankModal .modal-content {
-  border-radius: 1.5rem;
-  border: none;
-  overflow: hidden;
-}
-#bankModal .modal-header {
-  border-bottom: none;
-  padding-bottom: 1rem;
-}
-#bankModal .modal-title {
-  font-size: 1.25rem;
-  letter-spacing: 0.01em;
-}
-#bankModal .form-check-input:checked {
-  background-color: #000c78;
-  border-color: #000c78;
-}
-#bankModal .form-check {
-  cursor: pointer;
-  transition: box-shadow 0.2s;
-}
-#bankModal .form-check:hover {
-  box-shadow: 0 0 0 2px #000c7833;
-}
-#bankModal .btn-primary-custom {
-  background: linear-gradient(90deg, #000c78 60%, #3b3b98 100%);
-  border: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 2px 8px #000c7822;
-}
-#bankModal .btn-primary-custom:hover {
-  background: linear-gradient(90deg, #000a66 60%, #23235a 100%);
-}
-#bankModal .btn-secondary-custom {
-  background: #fff;
-  color: #000c78;
-  border: 2px solid #000c78;
-  font-weight: 600;
-  font-size: 1.1rem;
-  border-radius: 0.75rem;
-}
-#bankModal .btn-secondary-custom:hover {
-  background: #000c78;
-  color: #fff;
-}
-#bankModal .badge {
-  font-size: 1rem;
-  letter-spacing: 0.02em;
-}
-#bankModal .card {
-  border-radius: 1rem;
-  border: none;
-  background: #fff;
-}
-#bankModal .card-body {
-  padding: 1.2rem 1rem;
-}
-#bankModal .alert-info, #bankModal .alert-success {
-  border-radius: 0.75rem;
-  font-size: 1rem;
-}
-@media (max-width: 576px) {
-  #bankModal .modal-dialog {
-    margin: 1rem;
-  }
-  #bankModal .modal-content {
-    border-radius: 1rem;
-  }
-  #bankModal .card-body {
-    padding: 1rem 0.5rem;
-  }
-}
-</style>
-<script>
-let data = null;
-let etapaAtual = 1;
-const totalEtapas = 3;
-let bloquearRetorno = false; // Flag para impedir o retorno ao Step 2
+      const btnProximo = document.getElementById('btnProximo');
+      const btnAnterior = document.getElementById('btnAnterior');
 
-const btnProximo = document.getElementById('btnProximo');
-const btnAnterior = document.getElementById('btnAnterior');
+      const atualizarEtapa = () => {
+        document.querySelectorAll('.step').forEach(el => {
+        el.classList.add('d-none');
+        if (parseInt(el.dataset.step) === etapaAtual) {
+          el.classList.remove('d-none');
+        }
+        });
 
-const atualizarEtapa = () => {
-  document.querySelectorAll('.step').forEach(el => {
-    el.classList.add('d-none');
-    if (parseInt(el.dataset.step) === etapaAtual) {
-      el.classList.remove('d-none');
-    }
-  });
+        btnAnterior.disabled = etapaAtual === 1 || (etapaAtual === 2 && bloquearRetorno);
+        btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Finalizar' : 'Próximo';
+      };
 
-  btnAnterior.disabled = etapaAtual === 1 || (etapaAtual === 3 && bloquearRetorno);
-  btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Finalizar' : 'Próximo';
-};
+      // Copiar número
+      function copiarTexto(texto) {
+        navigator.clipboard.writeText(texto).then(() => {
+        alert("Copiado!");
+        });
+      }
 
-// Copiar número
-function copiarTexto(texto) {
-  navigator.clipboard.writeText(texto).then(() => {
-    alert("Copiado!");
-  });
-}
-
-// Mostrar ou ocultar campo de endereço
-document.querySelectorAll('input[name="delivery_option"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    const campo = document.getElementById('campoEndereco');
-    campo.style.display = (radio.value === 'entrega') ? 'block' : 'none';
-  });
-});
-
-btnProximo.addEventListener('click', async () => {
-  if (etapaAtual === 3) {
-    const opcao = document.querySelector('input[name="delivery_option"]:checked').value;
-    const endereco = document.getElementById('endereco').value.trim();
-
-    const form = document.getElementById('deliveryForm');
-    const formData = new FormData(form);
-    const jsonData = Object.fromEntries(formData.entries());
-
-    jsonData.tipo = opcao;
-
-    if (opcao === 'entrega' && endereco === '') {
-      alert('Por favor, preencha sua localização antes de continuar.');
-      return;
-    }
-
-    const url = (opcao === 'entrega') ? 'ajax_bank_payment.php' : 'ajax_bank_payment.php';
-
-    // Animação de carregamento
-    const textoOriginal = btnProximo.innerHTML;
-    btnProximo.disabled = true;
-    btnProximo.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Enviando...`;
-
-    console.log('Enviando dados:', jsonData);
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(jsonData)
+      // Mostrar ou ocultar campo de endereço
+      document.querySelectorAll('input[name="delivery_option"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+        const campo = document.getElementById('campoEndereco');
+        campo.style.display = (radio.value === 'entrega') ? 'block' : 'none';
+        });
       });
 
-      if (!response.ok) throw new Error('Erro no servidor');
+      // Permitir clicar na div para selecionar o radio
+      document.querySelectorAll('.delivery-option-div').forEach(div => {
+        div.addEventListener('click', function(e) {
+        // Evita duplo clique no input/label
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
+        const radioId = this.getAttribute('data-radio');
+        const radio = document.getElementById(radioId);
+        if (radio) {
+          radio.checked = true;
+          radio.dispatchEvent(new Event('change'));
+        }
+        });
+      });
 
-      data = await response.json();
-      console.log(data);
+      btnProximo.addEventListener('click', async () => {
+        if (etapaAtual === 2) {
+        const opcao = document.querySelector('input[name="delivery_option"]:checked').value;
+        const endereco = document.getElementById('endereco').value.trim();
 
-      // Exibe alerta de sucesso
-      swal.fire({
-        icon: 'success',
-        title: 'Pedido enviado',
-        text: data.message
-      }).then((result) => {
-      if (result.isConfirmed || result.isDismissed) {
-        // Redirecionar, por exemplo, para a página de pedidos:
-        window.location.href = `${ROOT}customer-order.php`;
-      }
-    });
+        const form = document.getElementById('deliveryForm');
+        const formData = new FormData(form);
+        const jsonData = Object.fromEntries(formData.entries());
 
-      //const mensagem = `Olá, segue em anexo o comprovativo de pagamento do meu pedido com o id:${data.paymentid}. Obrigado, ${data.name}!`;
-      //const whatsappurl = `https://api.whatsapp.com/send?phone=244927606472&text=${encodeURIComponent(mensagem)}`;
-      //document.getElementById('whatsappBtn').href = whatsappurl;
-      etapaAtual++;
-      bloquearRetorno = true; // impede voltar do step 3
-      atualizarEtapa();
+        jsonData.tipo = opcao;
 
-    } catch (error) {
-      console.error('Erro ao enviar:', error);
-      alert('Ocorreu um erro ao enviar. Tente novamente.');
-    } finally {
-      btnProximo.disabled = false;
-      btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Fechar' : 'Próximo';
-    }
+        if (opcao === 'entrega' && endereco === '') {
+          alert('Por favor, preencha sua localização antes de continuar.');
+          return;
+        }
 
-    return;
-  }
+        const url = (opcao === 'entrega') ? 'ajax_bank_payment.php' : 'ajax_bank_payment.php';
 
-  if (etapaAtual < totalEtapas) {
-    etapaAtual++;
-    atualizarEtapa();
-  } else {
-    const modal = bootstrap.Modal.getInstance(document.getElementById('bankModal'));
-    modal.hide();
+        // Animação de carregamento
+        const textoOriginal = btnProximo.innerHTML;
+        btnProximo.disabled = true;
+        btnProximo.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Enviando...`;
 
-    // Aguarda um pequeno tempo para o modal desaparecer antes do redirecionamento
-  setTimeout(() => {
-    window.location.href = 'https://7setetech.com/'; // <-- Altere o caminho se necessário
-  }, 300);
-  }
-});
+        console.log('Enviando dados:', jsonData);
 
-btnAnterior.addEventListener('click', () => {
-  if (etapaAtual === 3 && bloquearRetorno) return; // impede voltar para o step 2
-  if (etapaAtual > 1) {
-    etapaAtual--;
-    atualizarEtapa();
-  }
-});
+        try {
+          const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(jsonData)
+          });
 
-</script>
+          if (!response.ok) throw new Error('Erro no servidor');
 
+          data = await response.json();
+          console.log(data);
+
+          // Exibe alerta de sucesso
+          swal.fire({
+          icon: 'success',
+          title: 'Pedido enviado',
+          text: data.message
+          }).then((result) => {
+          if (result.isConfirmed || result.isDismissed) {
+          // Redirecionar, por exemplo, para a página de pedidos:
+          window.location.href = `${ROOT}customer-order.php`;
+          }
+        });
+
+          //const mensagem = `Olá, segue em anexo o comprovativo de pagamento do meu pedido com o id:${data.paymentid}. Obrigado, ${data.name}!`;
+          //const whatsappurl = `https://api.whatsapp.com/send?phone=244927606472&text=${encodeURIComponent(mensagem)}`;
+          //document.getElementById('whatsappBtn').href = whatsappurl;
+          etapaAtual++;
+          bloquearRetorno = true; // impede voltar do step 3
+          atualizarEtapa();
+
+        } catch (error) {
+          console.error('Erro ao enviar:', error);
+          alert('Ocorreu um erro ao enviar. Tente novamente.');
+        } finally {
+          btnProximo.disabled = false;
+          btnProximo.innerHTML = etapaAtual === totalEtapas ? 'Fechar' : 'Próximo';
+        }
+
+        return;
+        }
+
+        if (etapaAtual < totalEtapas) {
+        etapaAtual++;
+        atualizarEtapa();
+        } else {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('bankModal'));
+        modal.hide();
+
+        // Aguarda um pequeno tempo para o modal desaparecer antes do redirecionamento
+        setTimeout(() => {
+        window.location.href = 'https://7setetech.com/'; // <-- Altere o caminho se necessário
+        }, 300);
+        }
+      });
+
+      btnAnterior.addEventListener('click', () => {
+        if (etapaAtual === 2 && bloquearRetorno) return; // impede voltar para o step 2
+        if (etapaAtual > 1) {
+        etapaAtual--;
+        atualizarEtapa();
+        }
+      });
+
+      </script>
 
 
 
