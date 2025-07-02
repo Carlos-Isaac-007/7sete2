@@ -161,7 +161,7 @@ $statement1->execute(array($row['id']));
 <link rel="stylesheet" href="assets/css/tree-menu.css">
 <link rel="stylesheet" href="assets/css/select2.min.css">
 <link rel="stylesheet" href="assets/css/main.css?v=<?= filemtime('assets/css/main.css') ?>">
-<link rel="stylesheet" href="assets/css/styles-cards.css?v=<?= filemtime('assets/css/main.css') ?>">
+<link rel="stylesheet" href="assets/css/styles-cards.css?v=<?= filemtime('assets/css/styles-cards.css') ?>">
 <link rel="stylesheet" href="assets/css/responsive.css">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">

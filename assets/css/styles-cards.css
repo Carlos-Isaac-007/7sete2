@@ -29,14 +29,28 @@
   min-height: 2.6em;
 }
 
+.brand-circle {
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  z-index: 2;
+}
+
 .custom-brand-logo {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
-  border: 1px solid #eee;
-  border-radius: 4px;
+  border: none;
+  border-radius: 50%;
   background: #fff;
 }
+
 
 /* Tablets */
 @media (max-width: 1024px) {
@@ -49,6 +63,10 @@
 @media (max-width: 768px) {
   .custom-product-card {
     flex: 0 0 calc(50% - 16px); /* 2 por linha */
+  }
+
+  .card-title {
+    font-size: 12pt;
   }
 }
 
@@ -74,4 +92,63 @@
 
 .custom-product-image-wrapper {
   position: relative;
+}
+
+.promo-badge-modern {
+  background: linear-gradient(90deg, #ff3366 0%, #ff6a00 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.35em 1em 0.35em 0.5em;
+  border-radius: 2em 0.7em 2em 0.7em;
+  box-shadow: 0 2px 8px rgba(255,51,102,0.15);
+  letter-spacing: 0.03em;
+  animation: badge-pop 0.5s cubic-bezier(.68,-0.55,.27,1.55);
+  z-index: 2;
+  min-width: 70px;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4em;
+  border: none;
+}
+
+.promo-badge-modern svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.promo-badge-text {
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@keyframes badge-pop {
+  0% { transform: scale(0.7) rotate(-10deg);}
+  70% { transform: scale(1.1) rotate(2deg);}
+  100% { transform: scale(1) rotate(0);}
+}
+
+@media (max-width: 768px) {
+  .promo-badge-modern {
+    font-size: 0.85rem;
+    padding: 0.25em 0.7em 0.25em 0.4em;
+    min-width: 56px;
+  }
+  .promo-badge-modern svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .promo-badge-modern {
+    font-size: 0.75rem;
+    padding: 0.18em 0.5em 0.18em 0.3em;
+    min-width: 44px;
+  }
+  .promo-badge-modern svg {
+    width: 12px;
+    height: 12px;
+  }
 }

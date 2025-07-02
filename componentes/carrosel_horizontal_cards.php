@@ -3,6 +3,12 @@
     <?php foreach ($result as $row): ?>
       <div class="card custom-product-card">
         <div class="custom-product-image-wrapper position-relative">
+           <!-- Brand logo no topo esquerdo em círculo -->
+          <div class="brand-circle position-absolute top-0 start-0 m-2">
+            <img src="<?= empty($row['brand']) || !$row['brand'] ? 'assets/uploads/SETE-NOVO-LOGOTIPO.png' : 'assets/uploads/' . htmlspecialchars($row['brand']) ?>"
+                 class="custom-brand-logo"
+                 alt="Marca">
+          </div>
           <a href="<?= ROOT ?>product?id=<?= $row['p_id']; ?>">
             <picture>
               <source srcset="<?= ROOT ?>assets/uploads/<?= $row['p_featured_photo'] ?>" type="image/webp">
@@ -12,8 +18,15 @@
                    loading="lazy">
             </picture>
           </a>
-          <?php if (!empty($row['p_old_price']) && $row['p_current_price'] < $row['p_old_price']): ?>
-            <span class="badge bg-danger position-absolute top-0 start-0 m-2">Promoção</span>
+
+           <?php if (!empty($row['p_old_price']) && $row['p_current_price'] < $row['p_old_price']): ?>
+            <span class="promo-badge-modern position-absolute top-0 end-0 m-2 d-flex align-items-center gap-1">
+              <svg width="18" height="18" fill="none" viewBox="0 0 20 20">
+                <circle cx="10" cy="10" r="10" fill="#ff3366"/>
+                <path d="M7 10.5l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="promo-badge-text">Promo</span>
+            </span>
           <?php endif; ?>
         </div>
 
@@ -23,13 +36,6 @@
               <?= $row['p_name'] ?>
             </a>
           </h5>
-
-          <div class="mb-2 d-flex align-items-center gap-2">
-            <img src="<?= empty($row['brand']) || !$row['brand'] ? 'assets/uploads/SETE-NOVO-LOGOTIPO.png' : 'assets/uploads/' . htmlspecialchars($row['brand']) ?>"
-                 class="custom-brand-logo"
-                 alt="Marca">
-            <span class="text-muted small"><?= htmlspecialchars($row['brand_name'] ?? '') ?></span>
-          </div>
 
           <div class="mb-2">
             <?php if (!empty($row['p_old_price']) && $row['p_current_price'] < $row['p_old_price']): ?>
@@ -69,6 +75,9 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .carousel-container {

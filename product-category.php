@@ -120,26 +120,31 @@
                         <div class="col-6 col-md-4 col-lg-3">
                             <div class="card produto-card h-100 shadow-sm border-0">
                                 <div class="position-relative">
+                                       <!-- Brand logo no topo esquerdo em círculo -->
+                                    <div class="brand-circle position-absolute top-0 start-0 m-2">
+                                        <img src="<?= empty($row['brand']) || !$row['brand'] ? 'assets/uploads/SETE-NOVO-LOGOTIPO.png' : 'assets/uploads/' . htmlspecialchars($row['brand']) ?>"
+                                            class="custom-brand-logo"
+                                            alt="Marca">
+                                    </div>
                                     <!-- Imagem do produto -->
                                     <img src="assets/uploads/<?= htmlspecialchars($produto['p_featured_photo']) ?>"
                                          class="card-img-top produto-img"
                                          alt="<?= htmlspecialchars($produto['p_name']) ?>">
                                     <?php if (!empty($produto['p_old_price']) && $produto['p_current_price'] < $produto['p_old_price']): ?>
                                         <!-- Selo de promoção -->
-                                        <span class="badge bg-danger position-absolute top-0 start-0 m-2">Promoção</span>
+                                          <!-- Selo de promoção -->
+                                        <span class="promo-badge-modern position-absolute top-0 end-0 m-2 d-flex align-items-center gap-1">
+                                            <svg width="18" height="18" fill="none" viewBox="0 0 20 20">
+                                                <circle cx="10" cy="10" r="10" fill="#ff3366"/>
+                                                <path d="M7 10.5l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            <span class="promo-badge-text">Promo</span>
+                                        </span>
                                     <?php endif; ?>
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <!-- Nome do produto -->
                                     <h5 class="card-title produto-nome mb-1"><?= htmlspecialchars($produto['p_name']) ?></h5>
-                                    <!-- Marca do produto -->
-                                    <div class="mb-2 d-flex align-items-center gap-2">
-                                        <img src="<?= empty($produto['brand']) ? 'assets/uploads/SETE-NOVO-LOGOTIPO.png' : 'assets/uploads/' . htmlspecialchars($produto['brand']) ?>"
-                                             alt="Marca"
-                                             class="brand-logo rounded"
-                                             style="width:24px;height:24px;object-fit:contain;">
-                                        <span class="text-muted small"><?= htmlspecialchars($produto['brand_name'] ?? '') ?></span>
-                                    </div>
                                     <!-- Preço do produto -->
                                     <div class="mb-2">
                                         <?php if (!empty($produto['p_old_price']) && $produto['p_current_price'] < $produto['p_old_price']): ?>
@@ -175,15 +180,6 @@
 
 <!-- Estilos customizados -->
 <style>
-    .card-title {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 2.6em; /* opcional, para manter o espaço de 2 linhas mesmo em nomes curtos */
-
-    }
     /* Estilo do card de produto */
     .produto-card {
         transition: box-shadow .2s, transform .2s;

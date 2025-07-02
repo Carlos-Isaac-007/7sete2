@@ -290,20 +290,12 @@ body {
 
 /*-----------------------------------------------------------------------------------------*/
 /* Ajuste do tamanho das imagens dos produtos */
-     .carousel-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            padding: 10px;
-        }
+
 
         .carousel-container {
-            display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            gap: 20px;
-            padding: 10px;
             scroll-behavior: smooth;
         }
         .carousel-container {
@@ -358,24 +350,7 @@ body {
             border-color: rgb(50, 67, 218) !important
         }
 
-        /* Botões de navegação */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        .carousel-btn:hover {
-            background: rgba(0, 0, 0, 0.8);
-        }
+  
 
         .prev-btn {
             left: 0;
@@ -400,9 +375,7 @@ body {
             transition: transform 0.3s ease !important;
             }
             
-            .carousel-btn {
-                display: none;
-            }
+          
             
             .headline h2{
                 font-size: 16pt !important;
@@ -550,21 +523,28 @@ body {
 /* barra de pesquisa e menu categorias estilos*/
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  .carousel{
-        margin: 0 auto;
-        -border: 1px solid black;
-        width: 85%;
-        border-radius: 20px;
-    }
+    .carousel{
+            margin: 0 auto;
+            -border: 1px solid black;
+            width: 85%;
+        }
      .carousel-item img {
             width: 100%;
             height: auto; /* Altura fixa */
             object-fit: contain; /* Evita distorção */
-            border-radius: 20px;
         }
- .changeCart{
-    font-size:  2.5rem;
-} 
+    .carousel-inner{
+        border-radios: 18px
+    }
+    .carousel-item img {
+        border-radius: 18px;
+    }
+    .carousel-caption{
+        border-radius: 18px;
+        }
+    .changeCart{
+        font-size:  2.5rem;
+    } 
 }
 
 /* tudo sobre o novo header*/

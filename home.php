@@ -31,9 +31,9 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
 
 ?>
 
-<div class="home-todo" id="home_box" style="border-radius: 18px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 40px; background: #000c78;">
+<div class="home-todo" id="home_box" style="border-radius: 1px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); background: #000c78;">
     <!-- Carrossel Heroico e Interativo para E-commerce -->
-    <div id="newsCarousel" class="carousel slide position-relative" data-bs-ride="carousel" style="margin-bottom: 40px;">
+    <div id="newsCarousel" class="carousel slide position-relative" data-bs-ride="carousel" style="margin-bottom: 25px;">
         <!-- Indicadores circulares personalizados -->
         <div class="carousel-indicators mb-0" style="bottom: 18px;">
             <?php 
@@ -46,7 +46,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                 <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="<?=$j?>" class="<?php if($j == 0) echo 'active'; ?>" aria-current="<?php if($j == 0) echo 'true'; ?>" aria-label="Slide <?=$j+1?>" style="background: linear-gradient(135deg, #0166ff 0%, #ff4b6e 100%); width: 16px; height: 16px; border-radius: 50%; border: none; margin: 0 7px; opacity: 0.7; transition: opacity 0.3s;"></button>
             <?php endfor; ?>
         </div>
-        <div class="carousel-inner rounded-4 shadow-lg">
+        <div class="carousel-inner shadow-lg">
             <?php 
                 $i = 0;
                 $colors = ['#000c78', '#d0752f', '#b37071', '#ff4b6e', '#4F8A8B'];
@@ -59,10 +59,10 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                             alt="Imagem <?=$i+1?>" 
                             data-color="<?= $colors[$i % count($colors)] ?>"
                             class="d-block w-100"
-                            style="object-fit: cover; height: 340px; filter: brightness(0.75) blur(0.5px); border-radius: 18px;"
+                            style="object-fit: cover; height: 340px; filter: brightness(0.75) blur(0.5px);"
                         >
                         <!-- Overlay com CTA -->
-                        <div class="carousel-caption d-flex flex-column justify-content-center align-items-start h-100 w-100 px-4" style="left:0; right:0; top:0; bottom:0; background: linear-gradient(90deg, rgba(0,12,120,0.85) 0%, rgba(0,0,0,0.15) 80%); border-radius: 18px;">
+                        <div class="carousel-caption d-flex flex-column justify-content-center align-items-start h-100 w-100 px-4" style="left:0; right:0; top:0; bottom:0; background: linear-gradient(90deg, rgba(0,12,120,0.85) 0%, rgba(0,0,0,0.15) 80%);">
                             <h2 class="fw-bold mb-2 animate__animated animate__fadeInDown" style="font-size: 2.2rem; color: #fff; text-shadow: 0 2px 12px #000c78;">
                                 <?=!empty($row['caption']) ? htmlspecialchars($row['caption']) : 'Bem-vindo à nossa loja!'?>
                             </h2>
@@ -76,8 +76,12 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                                 <i class="bi bi-arrow-right ms-2"></i>
                             </a>
                             <?php if(!empty($row['promo_badge'])): ?>
-                                <span class="badge bg-warning text-dark mt-3 animate__animated animate__bounceIn" style="font-size: 1rem; border-radius: 12px; padding: 8px 18px; box-shadow: 0 2px 8px #ffba04; margin-right: 10px;">
-                                    <?=htmlspecialchars($row['promo_badge'])?>
+                                 <span class="promo-badge-modern position-absolute top-0 end-0 m-2 d-flex align-items-center gap-1">
+                                    <svg width="18" height="18" fill="none" viewBox="0 0 20 20">
+                                        <circle cx="10" cy="10" r="10" fill="#ff3366"/>
+                                        <path d="M7 10.5l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span class="promo-badge-text"><?= $row['promo_badge'] ?></span>
                                 </span>
                             <?php endif; ?>
                         </div>
@@ -87,11 +91,11 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
             <?php endforeach; ?>
         </div>
         <!-- Botões de navegação customizados -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev" style="width: 56px;">
+        <button class="carousel-control-prev d-none" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev" style="width: 56px;">
             <span class="carousel-control-prev-icon" aria-hidden="true" style="background-image: linear-gradient(135deg, #0166ff 0%, #ff4b6e 100%); border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 2px 8px #000c78;"></span>
             <span class="visually-hidden">Anterior</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next" style="width: 56px;">
+        <button class="carousel-control-next d-none" type="button" data-bs-target="#newsCarousel" data-bs-slide="next" style="width: 56px;">
             <span class="carousel-control-next-icon" aria-hidden="true" style="background-image: linear-gradient(135deg, #ff4b6e 0%, #0166ff 100%); border-radius: 50%; width: 44px; height: 44px; box-shadow: 0 2px 8px #000c78;"></span>
             <span class="visually-hidden">Próximo</span>
         </button>
@@ -167,11 +171,11 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                         </div>
                         <div style="margin-top: -20px;">
                             <?php 
-                           $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
-                    $statement->execute(array(1,1));
+                           $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_current_price < p_old_price AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
+                    $statement->execute(array(1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if (is_array($result)){
-                        require('componentes/carrosel_horizontal_cards.php');
+                        require('componentes/carrosel_horizontal_cards_promo.php');
                     } else {
                                 echo '<div class="alert alert-info text-center">Nenhum produto promocional no momento.</div>';
                             }
@@ -199,11 +203,11 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
                         </div>
                         <div style="margin-top: -20px;">
                             <?php 
-                           $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
+                           $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_current_price >= p_old_price AND p_is_featured=? AND p_is_active=? ORDER BY RAND() LIMIT ".$total_featured_product_home);
                     $statement->execute(array(1,1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if (is_array($result)){
-                        require('componentes/carrosel_horizontal_cards.php');
+                        require('componentes/carrosel_horizontal_cards_promo.php');
                     } else {
                                 echo '<div class="alert alert-info text-center">Nenhum produto em destaque no momento.</div>';
                             }
@@ -216,6 +220,10 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
     </div>
     <style>
         /* UI/UX Moderno para cards e carrossel */
+         .container-fluid {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
         .product .headline .gradiente-brilho {
             background: linear-gradient(90deg, #ff4b6e 0%, #0166ff 100%);
             -webkit-background-clip: text;
@@ -228,9 +236,6 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
             }
             .product .headline h3 {
                 font-size: 0.95rem !important;
-            }
-            .product {
-                padding: 0.5rem !important;
             }
         }
         .product .headline {
@@ -246,18 +251,19 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
             .product {
                 min-height: 420px;
             }
-        }
-        /* Remove container padding for full width */
+            /* Remove container padding for full width */
         .container-fluid {
             padding-left: 10 !important;
             padding-right: 10 !important;
         }
+        }
+        
     </style>
     <?php endif; ?>
 
     <?php if($home_latest_product_on_off == 1): ?>
-    <div class="product mb-4" style="background: linear-gradient(90deg, #f8fafc 60%, #e0e7ff 100%); border-radius: 18px;">
-        <div class="container">
+    <div class="product" style="background: linear-gradient(90deg, #f8fafc 60%, #e0e7ff 100%); border-radius: 18px 18px 0 0;">
+        <div class="container pt-3">
             <div class="row">
                 <div class="col-md-12">
                     <div class="headline d-flex align-items-center mb-3">
@@ -273,7 +279,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
             <div class="row" style="margin-top: -20px">
                 <div class="col-md-12">
                     <?php  
-                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY RAND() LIMIT ".$total_latest_product_home);
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE  p_current_price >= p_old_price AND p_is_active=? ORDER BY RAND() LIMIT ".$total_latest_product_home);
                     $statement->execute(array(1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC); 
                     if (is_array($result)){
@@ -288,14 +294,14 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
 </div>
 
 <?php if($home_popular_product_on_off == 1): ?>
-<div class="product" style="background: linear-gradient(90deg, #f8fafc 60%, #ffe5ec 100%); border-radius: 18px; margin-bottom: 40px; box-shadow: 0 2px 16px rgba(255, 105, 135, 0.08);">
-    <div class="container py-3">
+<div class="product" style="background: linear-gradient(90deg, #f8fafc 60%, #ffe5ec 100%); border-radius: 0px 0px 0 0; box-shadow: 0 2px 16px rgba(255, 105, 135, 0.08);">
+    <div class="container pt-3">
         <div class="row">
             <div class="col-md-12 d-flex align-items-center mb-2">
                 <span class="me-2" style="font-size: 2.2rem; color: #ff4b6e;">
                     <i class="bi bi-heart-fill"></i>
                 </span>
-                <div class="headline mb-0">
+                <div class="headline mb-3">
                     <h2 class="gradiente-brilho" style="margin: 0; font-weight: 700; font-size: 1.7rem; color: #222;">
                         <?php echo $popular_product_title; ?>
                     </h2>
@@ -306,7 +312,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
         <div class="row" style="margin-top: -20px;">
             <div class="col-md-12">
                 <?php 
-                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY RAND() LIMIT ".$total_popular_product_home);
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE  p_current_price >= p_old_price AND p_is_active=? ORDER BY RAND() LIMIT ".$total_popular_product_home);
                     $statement->execute(array(1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if(is_array($result)){
@@ -321,7 +327,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
 
 <!-- aqui vai aparecer uma div que vai carregar os produtos sem para -->
 <div class="product bg-gray" style="padding-bottom: 40px;">
-    <div class="container">
+    <div class="container pt-3">
         <div class="row align-items-center" style="margin-bottom: 20px;">
             <div class="col-md-12 d-flex align-items-center">
                 <span class="me-2" style="font-size: 2rem; color: #4F8A8B;">
