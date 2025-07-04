@@ -5,6 +5,66 @@
     font-family: 'Inter', sans-serif;
     font-weight: 400;
 }
+
+  /* Header responsivo */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 9.5rem;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            height: 40px;
+        }
+        .nav-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000c78;
+            color: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0, 12, 120, 0.15);
+            position: relative;
+        }
+
+        .nav-icon-btn:hover {
+            background-color: #ffffff;
+            color: #000c78;
+            border: 2px solid #000c78;
+            transform: translateY(-2px);
+        }
+
+        .nav-icon-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 12, 120, 0.3);
+        }
+
+        .header-icon:active {
+            transform: scale(0.95);
+        }
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: row;
+                gap: 0.5rem;
+                padding: 0.7rem 1rem;
+            }
+            .logo {
+                height: 32px;
+            }
+            .header-icons {
+                gap: 1rem;
+            }
+        }
+
 @font-face {
     font-family: "Inter", sans-serif;
     src: url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
@@ -268,7 +328,7 @@ p{
     height: auto
  }
  .direita{
-    height: 200px;
+    height: 230px;
  }
   h2 {
     font-size: 36px;

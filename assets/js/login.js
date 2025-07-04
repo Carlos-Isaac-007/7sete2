@@ -8,7 +8,7 @@ btnlogin.onclick = () => {
     card.classList.add('loginActive');
     if (!isDesktop()) {
         document.querySelector('.direita').style.marginTop = '0px';
-        document.querySelector('.direita').style.height = '200px';
+        document.querySelector('.direita').style.height = '230px';
         document.querySelector('.esquerda').style.marginTop = '0px';
     }
 }
@@ -20,7 +20,7 @@ btnCadastro.onclick = () => {
     if (!isDesktop()) {
         document.querySelector('.direita').style.marginTop = '10px';
         document.querySelector('.direita').style.height = '350px';
-        document.querySelector('.esquerda').style.marginTop = '200px';
+        document.querySelector('.esquerda').style.marginTop = '230px';
         window.scrollTo({
             top: document.body.scrollHeight,
             behavior: 'smooth' // opcional: para rolagem suave

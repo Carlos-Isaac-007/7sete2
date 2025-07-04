@@ -2,7 +2,7 @@
 <?php require_once('style_login.php'); ?>
 <style>
   /* Estilo base da página */
-body {
+  
 /* style_register.css */
 .form-register {
   max-width: 500px;
@@ -153,32 +153,6 @@ $error_message .= validarTelefone($_POST['cust_phone']);
     }
 }
 
-/*
-if(empty($_POST['cust_address'])) {
-$valid = 0;
-$error_message .= LANG_VALUE_125."<br>";
-}*/
-
-/*if(empty($_POST['cust_province'])) {
-$valid = 0;
-$error_message .= "<br>".LANG_VALUE_126."<br>";
-}
-
-if(empty($_POST['cust_municipio'])) {
-$valid = 0;
-$error_message .= LANG_VALUE_127."<br>";
-}
-
-if(empty($_POST['cust_bairro'])) {
-$valid = 0;
-$error_message .= LANG_VALUE_128."<br>";
-}
-
-/*if(empty($_POST['cust_zip'])) {
-$valid = 0;
-$error_message .= LANG_VALUE_129."<br>";
-}*/
-
 if( empty($_POST['cust_password']) || empty($_POST['cust_re_password']) ) {
 $valid = 0;
 $error_message .= LANG_VALUE_138."<br>";
@@ -200,24 +174,6 @@ if($valid == 1) {
     // variavel aleatoria para prechecr a mais tarde
 $_POST['cust_cname'] = "none";
 $_POST['cust_zip'] = "none";
-/*if($_POST['cust_bairro'] == "outro"){
-    //$_POST['cust_address'] = $_POST['cust_province']."," . $_POST['custom_bairro_outro']."," . $_POST['cust_municipio'];
-    // aterando o bairro pelo bairro desejado pelo clien
-    $_POST['cust_bairro'] = $_POST['custom_bairro_outro'];
-    	// Saving data into the main table tbl_country
-		$statement = $pdo->prepare("INSERT INTO tbl_bairro (province_id,municipio_id,nome_bairro) VALUES (?,?,?)");
-		$statement->execute(array($_POST['cust_province'],$_POST['cust_municipio'],$_POST['custom_bairro_outro']));
-	
-    //	$success_message = 'Bairro Adicionado com sucesso.';
-    
-     // adiciona uma nova notificacao
-    $mensagem = "Novo bairro Adicionado! Adicione o custo de envio.";
-    $sql = "INSERT INTO notificacoes (mensagem) VALUES (:mensagem)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['mensagem' => $mensagem]);
-} else{
-    $_POST['cust_address'] = $_POST['cust_province']."," . $_POST['cust_bairro']."," . $_POST['cust_municipio'];
-}*/
 $token = md5(time());
 date_default_timezone_set('Africa/Luanda');
 $cust_datetime = date('Y-m-d H:i:s');
@@ -350,12 +306,7 @@ echo "<div class='success' style='padding: 10px;background:#f1f1f1;margin-bottom
 <label for=""><?php echo LANG_VALUE_102; ?> </label>
 <input type="text" class="form-control" name="cust_name" value="<?php if(isset($_POST['cust_name'])){echo $_POST['cust_name'];} ?>" placeholder="Digite o seu nome" required="True">
 </div>
-<!--
-<div class="col-md-6 form-group">
-<label for=""><?php echo LANG_VALUE_103; ?></label>
-<input type="text" class="form-control" name="cust_cname" value="<?php if(isset($_POST['cust_cname'])){echo $_POST['cust_cname'];} ?>">
-</div>
-<!-->
+
 <div class="form-group">
 <label for=""><?php echo LANG_VALUE_94; ?> </label>
 <input type="email" class="form-control" name="cust_email" value="<?php if(isset($_POST['cust_email'])){echo $_POST['cust_email'];} ?>" placeholder="exemplo@gmail.com" required="True">
