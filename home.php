@@ -279,7 +279,7 @@ $home_popular_product_on_off = $row['home_popular_product_on_off'];
             <div class="row" style="margin-top: -20px">
                 <div class="col-md-12">
                     <?php  
-                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE  p_current_price >= p_old_price AND p_is_active=? ORDER BY RAND() LIMIT ".$total_latest_product_home);
+                    $statement = $pdo->prepare("SELECT * FROM tbl_product WHERE p_is_active=? ORDER BY p_id DESC LIMIT ".$total_latest_product_home);
                     $statement->execute(array(1));
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC); 
                     if (is_array($result)){

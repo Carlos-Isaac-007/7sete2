@@ -387,7 +387,7 @@ $i++;
 <?php
 $estimativa = calcularEstimativa();
 ?>
-  <?php if(!strpos($final_ebook_name, '.pdf')): ?>
+  <?php if (!str_contains((string)$final_ebook_name, '.pdf')): ?>
   <div class="shipping-info">
     <i class="fas fa-shipping-fast"></i>
     <span><?= $estimativa ?> <i class="fas fa-clock"></i></span>
@@ -562,7 +562,7 @@ $estimativa = calcularEstimativa();
         <i class="fas fa-sort-numeric-up-alt"></i> <?php echo LANG_VALUE_55; ?>
       </label>
       <div class="qty-container d-flex align-items-center gap-2" style="max-width: 180px;">
-        <?php if(!strpos($final_ebook_name, '.pdf')): ?>
+        <?php if (!str_contains((string)$final_ebook_name, '.pdf')): ?>
           <button type="button" class="qty-btn minus btn btn-outline-secondary rounded-circle shadow-sm" style="width:38px;height:38px;font-size:20px;display:flex;align-items:center;justify-content:center;">−</button>
           <input 
             type="number" 
@@ -572,14 +572,14 @@ $estimativa = calcularEstimativa();
           >
           <button type="button" class="qty-btn plus btn btn-outline-secondary rounded-circle shadow-sm" style="width:38px;height:38px;font-size:20px;display:flex;align-items:center;justify-content:center;">+</button>
         <?php endif; ?>
-        <?php if(strpos($final_ebook_name, '.pdf')): ?>
+       <?php if (!str_contains((string)$final_ebook_name, '.pdf')): ?>
           <input type="hidden" class="input-text qty" step="1" min="1" max="1" name="p_qty" value="1">
         <?php endif; ?>
       </div>
     </div>
 
     <div class="d-flex flex-column flex-md-row gap-3 mb-3">
-      <?php if(!strpos($final_ebook_name, '.pdf')): ?>
+     <?php if (!str_contains((string)$final_ebook_name, '.pdf')): ?>
         <button type="submit" id="Add_To_Cart" class="btn-details2 w-100" style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;">
           <i class="fas fa-shopping-cart"></i> <?php echo LANG_VALUE_154; ?>
         </button>
@@ -672,7 +672,7 @@ $estimativa = calcularEstimativa();
  </style>
 <?php
 
-  if(strpos($final_ebook_name, '.pdf') !== false and $p_current_price < 1){
+  if (str_contains((string)$final_ebook_name, '.pdf') && $p_current_price < 1){
       echo'
   <div>
         <!-- Botão personalizado -->

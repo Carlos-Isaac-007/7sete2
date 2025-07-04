@@ -73,27 +73,7 @@ if ($path != '') {
     $error_message .= 'Você deve selecionar uma Foto em Destaque<br>';
 }
 
-// Lista de extensões permitidas para eBook
-$allowed_ebook_ext = ['pdf', 'epub', 'mobi'];
 
-$ebook_path = $_FILES['ebook']['name'];
-$ebook_tmp = $_FILES['ebook']['tmp_name'];
-
-if ($ebook_path != '') {
-    $ebook_ext = strtolower(pathinfo($ebook_path, PATHINFO_EXTENSION));
-    if (!in_array($ebook_ext, $allowed_ebook_ext)) {
-        $valid = 0;
-        $error_message .= 'O eBook deve estar no formato PDF, EPUB ou MOBI<br>';
-    }
-} else {
-    $valid = 0;
-    $error_message .= 'Você deve selecionar um arquivo de eBook<br>';
-}
-if ($valid == 1) {
-    // mover o ebook
-    $final_ebook_name = rand() . '_' . time() . '.' . $ebook_ext;
-    move_uploaded_file($ebook_tmp, '../assets/uploads/ebooks/' . $final_ebook_name);
-}
 
 
    // Validação da Brand (Logo da Marca)
@@ -202,9 +182,8 @@ p_total_view,
 p_is_featured,
 p_is_active,
 ecat_id,
-brand,
-final_ebook_name
-) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+brand
+) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 $statement->execute(array(
 $_POST['p_name'],
 $p_old_price,
@@ -221,8 +200,7 @@ $_POST['p_return_policy'],
 $_POST['p_is_featured'],
 $_POST['p_is_active'],
 $_POST['ecat_id'],
-$brand_path,
-$final_ebook_name
+$brand_path
 ));
 
 
@@ -418,12 +396,7 @@ foreach ($result as $row) {
 <input type="file" name="brand">
 </div>
 </div>
-<div class="form-group">
-    <label for="" class="col-sm-3 control-label">Upload de eBook (PDF, EPUB, MOBI) <span>*</span></label>
-    <div class="col-sm-4" style="padding-top:4px;">
-        <input type="file" name="ebook" accept=".pdf,.epub,.mobi">
-    </div>
-</div>
+
 <div class="form-group">
 <label for="" class="col-sm-3 control-label">Descrição</label>
 <div class="col-sm-8">
